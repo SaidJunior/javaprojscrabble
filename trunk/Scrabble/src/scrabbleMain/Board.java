@@ -81,8 +81,11 @@ public class Board {
 		
 		return false;
 	}
+	public String getWord() {
+		return null;
+	}
 	
-	public String getWord(int startRow, int startCol, int endRow, int endCol){
+	public String getWordExtra(int startRow, int startCol, int endRow, int endCol){
 		StringBuffer  word = new StringBuffer();
 		if (startRow == endRow) {
 			for(int i = startCol; i <= endCol; i++) {
