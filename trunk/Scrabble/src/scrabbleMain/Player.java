@@ -1,8 +1,9 @@
 package scrabbleMain;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements Serializable{
 	private final String name;
 	private int score = 0;
 	private List<Character> playerLetters = new ArrayList<Character>(7);

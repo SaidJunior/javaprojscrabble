@@ -1,12 +1,20 @@
 package scrabbleMain;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 
-public class Game {
+
+public class Game{
 	private final static int rows          = 15;
 	private final static int columns       = 15;
 	private final static int maxNameLength = 50;
@@ -33,7 +41,7 @@ public class Game {
 		while ((lettersSet.getLetterSetSize() > 0) && (finishGame == false)) {
 			for(int i = 0; i < numberOfPlayers; i++) {
 				
-				System.out.println("Now playing: " + playerList.get(i).getName() + "your score is: " + playerList.get(i).getScore());
+				System.out.println("Now playing: " + playerList.get(i).getName() + " your score is: " + playerList.get(i).getScore());
 				System.out.println("\n\n");
 				
 				board.printBoard();
@@ -104,8 +112,37 @@ public class Game {
 
 
 	private static void loadGame() {
-		// TODO Auto-generated method stub
-		// init board, player list, game rules, ect. 
+		
+		String currentName = getGameName();
+		if (!checkIfValidName(currentName))
+		{
+			System.out.println("Please enter a vaild name. ");
+			return;
+		}
+		
+		try {
+			FileInputStream file = new FileInputStream(currentName);
+			ObjectInputStream data = new ObjectInputStream(file);
+			GameEntity gameEntity= (GameEntity) data.readObject();
+			data.close();
+			file.close();
+			
+			playerList = gameEntity.getPlayerList();
+			lettersSet = gameEntity.getLettersSet();
+			dictionary = gameEntity.getDictionary();
+			board = gameEntity.getBoard();
+			numberOfPlayers = playerList.size();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File Error while loading.");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("IOE Exception while loading.");
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("Cast problem while loading.");
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -149,7 +186,30 @@ public class Game {
 	
 
 	private static void saveCurrentGame() {
-		// TODO Auto-generated method stub
+		
+		String currentName = getGameName();
+		if (!checkIfValidName(currentName))
+		{
+			System.out.println("Please enter a vaild name. ");
+			return;
+		}
+		GameEntity gameEntity = new GameEntity(playerList, lettersSet, dictionary, board);
+		
+		try {
+			FileOutputStream file = new FileOutputStream(currentName);
+			ObjectOutputStream data = new ObjectOutputStream(file);
+			
+			data.writeObject(gameEntity);
+			data.close();
+			file.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File Error while saving.");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("IOE Exception while saving.");
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -340,13 +400,35 @@ public class Game {
 		return charInput;
 	}
 	
+	private static String getGameName() {
+		
+		String gameName = null;
+		System.out.println("Please enter the name of the game:");
+		
+		try {
+			gameName = consoleReader.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return gameName;
+	}
+	
+	private static boolean checkIfValidName(String name) {
+		if (name == null || "".equals(name) || name.startsWith(" "))
+			return false;
+		return true;
+	}
+	
+	
 	private static void createPlayersList() {
 		for (int i = 1; i < numberOfPlayers + 1; i++) {
 			String playerName = null;
 			
 			try {
 				do {
-					System.out.print("Enter NameOf Player(Length less than 50) " + i + ":");
+					System.out.print("Enter Name Of Player(Length less than 50) " + i + ":");
 					playerName = consoleReader.readLine();
 				} while (playerName.length() > maxNameLength);
 				
@@ -364,7 +446,7 @@ public class Game {
 	}
 
 	private static void getNumberOfPlayers() {
-		numberOfPlayers = getUsetIntgerInput(1, 4,"WELLCOM TO SCRABBLE!!!!!\n\n Enter Number Of Players(1 - 4)");
+		numberOfPlayers = getUsetIntgerInput(1, 4,"WELLCOME TO SCRABBLE!!!!!\n\n Enter Number Of Players(1 - 4)");
 	}
 	
 	private static void printExitScreen() {

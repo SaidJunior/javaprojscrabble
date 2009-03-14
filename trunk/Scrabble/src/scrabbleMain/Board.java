@@ -1,8 +1,10 @@
 package scrabbleMain;
 
+import java.io.Serializable;
 
 
-public class Board {
+
+public class Board implements Serializable{
 	
 	private final int length, width;
 	private Cell[][] CellArray; 
@@ -107,7 +109,7 @@ public class Board {
 		CellArray[i][j].letter = '*';	
 	}
 	
-	private class Cell{
+	private class Cell implements Serializable{
 		char letter;
 		int type; //cells with different score
 		

@@ -7,7 +7,7 @@ import java.io.*;
  * The dictionary class
  */
 
-public class Dictionary {
+public class Dictionary implements Serializable{
 	
 	private Set<String> words = new HashSet<String>(); //the set of words
 	private List<String> randomWords = new ArrayList<String>(); // list of random words
@@ -21,7 +21,7 @@ public class Dictionary {
 
 		try{
 			BufferedReader in = 
-				new BufferedReader(new FileReader("/specific/a/home/cc/students/cs/eviatark/workspace/Scrabble/src/resources/Nouns.txt"));
+				new BufferedReader(new FileReader("src/resources/Nouns.txt"));
 			String str;
 			while ((str = in.readLine()) != null){
 				words.add(str);

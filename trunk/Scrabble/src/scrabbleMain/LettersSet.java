@@ -6,17 +6,18 @@ package scrabbleMain;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class LettersSet {
+public class LettersSet implements Serializable{
 	private List <Character> letters = new ArrayList<Character>();
 	private int number = 0;
 	
 	public LettersSet() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("/specific/a/home/cc/students/cs/eviatark/workspace/Scrabble/src/resources/letterDestribution.txt"));
+			BufferedReader in = new BufferedReader(new FileReader("src/resources/letterDestribution.txt"));
 			String str;
 			while ((str = in.readLine()) != null) {
 				number = Integer.parseInt(str.substring(1));
