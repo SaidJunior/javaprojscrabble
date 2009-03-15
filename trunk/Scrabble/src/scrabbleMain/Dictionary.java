@@ -7,7 +7,7 @@ import java.io.*;
  * The dictionary class
  */
 
-public class Dictionary implements Serializable{
+public class Dictionary {
 	
 	private Set<String> words = new HashSet<String>(); //the set of words
 	private List<String> randomWords = new ArrayList<String>(); // list of random words

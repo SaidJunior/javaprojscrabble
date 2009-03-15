@@ -1,6 +1,7 @@
 package scrabbleMain;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,6 +28,9 @@ public class Game{
 	private static LettersSet     lettersSet      = new LettersSet();
 	private static Dictionary     dictionary      = new Dictionary(rows, columns);
 	private static Board          board           = new Board(rows, columns, dictionary.getRandomWord());
+	private static int player_id = 0;
+	
+	private static String savedGamesPath = "src/Saved_Games/";
 	
 	public static void main(String[] args) {
 		int returnStartInputValue;
@@ -39,7 +43,9 @@ public class Game{
 		}
 		
 		while ((lettersSet.getLetterSetSize() > 0) && (finishGame == false)) {
-			for(int i = 0; i < numberOfPlayers; i++) {
+			for( int i = 0 ; i < numberOfPlayers; i++) {
+				
+				
 				
 				System.out.println("Now playing: " + playerList.get(i).getName() + " your score is: " + playerList.get(i).getScore());
 				System.out.println("\n\n");
@@ -54,6 +60,8 @@ public class Game{
 				System.out.println("\n\n");
 				
 				parseUserInput(i);
+				
+				
 				
 				if (finishGame == true) {
 					break;
@@ -121,7 +129,7 @@ public class Game{
 		}
 		
 		try {
-			FileInputStream file = new FileInputStream(currentName);
+			FileInputStream file = new FileInputStream(savedGamesPath + currentName);
 			ObjectInputStream data = new ObjectInputStream(file);
 			GameEntity gameEntity= (GameEntity) data.readObject();
 			data.close();
@@ -129,19 +137,22 @@ public class Game{
 			
 			playerList = gameEntity.getPlayerList();
 			lettersSet = gameEntity.getLettersSet();
-			dictionary = gameEntity.getDictionary();
 			board = gameEntity.getBoard();
 			numberOfPlayers = playerList.size();
+			player_id = gameEntity.getPlayer_id();
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("File Error while loading.");
-			e.printStackTrace();
+			parseUserStartInput();
+			//e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("IOE Exception while loading.");
-			e.printStackTrace();
+			parseUserStartInput();
+			//e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			System.out.println("Cast problem while loading.");
-			e.printStackTrace();
+			parseUserStartInput();
+			//e.printStackTrace();
 		}
 		
 	}
@@ -161,7 +172,7 @@ public class Game{
 		boolean validInput = false;
 		
 		do {
-			currentMove = getUserCharInput("choose your next move: t for throwing letters, w for adding a word to board, q for exit");
+			currentMove = getUserCharInput("choose your next move: t for throwing letters, w for adding a word to board, s for saving the game, q for exit");
 			switch (currentMove) {
 			case 't': throwLetter(playerList.get(i)); 
 					  validInput = true; 
@@ -193,26 +204,53 @@ public class Game{
 			System.out.println("Please enter a vaild name. ");
 			return;
 		}
-		GameEntity gameEntity = new GameEntity(playerList, lettersSet, dictionary, board);
+		/*
+		if(checkIfExist(currentName))
+		{
+			System.out.println("A game with this name already exits.\n if you want to resave it please enter y.n");
+			
+			try {
+				String answer= consoleReader.readLine();
+				if(!"y".equals(answer)){
+					saveCurrentGame();
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		*/
+		GameEntity gameEntity = new GameEntity(playerList, lettersSet, board, player_id);
 		
 		try {
-			FileOutputStream file = new FileOutputStream(currentName);
+			FileOutputStream file = new FileOutputStream(savedGamesPath + currentName);		  
 			ObjectOutputStream data = new ObjectOutputStream(file);
 			
 			data.writeObject(gameEntity);
 			data.close();
 			file.close();
 			
+			System.out.println("The game: " + currentName + " has been successfully saved.\n");
 		} catch (FileNotFoundException e) {
 			System.out.println("File Error while saving.");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("IOE Exception while saving.");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 	}
+	
 
+
+	public static boolean checkIfExist(String fileName){
+		
+		File file=new File(savedGamesPath+ fileName);
+		return file.exists();
+		
+	}
 
 
 	private static void printHelpScreen() {
@@ -403,7 +441,7 @@ public class Game{
 	private static String getGameName() {
 		
 		String gameName = null;
-		System.out.println("Please enter the name of the game:");
+		System.out.println("Please enter the name of the game: ");
 		
 		try {
 			gameName = consoleReader.readLine();
