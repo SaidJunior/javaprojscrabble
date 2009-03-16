@@ -28,8 +28,9 @@ public class Game{
 	private static LettersSet     lettersSet      = new LettersSet();
 	private static Dictionary     dictionary      = new Dictionary(rows, columns);
 	private static Board          board           = new Board(rows, columns, dictionary.getRandomWord());
-	private static int player_id = 0;
+	private static int turnInd = 0;
 	
+	//Path to hold all saved games at.
 	private static String savedGamesPath = "src/Saved_Games/";
 	
 	public static void main(String[] args) {
@@ -43,11 +44,9 @@ public class Game{
 		}
 		
 		while ((lettersSet.getLetterSetSize() > 0) && (finishGame == false)) {
-			for( int i = 0 ; i < numberOfPlayers; i++) {
-				
-				
-				
-				System.out.println("Now playing: " + playerList.get(i).getName() + " your score is: " + playerList.get(i).getScore());
+			for( ; turnInd < numberOfPlayers; turnInd++) {
+			
+				System.out.println("Now playing: " + playerList.get(turnInd).getName() + " your score is: " + playerList.get(turnInd).getScore());
 				System.out.println("\n\n");
 				
 				board.printBoard();
@@ -55,18 +54,18 @@ public class Game{
 				System.out.print("\n\n Your letters are: ");
 				System.out.println();
 				
-				playerList.get(i).printPlayerLetters();
+				playerList.get(turnInd).printPlayerLetters();
 				
 				System.out.println("\n\n");
 				
-				parseUserInput(i);
-				
-				
+				parseUserInput(turnInd);
 				
 				if (finishGame == true) {
 					break;
 				}
 			}
+			if (turnInd % numberOfPlayers == 0)
+				turnInd = 0;
 		}
 		printExitScreen();
 		updateRecordList();
@@ -101,8 +100,8 @@ public class Game{
 		              createPlayersList();
 		              validInput = true;
 		              break;
-			case 'l': loadGame();
-			          validInput = true;
+			case 'l': 
+			          validInput = loadGame();;
 			          break;
 			case 'h': printHelpScreen();
 			          validInput = true;
@@ -117,17 +116,21 @@ public class Game{
 		return 0;
 	}
 
-
-
-	private static void loadGame() {
+	private static boolean loadGame() {
 		
 		String currentName = getGameName();
+		boolean succ = false;
 		if (!checkIfValidName(currentName))
 		{
 			System.out.println("Please enter a vaild name. ");
-			return;
+			return succ;
 		}
-		
+		if (!checkIfExist(currentName))
+		{
+			System.out.println("A game named: " + currentName + " does not exists.");
+			return succ;
+		}
+					
 		try {
 			FileInputStream file = new FileInputStream(savedGamesPath + currentName);
 			ObjectInputStream data = new ObjectInputStream(file);
@@ -139,22 +142,20 @@ public class Game{
 			lettersSet = gameEntity.getLettersSet();
 			board = gameEntity.getBoard();
 			numberOfPlayers = playerList.size();
-			player_id = gameEntity.getPlayer_id();
+			turnInd = gameEntity.turnInd();
+			succ = true;
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("File Error while loading.");
-			parseUserStartInput();
-			//e.printStackTrace();
+			System.out.println("File Error while loading the game.");
+			return succ;
 		} catch (IOException e) {
-			System.out.println("IOE Exception while loading.");
-			parseUserStartInput();
-			//e.printStackTrace();
+			System.out.println("IOE Exception while loading the game.");
+			return succ;
 		} catch (ClassNotFoundException e) {
-			System.out.println("Cast problem while loading.");
-			parseUserStartInput();
-			//e.printStackTrace();
+			System.out.println("Cast problem while loading the game.");
+			return succ;
 		}
-		
+		return succ;
 	}
 
 
@@ -201,29 +202,29 @@ public class Game{
 		String currentName = getGameName();
 		if (!checkIfValidName(currentName))
 		{
-			System.out.println("Please enter a vaild name. ");
+			System.out.println("Please enter a vaild name.");
+			turnInd--;
 			return;
 		}
-		/*
+		//check if such a game already exists.
 		if(checkIfExist(currentName))
 		{
-			System.out.println("A game with this name already exits.\n if you want to resave it please enter y.n");
-			
+			System.out.println("A game with this name already exists.\n\nPlease type y if you want to overwrite it.");			
 			try {
 				String answer= consoleReader.readLine();
 				if(!"y".equals(answer)){
-					saveCurrentGame();
+					//otherwise, play the turn again
+					turnInd--;
+					return;
 				}
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+				turnInd--;
+				return;
+			}		
 		}
-		*/
-		GameEntity gameEntity = new GameEntity(playerList, lettersSet, board, player_id);
 		
+		GameEntity gameEntity = new GameEntity(playerList, lettersSet, board, turnInd);
 		try {
 			FileOutputStream file = new FileOutputStream(savedGamesPath + currentName);		  
 			ObjectOutputStream data = new ObjectOutputStream(file);
@@ -240,16 +241,17 @@ public class Game{
 			System.out.println("IOE Exception while saving.");
 			//e.printStackTrace();
 		}
-		
+		//after saving the game, player get to play again
+		turnInd--;
 	}
 	
 
-
+/* Helper function. Checks if a file exists before saving it as a game.
+ * */
 	public static boolean checkIfExist(String fileName){
 		
-		File file=new File(savedGamesPath+ fileName);
-		return file.exists();
-		
+		File file=new File(savedGamesPath + fileName);
+		return file.exists();		
 	}
 
 
