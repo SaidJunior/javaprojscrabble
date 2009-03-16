@@ -9,13 +9,16 @@ public class GameEntity implements Serializable{
 	private LettersSet lettersSet;
 	private Board board;
 	private int turnInd;
+	private char mode;
 	
-	public GameEntity(List<Player> playerList, LettersSet lettersSet, Board board,int player_id)
+	public GameEntity(List<Player> playerList, LettersSet lettersSet, Board board,
+					 int player_id, char mode)
 	{
 		this.playerList = playerList;
 		this.lettersSet = lettersSet;
 		this.board = board;
 		this.turnInd=player_id;
+		this.mode = mode;
 	}
 
 	public List<Player> getPlayerList() {
@@ -46,8 +49,18 @@ public class GameEntity implements Serializable{
 	public int turnInd() {
 		return turnInd;
 	}
-
+	
 	public void setturnInd(int turnInd) {
 		this.turnInd = turnInd;
 	}
+
+	public char getMode(){
+		return mode;
+	}
+	
+	public void setMode(char mode){
+		this.mode = mode;
+	}
+
+	
 }

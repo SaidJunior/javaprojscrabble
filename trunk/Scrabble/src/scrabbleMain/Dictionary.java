@@ -21,7 +21,7 @@ public class Dictionary {
 
 		try{
 			BufferedReader in = 
-				new BufferedReader(new FileReader("src/resources/Nouns.txt"));
+				new BufferedReader(new FileReader("src/resources/Words.txt"));
 			String str;
 			while ((str = in.readLine()) != null){
 				words.add(str);

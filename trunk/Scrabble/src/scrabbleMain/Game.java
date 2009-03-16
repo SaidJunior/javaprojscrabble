@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.SortedMap;
 
 
@@ -29,6 +30,7 @@ public class Game{
 	private static Dictionary     dictionary      = new Dictionary(rows, columns);
 	private static Board          board           = new Board(rows, columns, dictionary.getRandomWord());
 	private static int turnInd = 0;
+	static char mode;  //the rules
 	
 	//Path to hold all saved games at.
 	private static String savedGamesPath = "src/Saved_Games/";
@@ -95,7 +97,7 @@ public class Game{
 		do {
 			startInput = getUserCharInput("Enter 'n' for a new game, 'l' for loading a game, 'h' for help or 'q' to exit");
 			switch (startInput) {
-			case 'n': getGameRuels(); 
+			case 'n': getGameRules(); 
 				      getNumberOfPlayers();
 		              createPlayersList();
 		              validInput = true;
@@ -106,6 +108,7 @@ public class Game{
 			case 'h': printHelpScreen();
 			          validInput = true;
 			          break;
+			
 			case 'q': return 1;
 			
 			default : System.out.println("input is not valid, please try again");
@@ -143,6 +146,7 @@ public class Game{
 			board = gameEntity.getBoard();
 			numberOfPlayers = playerList.size();
 			turnInd = gameEntity.turnInd();
+			mode = gameEntity.getMode();
 			succ = true;
 			
 		} catch (FileNotFoundException e) {
@@ -160,11 +164,34 @@ public class Game{
 
 
 
-	private static void getGameRuels() {
-		// TODO Auto-generated method stub
+	private static void getGameRules() { //this function sets the rules
+		do{
+			mode = getUserCharInput("Enter 'b' for basic settings and 'a' for advanced");
+		}while (mode != 'b' && mode != 'a');
 		
+		if (mode == 'a')
+			makeAdvancedBoard();
 	}
 
+	private static void makeAdvancedBoard(){
+		int []oddsArray = {1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
+		Random generator = new Random();
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < columns; j++)
+				board.setScore(i, j, oddsArray[generator.nextInt(10)]);
+	}
+	
+	//get the score of the word
+	private static int getScore(int startRow, int startCol, int endRow, int endCol){
+		int sum = 0;
+		if (startRow == endRow)
+			for (int i = startCol; i <= endCol; i++)
+				sum += board.getScore(startRow, i);
+		if (startCol == endCol)
+			for (int i = startRow; i <= endRow; i++)
+				sum += board.getScore(i, startCol);
+		return sum;
+	}
 
 
 	private static void parseUserInput(int i) {
@@ -178,7 +205,11 @@ public class Game{
 			case 't': throwLetter(playerList.get(i)); 
 					  validInput = true; 
 					  break;
-			case 'w': placeWordExtra(playerList.get(i)); 
+			case 'w': 
+					  if(mode == 'b') 
+						  placeWordExtra(playerList.get(i)); //change this to wordBasic
+					  else
+						  placeWordExtra(playerList.get(i)); 
 			          validInput = true; 
 			          break;
 			case 'q': finishGame = true; 
@@ -224,7 +255,7 @@ public class Game{
 			}		
 		}
 		
-		GameEntity gameEntity = new GameEntity(playerList, lettersSet, board, turnInd);
+		GameEntity gameEntity = new GameEntity(playerList, lettersSet, board, turnInd, mode);
 		try {
 			FileOutputStream file = new FileOutputStream(savedGamesPath + currentName);		  
 			ObjectOutputStream data = new ObjectOutputStream(file);
@@ -355,7 +386,8 @@ public class Game{
 		if(dictionary.contains(userWord)) {
 			player.removeLetter(letterIndex);
 			player.insertLetter(lettersSet.getLetter());
-			player.setScore(userWord.length());
+			//player.setScore(userWord.length());
+			player.setScore(getScore(startRow, startCol, endRow, endCol));
 		}
 		else {
 			board.removeLetter(row, column);

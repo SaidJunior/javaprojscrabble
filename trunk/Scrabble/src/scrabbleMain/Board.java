@@ -37,7 +37,10 @@ public class Board implements Serializable{
 		for(int i=0; i<length; i++ ){
 			System.out.format("%8d| ", i);
 			for(int j=0; j<width; j++){
-				System.out.format("%2c ",CellArray[i][j].letter);
+				if (Game.mode == 'a' && isCellFree(i,j))
+					System.out.format("%2d ", CellArray[i][j].type);
+				else
+					System.out.format("%2c ",CellArray[i][j].letter);
 			}
 			System.out.println();
 		}
@@ -62,7 +65,7 @@ public class Board implements Serializable{
 	}
 	
 	public boolean isCellFree(int i, int j) {
-		if ((CellArray[i][j].letter != '*') && (CellArray[i][j].letter != '2'))
+		if (CellArray[i][j].letter != '*')
 			return false;
 		return true;
 	}
@@ -105,25 +108,27 @@ public class Board implements Serializable{
 		return word.toString();
 	}
 	
+	public void setScore(int i, int j, int s){
+		CellArray[i][j].type = s;
+	}
+	
+	public int getScore(int i, int j){
+		return CellArray[i][j].type;
+	}
+	
 	public void removeLetter(int i, int j) {
 		CellArray[i][j].letter = '*';	
 	}
 	
 	private class Cell implements Serializable{
-		char letter;
-		int type; //cells with different score
+		char letter = '*';
+		int type = 1; //cells with different score
 		
 		private Cell() {
-			this(1);
 		}
 		
-		private Cell(int type){
-			switch(type){
-			case 1:	letter = '*'; break;
-			case 2: letter = '2'; break;
-			default:;
-			}
-		}
+
+		
 	}
 
 	
