@@ -11,9 +11,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 
 public class Game{
@@ -31,9 +33,11 @@ public class Game{
 	private static Board          board           = new Board(rows, columns, dictionary.getRandomWord());
 	private static int turnInd = 0;
 	static char mode;  //the rules
+	private static RecordList     recordList      =new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	
 	//Path to hold all saved games at.
 	private static String savedGamesPath = "src/Saved_Games/";
+	private static String savedRecordList ="src/RecordList/fileRecordList";
 	
 	public static void main(String[] args) {
 		int returnStartInputValue;
@@ -77,15 +81,56 @@ public class Game{
 
 
 	private static void printRecordList() {
-		// TODO Auto-generated method stub
+		System.out.println("Top Scores");
+		System.out.println("----------");
+		recordList.printRecordList();
+		FileOutputStream file;
+		
+			try {
+				file = new FileOutputStream(savedRecordList);
+				ObjectOutputStream data = new ObjectOutputStream(file);
+//				recordList.updatePlayer("First Player", 10);
+				data.writeObject(recordList);
+				data.close();
+				file.close();
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		System.out.println("Thank you for playing Scrabble!!");
 	}
 
 
 
 	private static void updateRecordList() {
-		// TODO Auto-generated method stub
-		
+		FileInputStream file;
+		try {
+			file = new FileInputStream(savedRecordList);
+			ObjectInputStream data = new ObjectInputStream(file);
+		    recordList= (RecordList) data.readObject();
+			data.close();
+			file.close();
+			for(Player player:playerList){
+				recordList.updatePlayer(player.getName(),player.getScore());
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("File Error while loading.");
+			parseUserStartInput();
+			//e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("IOE Exception while loading updateRecordList.");
+			
+			//e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("Cast problem while loading.");
+			parseUserStartInput();
+			//e.printStackTrace();
+		}
 	}
 
 
