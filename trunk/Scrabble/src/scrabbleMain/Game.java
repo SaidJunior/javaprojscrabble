@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -151,7 +152,6 @@ public class Game{
 			          validInput = loadGame();;
 			          break;
 			case 'h': printHelpScreen();
-			          validInput = true;
 			          break;
 			
 			case 'q': return 1;
@@ -332,8 +332,18 @@ public class Game{
 
 
 	private static void printHelpScreen() {
-		// 
-		
+		try{
+			BufferedReader in = 
+				new BufferedReader(new FileReader("src/resources/help_file.txt"));
+			String str;
+			while ((str = in.readLine()) != null)
+				System.out.println(str);
+			
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+
 	}
 
 
