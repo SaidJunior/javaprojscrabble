@@ -25,7 +25,9 @@ public class Player implements Serializable{
 	}
 	
 	public void insertLetter(char letter) {
-		playerLetters.add(letter);
+		if (letter != 0) {
+			playerLetters.add(letter);
+		}
 	}
 	
 	public void removeLetter(int letterIndex) {

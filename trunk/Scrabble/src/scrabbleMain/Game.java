@@ -10,12 +10,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 
@@ -33,16 +30,18 @@ public class Game{
 	private static Dictionary     dictionary      = new Dictionary(rows, columns);
 	private static Board          board           = new Board(rows, columns, dictionary.getRandomWord());
 	private static int turnInd = 0;
-	static char mode;  //the rules
-	private static RecordList     recordList      =new RecordList(new TreeMap<Integer,LinkedList<String>>());
+	static char mode;  //indicates the chosen rules set
+	private static RecordList     recordList      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	
 	//Path to hold all saved games at.
 	private static String savedGamesPath = "src/Saved_Games/";
 	private static String savedRecordList ="src/RecordList/fileRecordList";
 	
 	public static void main(String[] args) {
-		int returnStartInputValue;
+		int returnStartInputValue = 0;
+		
 		System.out.println("WELLCOME TO SCABBLE");
+		
 		returnStartInputValue = parseUserStartInput(); 
 		
 		if (returnStartInputValue == 1)  { // quit the game
@@ -53,7 +52,7 @@ public class Game{
 		while ((lettersSet.getLetterSetSize() > 0) && (finishGame == false)) {
 			for( ; turnInd < numberOfPlayers; turnInd++) {
 			
-				System.out.println("Now playing: " + playerList.get(turnInd).getName() + " your score is: " + playerList.get(turnInd).getScore());
+				System.out.println("\n\nNow playing: " + playerList.get(turnInd).getName() + " your score is: " + playerList.get(turnInd).getScore());
 				System.out.println("\n\n");
 				
 				board.printBoard();
@@ -96,11 +95,11 @@ public class Game{
 				file.close();
 				
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("IO error - File not found. The record list will not be printed - try again later");
+				return;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("IO error. The record list will not be printed - try again later");
+				return;
 			}
 			
 		System.out.println("Thank you for playing Scrabble!!");
@@ -122,26 +121,20 @@ public class Game{
 		} catch (FileNotFoundException e) {
 			System.out.println("File Error while loading.");
 			parseUserStartInput();
-			//e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("IOE Exception while loading updateRecordList.");
-			
-			//e.printStackTrace();
+			System.out.println("IO Exception while loading updateRecordList.");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Cast problem while loading.");
 			parseUserStartInput();
-			//e.printStackTrace();
 		}
 	}
 
-
-
-	private static int parseUserStartInput() { //ask the user if to start a new game or to load 
+	private static int parseUserStartInput() { //ask the user if start a new game or to load 
 		char startInput = 0;
 		boolean validInput = false;
 		
 		do {
-			startInput = getUserCharInput("Enter 'n' for a new game, 'l' for loading a game, 'h' for help or 'q' to exit");
+			startInput = GetUserInput.getUserCharInput("Enter 'n' for a new game, 'l' for loading a game, 'h' for help or 'q' to exit", consoleReader);
 			switch (startInput) {
 			case 'n': getGameRules(); 
 				      getNumberOfPlayers();
@@ -152,11 +145,12 @@ public class Game{
 			          validInput = loadGame();;
 			          break;
 			case 'h': printHelpScreen();
+					  validInput = true;
 			          break;
 			
 			case 'q': return 1;
 			
-			default : System.out.println("input is not valid, please try again");
+			default : System.out.println("Input is not valid, please try again");
 			}
 			 
 		} while (validInput == false);
@@ -166,7 +160,7 @@ public class Game{
 
 	private static boolean loadGame() {
 		
-		String currentName = getGameName();
+		String currentName = GetUserInput.getGameName(consoleReader);
 		boolean succ = false;
 		if (!checkIfValidName(currentName))
 		{
@@ -182,7 +176,7 @@ public class Game{
 		try {
 			FileInputStream file = new FileInputStream(savedGamesPath + currentName);
 			ObjectInputStream data = new ObjectInputStream(file);
-			GameEntity gameEntity= (GameEntity) data.readObject();
+			GameEntity gameEntity = (GameEntity) data.readObject();
 			data.close();
 			file.close();
 			
@@ -211,23 +205,16 @@ public class Game{
 
 	private static void getGameRules() { //this function sets the rules
 		do{
-			mode = getUserCharInput("Enter 'b' for basic settings and 'a' for advanced");
+			mode = GetUserInput.getUserCharInput("Enter 'b' for basic settings and 'a' for advanced", consoleReader);
 		}while (mode != 'b' && mode != 'a');
 		
-		if (mode == 'a')
-			makeAdvancedBoard();
-	}
-
-	private static void makeAdvancedBoard(){
-		int []oddsArray = {1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
-		Random generator = new Random();
-		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < columns; j++)
-				board.setScore(i, j, oddsArray[generator.nextInt(10)]);
+		if (mode == 'a') {
+			board.makeAdvancedBoard();
+		}
 	}
 	
 	//get the score of the word
-	private static int getScore(int startRow, int startCol, int endRow, int endCol){
+	private static int calcScore(int startRow, int startCol, int endRow, int endCol){
 		int sum = 0;
 		if (startRow == endRow)
 			for (int i = startCol; i <= endCol; i++)
@@ -245,16 +232,17 @@ public class Game{
 		boolean validInput = false;
 		
 		do {
-			currentMove = getUserCharInput("choose your next move: t for throwing letters, w for adding a word to board, s for saving the game, q for exit");
+			currentMove = GetUserInput.getUserCharInput("choose your next move: t for throwing letters, w for adding a word to board, s for saving the game, q for exit", consoleReader);
+
 			switch (currentMove) {
 			case 't': throwLetter(playerList.get(i)); 
 					  validInput = true; 
 					  break;
 			case 'w': 
 					  if(mode == 'b') 
-						  placeWordExtra(playerList.get(i)); //change this to wordBasic
+						  placeWordBasic(playerList.get(i)); 
 					  else
-						  placeWordExtra(playerList.get(i)); 
+						  placeWordAdvanced(playerList.get(i));
 			          validInput = true; 
 			          break;
 			case 'q': finishGame = true; 
@@ -275,7 +263,8 @@ public class Game{
 
 	private static void saveCurrentGame() {
 		
-		String currentName = getGameName();
+		String currentName = GetUserInput.getGameName(consoleReader);
+
 		if (!checkIfValidName(currentName))
 		{
 			System.out.println("Please enter a vaild name.");
@@ -287,7 +276,7 @@ public class Game{
 		{
 			System.out.println("A game with this name already exists.\n\nPlease type y if you want to overwrite it.");			
 			try {
-				String answer= consoleReader.readLine();
+				String answer = consoleReader.readLine();
 				if(!"y".equals(answer)){
 					//otherwise, play the turn again
 					turnInd--;
@@ -312,10 +301,8 @@ public class Game{
 			System.out.println("The game: " + currentName + " has been successfully saved.\n");
 		} catch (FileNotFoundException e) {
 			System.out.println("File Error while saving.");
-			//e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("IOE Exception while saving.");
-			//e.printStackTrace();
 		}
 		//after saving the game, player get to play again
 		turnInd--;
@@ -323,10 +310,10 @@ public class Game{
 	
 
 /* Helper function. Checks if a file exists before saving it as a game.
- * */
+ */
 	public static boolean checkIfExist(String fileName){
 		
-		File file=new File(savedGamesPath + fileName);
+		File file = new File(savedGamesPath + fileName);
 		return file.exists();		
 	}
 
@@ -337,77 +324,14 @@ public class Game{
 				new BufferedReader(new FileReader("src/resources/help_file.txt"));
 			String str;
 			while ((str = in.readLine()) != null)
-				System.out.println(str);
-			
+				System.out.println(str);	
 		}
 		catch(IOException e){
-			e.printStackTrace();
-		}
-
-	}
-
-
-/*
-	private static void placeWord(Player player) {
-		int rowCurrent;
-		int columnCurrent;
-		int startRow;
-		int startCol;
-		int endRow;
-		int endCol;
-		int letterIndex;
-		char addMore = 0;
-		boolean validInput = false;
-		List<Character> addedLetters = new ArrayList<Character>();
-
-		String userWord;
-		
-		startRow    = getUsetIntgerInput(0, rows, "enter row number");
-		startCol    = getUsetIntgerInput(0, columns, "enter column number");
-		letterIndex = getUsetIntgerInput(0, player.getNumberOfLetters(), "enter the index of the wanted letter");
-		
-		if ((board.hasNeigbours(startRow, startCol) == false) || (board.isCellFree(startRow, startCol) == false)) {
-			System.out.println("The placed letter doesn't have any neigbours, you lost your turn");
-			return;
-		}
-		board.insertLetter(startRow, startCol, player.getLetter(letterIndex));
-		
-		for (int i = 1; (i < player.getNumberOfLetters()) && (addMore != 'n'); i++){	
-			do {
-				addMore = getUserCharInput("Do you want to add another letter?(y/n)");
-				if ((addMore == 'n') || (addMore == 'y')) {
-					validInput = true;
-				}
-				else {
-					System.out.println("Input not valid");
-				}
-			} while (validInput == false);
-		}
-		rowCurrent    = getUsetIntgerInput(0, rows, "enter row number");
-		columnCurrent = getUsetIntgerInput(0, columns, "enter column number");
-		letterIndex   = getUsetIntgerInput(0, player.getNumberOfLetters(), "enter the index of the wanted letter");
-		
-		if ((board.hasNeigbours(rowCurrent, columnCurrent) == false) || (board.isCellFree(rowCurrent, columnCurrent) == false)) {
-			System.out.println("The placed letter doesn't have any neigbours, you lost your turn");
-			return;
-		}
-		
-		
-		board.insertLetter(rowCurrent, columnCurrent, player.getLetter(letterIndex));
-		
-		
-		if(dictionary.contains(userWord)) {
-			player.removeLetter(letterIndex);
-			player.insertLetter(lettersSet.getLetter());
-			player.setScore(userWord.length());
-		}
-		else {
-			board.removeLetter(rowCurrent, columnCurrent);
-			System.out.println("Word: "+ userWord + " does not exist in the dictionary");
+			System.out.println("IO Error. Loading the help file failed. Please try again later");
 		}
 	}
-	*/
-	private static void placeWordExtra(Player player) { //this function will be an extra rule, currently not in use
+	
+	private static void placeWordAdvanced(Player player) { //this function will be an extra rule, currently not in use
 		int row;
 		int column;
 		int letterIndex;
@@ -417,23 +341,33 @@ public class Game{
 		int endCol;
 		String userWord;
 		
-		row    = getUsetIntgerInput(0, rows, "enter row number");
-		column = getUsetIntgerInput(0, columns, "enter column number");
-		letterIndex = getUsetIntgerInput(0, player.getNumberOfLetters(), "enter the index of the wanted letter");
+		System.out.println("Choose JUST ONE letter to place in order to make a word");
+		row         = GetUserInput.getUsetIntgerInput(0, rows - 1, "enter letter row number", consoleReader);
+		column      = GetUserInput.getUsetIntgerInput(0, columns - 1, "enter letter column number", consoleReader);
+		letterIndex = GetUserInput.getUsetIntgerInput(0, player.getNumberOfLetters() - 1, "enter the index of the wanted letter", consoleReader);
 		
 		if ((board.hasNeigbours(row, column) == false) || (board.isCellFree(row, column) == false)) {
 			System.out.println("The placed letter doesn't have any neigbours, you lost your turn");
 			return;
 		}
 		
-		startRow = getUsetIntgerInput(0, rows, "enter word's start row");
-		startCol = getUsetIntgerInput(0, columns, "enter word's start column");
-		endRow   = getUsetIntgerInput(0, rows, "enter word's end row");
-		endCol   = getUsetIntgerInput(0, columns, "enter word's end column");
+		startRow = GetUserInput.getUsetIntgerInput(0, rows - 1, "enter word's start row", consoleReader);
+		startCol = GetUserInput.getUsetIntgerInput(0, columns - 1, "enter word's start column", consoleReader);
+		endRow   = GetUserInput.getUsetIntgerInput(0, rows - 1, "enter word's end row", consoleReader);
+		endCol   = GetUserInput.getUsetIntgerInput(0, columns - 1, "enter word's end column", consoleReader);
+		
+		if ((startRow != endRow) && (startCol != endCol)) {
+			System.out.println("Word cordinates not valid - you lost you turn");
+			return;
+		}
+		if (((startRow == endRow) && (endRow != row)) || ((endCol == startCol) && (startCol != column))){
+			System.out.println("Word cordinates do not include inserted letter - you lost your turn");
+			return;
+		}
 		
 		board.insertLetter(row, column, player.getLetter(letterIndex));
 		//board.printBoard();
-		userWord = board.getWordExtra(startRow, startCol, endRow, endCol);
+		userWord = board.getWord(startRow, startCol, endRow, endCol);
 		if (userWord == null) {
 			System.out.println("given indeces are not valid, you lost your turn");
 			board.removeLetter(row, column);
@@ -441,39 +375,177 @@ public class Game{
 		if(dictionary.contains(userWord)) {
 			player.removeLetter(letterIndex);
 			player.insertLetter(lettersSet.getLetter());
-			//player.setScore(userWord.length());
-			player.setScore(getScore(startRow, startCol, endRow, endCol));
+			player.setScore(calcScore(startRow, startCol, endRow, endCol));
 		}
 		else {
 			board.removeLetter(row, column);
 			System.out.println("Word: "+ userWord + " does not exist in the dictionary");
 		}
+		
 	}
 
-
-
-	private static int getUsetIntgerInput(int min, int max, String message) {
-		boolean validInput = false;
-		int inputInt    = 0;
-		System.out.println(message);
+	private static void placeWordBasic(Player player) { 
+		int row;
+		int column;
+		int maxWordLength = -1;
+		int letterIndex;
+		String userWord;
+		String maxWord = null;
+		char addMoreLetters;
+		boolean validInput       = false;
+		boolean validByRows      = true;
+		boolean validByCols      = true;
+		boolean validContinueRow = true;
+		boolean validContinueCol = true;
+		
+		List<LetterPosition> usedLetters = new ArrayList<LetterPosition>();
+		
+		System.out.println("\n\nENTER LETTERS FROM RIGHT TO LEFT OR UP TO DOWN!!!!\n\n");
 		do {
-			try {
-				inputInt = Integer.parseInt(consoleReader.readLine());
-				if ((inputInt >= min) && (inputInt < max)) {
-					break;
+			System.out.println("Choose a letter to place in order to make a word");
+			row         = GetUserInput.getUsetIntgerInput(0, rows - 1, "enter letter row number", consoleReader);
+			column      = GetUserInput.getUsetIntgerInput(0, columns - 1, "enter letter column number", consoleReader);
+			letterIndex = GetUserInput.getUsetIntgerInput(0, player.getNumberOfLetters() - 1, "enter the index of the wanted letter", consoleReader);
+	
+			//check if cell already taken
+			if (board.isCellFree(row, column) == false) {
+				System.out.println("This cell is already taken - you lost your turn");
+				return;
+			}
+			
+			//add letter to board
+			board.insertLetter(row, column, player.getLetter(letterIndex));
+			usedLetters.add(new LetterPosition(row, column, player.getLetter(letterIndex)));
+			player.removeLetter(letterIndex);
+			
+			board.printBoard();
+			player.printPlayerLetters();
+			System.out.println();
+			
+			do {
+				addMoreLetters = GetUserInput.getUserCharInput("do you want to place another letter?(y,n)", consoleReader);
+				if ((addMoreLetters == 'n') || (addMoreLetters == 'y')) {
+					validInput = true;
 				}
 				else {
-					System.out.println("Number of row should be " + min + " to " + max + " please enter again");
+					System.out.println("please enter y/n");
 				}
-			} catch (IOException e) {
-				System.out.println("IO Error, try again");
-			} catch (NumberFormatException e) {
-				System.out.println("Input is not a valid number, please enter again");
+			} while (validInput == false);
+			
+		} while ((addMoreLetters == 'y') && (player.getNumberOfLetters() > 0)); 
+		
+		if ((usedLetters.size() == 1) && (!(board.hasNeigbours(usedLetters.get(0).row, usedLetters.get(0).col)))) {
+			System.out.println("The given letter has no neigbours - you lost you turn");
+			board.removeLetter(usedLetters.get(0).row, usedLetters.get(0).col);
+			player.insertLetter(usedLetters.get(0).letter);
+			return;
+		}
+		
+		//check that the given letter list is valid
+		for (int i = 1; i < usedLetters.size(); i++) {
+			if (usedLetters.get(i).row != usedLetters.get(i - 1).row) {
+				validByRows = false;
 			}
-		}  while (validInput == false);
-		return inputInt;
+			else {
+				validContinueRow = board.hasleftNiegbour(usedLetters.get(i).row, usedLetters.get(i).col);
+			}
+			if (usedLetters.get(i).col != usedLetters.get(i - 1).col) {
+				validByCols = false;
+			}
+			else {
+				validContinueCol = board.hasUpperNiegbour(usedLetters.get(i).row, usedLetters.get(i).col);
+			}
+		}
+		if (((validByCols == false) && (validByRows == false)) || 
+			((validByRows == true) && (validContinueRow == false)) ||
+			((validByCols == true) && (validContinueCol == false))) {
+			System.out.println("your letters do not placed by one colunm or one row or you have holes in your word- you lost your turn");
+			for (int i = 0; i < usedLetters.size(); i++) {
+				board.removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
+				player.insertLetter(usedLetters.get(i).letter);
+			}
+			return;
+		}
+		
+		userWord = getWordBasic(usedLetters.get(0).row, usedLetters.get(0).col, validByRows, validByCols, usedLetters.size());
+
+		
+		if (userWord != null) {
+			for (int i = 0; i < usedLetters.size(); i++) {
+				player.insertLetter(lettersSet.getLetter());
+			}
+			player.setScore(userWord.length());
+		}
+		else {
+			for (int i = 0; i < usedLetters.size(); i++) {
+				board.removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
+				player.insertLetter(usedLetters.get(i).letter);
+			}
+			System.out.println("Your word does not exist in the dictionary - you lost your turn");
+		}
+		
 	}
 
+	private static String getWordBasic(int row, int column, boolean validByRows, boolean validByCols,int wordLength) {
+		int rowUpperBound     = row;
+		int rowLowerBound     = row;
+		int colUpperBound     = column;
+		int colLowerBound     = column;
+		String rowLogestWord  = null;
+		String colLogestWord  = null;
+		String boardString    = null;
+		
+		//find the last not empty cell of the column
+		for(int i = row + 1; i < rows; i++) {
+			if (board.isCellFree(i , column)) {
+				rowUpperBound = i - 1;
+				break;
+			}
+		}
+		
+		//find the first not empty cell of the column
+		for(int i = row - 1; 0 <= i; i--) {
+			if (board.isCellFree(i , column)) {
+				rowLowerBound = i + 1;
+				break;
+			}
+		}
+		
+		for(int i = column + 1; i < columns; i++) {
+			if (board.isCellFree(row , i)) {
+				colUpperBound = i - 1;
+				break;
+			}
+		}
+		
+		for(int i = column - 1; 0 <= i; i--) {
+			if (board.isCellFree(row , i)) {
+				colLowerBound = i + 1;
+				break;
+			}
+		}
+		
+		if ((validByCols) && (rowLowerBound < rowUpperBound)) {
+			boardString = board.getWord(rowLowerBound, column, rowUpperBound, column);
+			colLogestWord = dictionary.getLongesrWord(boardString, row - rowLowerBound, row - rowLowerBound - 1 + wordLength);
+		}
+		if ((validByRows) && (colLowerBound < colUpperBound)) {
+			boardString = board.getWord(row, colLowerBound, row, colUpperBound);
+			rowLogestWord = dictionary.getLongesrWord(boardString, column - colLowerBound, column - colLowerBound - 1 + wordLength);
+		}
+		
+		if ((colLogestWord == null) && (rowLogestWord == null)) {
+			return null;
+		}
+		if (rowLogestWord == null) {
+			return colLogestWord;
+		}
+		if (colLogestWord == null) {
+			return rowLogestWord;
+		}
+		
+		return ((rowLogestWord.length() > colLogestWord.length()) ? rowLogestWord : colLogestWord);
+	}
 
 	private static void throwLetter(Player player) {
 		int wantedLetter = 0;
@@ -482,14 +554,14 @@ public class Game{
 		boolean validInput = false;
 		
 		for (int i = 0; (i < 3) && (changeMore != 'n'); i++) {
-			wantedLetter = getUsetIntgerInput(0, player.getNumberOfLetters(), "Enter the number of letter you want to change");
+			wantedLetter = GetUserInput.getUsetIntgerInput(0, player.getNumberOfLetters() - 1, "Enter the number of letter you want to change", consoleReader);
 			player.removeLetter(wantedLetter);
 			player.insertLetter(lettersSet.getLetter());
 			player.printPlayerLetters();
 			System.out.println();
 			if (i < 2) {	
 				do {
-					changeMore = getUserCharInput("Do you want to change another letter (you have " + (3 - i -1) + " more changes)?(y/n)");
+					changeMore = GetUserInput.getUserCharInput("Do you want to change another letter (you have " + (3 - i -1) + " more changes)?(y/n)", consoleReader);
 					if ((changeMore == 'n') || (changeMore == 'y')) {
 						validInput = true;
 					}
@@ -502,46 +574,6 @@ public class Game{
 		
 	}
 
-
-	private static char getUserCharInput(String message) {
-		boolean validInput = false;
-		char charInput = 0;
-		
-		System.out.println(message);
-		do {
-			try {
-				String stringInput = null;
-				stringInput = consoleReader.readLine();
-				if (stringInput.length() != 1) {
-					System.out.println("Input not valid, please enter again");
-					continue;
-				}
-				charInput = stringInput.charAt(0);
-				validInput = true;
-				
-			} catch (IOException e) {
-				System.out.println("IO Error, please enter again");
-			}
-		} while (validInput == false);
-		
-		return charInput;
-	}
-	
-	private static String getGameName() {
-		
-		String gameName = null;
-		System.out.println("Please enter the name of the game: ");
-		
-		try {
-			gameName = consoleReader.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return gameName;
-	}
-	
 	private static boolean checkIfValidName(String name) {
 		if (name == null || "".equals(name) || name.startsWith(" "))
 			return false;
@@ -566,14 +598,13 @@ public class Game{
 				}
 				playerList.add(newPlayer);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("IO Error");
 			}						
 		}
 	}
 
 	private static void getNumberOfPlayers() {
-		numberOfPlayers = getUsetIntgerInput(1, 4,"WELLCOME TO SCRABBLE!!!!!\n\n Enter Number Of Players(1 - 4)");
+		numberOfPlayers = GetUserInput.getUsetIntgerInput(1, 4,"WELLCOME TO SCRABBLE!!!!!\n\n Enter Number Of Players(1 - 4)", consoleReader);
 	}
 	
 	private static void printExitScreen() {
@@ -589,5 +620,16 @@ public class Game{
 		System.out.println("The winner is: " + playerList.get(maxScorePlayer).getName());
 		System.out.println("\n\n\n");
 	}
-
+	
+	private static class LetterPosition {
+		int row;
+		int col;
+		char letter;
+		
+		private LetterPosition(int row, int col, char letter) {
+			this.row    = row;
+			this.col    = col;
+			this.letter = letter;
+		}
+	}
 }

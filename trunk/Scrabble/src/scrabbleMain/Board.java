@@ -1,8 +1,7 @@
 package scrabbleMain;
 
 import java.io.Serializable;
-
-
+import java.util.Random;
 
 public class Board implements Serializable{
 	
@@ -12,17 +11,25 @@ public class Board implements Serializable{
 		
 	public Board(int length, int width, String randomWord){
 		
-		this.length=length;
-		this.width=width;
+		this.length = length;
+		this.width  = width;
 		
 		CellArray = new Cell[length][width]; 
 		
-		for(int i=0; i<length; i++ )
-			for(int j=0; j<width; j++)
+		for(int i = 0; i < length; i++ )
+			for(int j = 0; j < width; j++)
 				CellArray[i][j] = new Cell();
 		
-		for(int k=0; k<randomWord.length(); k++) //assert words lengths fits board dimentions/2
-			insertLetter(length/2, (width-randomWord.length())/2+k, randomWord.charAt(k));
+		for(int k = 0; k < randomWord.length(); k++) //assert words lengths fits board dimentions/2
+			insertLetter(length / 2, (width-randomWord.length()) / 2 + k, randomWord.charAt(k));
+	}
+	
+	public void makeAdvancedBoard(){
+		int []oddsArray = {1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
+		Random generator = new Random();
+		for (int i = 0; i < length; i++)
+			for (int j = 0; j < width; j++)
+				setScore(i, j, oddsArray[generator.nextInt(10)]);
 	}
 	
 	public void printBoard(){
@@ -34,10 +41,10 @@ public class Board implements Serializable{
 		System.out.println();
 		System.out.println("          -----------------------------------------------------------");
 		
-		for(int i=0; i<length; i++ ){
+		for(int i = 0; i < length; i++ ){
 			System.out.format("%8d| ", i);
-			for(int j=0; j<width; j++){
-				if (Game.mode == 'a' && isCellFree(i,j))
+			for(int j = 0; j < width; j++){
+				if (Game.mode == 'a' && isCellFree(i, j))
 					System.out.format("%2d ", CellArray[i][j].type);
 				else
 					System.out.format("%2c ",CellArray[i][j].letter);
@@ -48,7 +55,7 @@ public class Board implements Serializable{
 	}
 	
 	public void insertLetter(int x, int y, char letter){
-		CellArray[x][y].letter=letter;
+		CellArray[x][y].letter = letter;
 	}
 
 	public int getLength() {
@@ -65,9 +72,9 @@ public class Board implements Serializable{
 	}
 	
 	public boolean isCellFree(int i, int j) {
-		if (CellArray[i][j].letter != '*')
-			return false;
-		return true;
+		if ((CellArray[i][j].letter > 122) || (CellArray[i][j].letter < 97))
+			return true;
+		return false;
 	}
 	
 	public boolean hasNeigbours(int i, int j) {
@@ -86,11 +93,22 @@ public class Board implements Serializable{
 		
 		return false;
 	}
-	public String getWord() {
-		return null;
-	}
 	
-	public String getWordExtra(int startRow, int startCol, int endRow, int endCol){
+	public boolean hasUpperNiegbour(int i, int j) {
+		if (i == 0) {
+			return false;
+		}
+		return !(isCellFree(i - 1, j));
+	}
+
+	public boolean hasleftNiegbour(int i, int j) {
+		if (j == 0) {
+			return false;
+		}
+		return !(isCellFree(i, j - 1));
+	}
+
+	public String getWord(int startRow, int startCol, int endRow, int endCol){
 		StringBuffer  word = new StringBuffer();
 		if (startRow == endRow) {
 			for(int i = startCol; i <= endCol; i++) {
@@ -122,15 +140,9 @@ public class Board implements Serializable{
 	
 	private class Cell implements Serializable{
 		char letter = '*';
-		int type = 1; //cells with different score
+		int type = 1; //this field will store the cell's score(basic rules all cells are 1, advanced rules random scores)
 		
 		private Cell() {
-		}
-		
-
-		
+		}	
 	}
-
-	
-
 }

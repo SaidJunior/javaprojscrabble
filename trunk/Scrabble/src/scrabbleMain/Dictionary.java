@@ -11,7 +11,8 @@ public class Dictionary {
 	
 	private Set<String> words = new HashSet<String>(); //the set of words
 	private List<String> randomWords = new ArrayList<String>(); // list of random words
-	private int n, m; //the size of the board
+	private int n;
+	private int m; 
 	
 	public Dictionary(int n, int m){
 		this.n = n;
@@ -48,11 +49,38 @@ public class Dictionary {
 	public boolean contains(String s){
 		return words.contains(s);
 	}
-	public static void main(String []args){
-		Dictionary d = new Dictionary(10, 10);
-		System.out.println(d.contains("abbreviation"));
-		System.out.println(d.contains("ar"));
-		System.out.println(d.getRandomWord());
+	
+	public String getLongesrWord(String boardString, int startLetterIndex, int endLetterIndex) {
+		int maxlength = 0;
 		
-	}
+		String longestWord = null;
+		if (startLetterIndex == 0) {
+			for (int i = endLetterIndex + 1; i < boardString.length(); i++) {
+				if ((words.contains(boardString.substring(0, i + 1)) == true) && (maxlength < i + 1)) {
+					longestWord = boardString.substring(0, i + 1);
+					maxlength = i + 1;
+				}
+			}
+		}
+		else if (endLetterIndex == (boardString.length() - 1)) {
+			for (int i = 0; i <= startLetterIndex - 1; i++) {
+				if ((words.contains(boardString.substring(i, boardString.length())) == true) && (maxlength < boardString.length() - i)) {
+					longestWord = boardString.substring(i, boardString.length());
+					maxlength = boardString.length() - i;
+				}
+			}
+		}
+		else {
+			for (int i = 0; i <= startLetterIndex; i++) {
+				for (int j = endLetterIndex; j < boardString.length(); j++) {
+					if ((words.contains(boardString.substring(i, j + 1)) == true) && (maxlength < (j - i + 1))) {
+						longestWord = boardString.substring(i, j + 1);
+						maxlength = j - i + 1;
+					}
+				}
+			}
+		}
+		
+		return longestWord;
+	}	
 }
