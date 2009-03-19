@@ -151,8 +151,6 @@ public class Game{
 			          validInput = loadGame();;
 			          break;
 			case 'h': printHelpScreen();
-					  validInput = true;
-					  returnValue = parseUserStartInput();
 			          break;
 			
 			case 'q': return 1;
@@ -239,7 +237,7 @@ public class Game{
 		boolean validInput = false;
 		
 		do {
-			currentMove = GetUserInput.getUserCharInput("Choose your next move: t for throwing letters, w for adding a word to board, s for saving the game, q for exit", consoleReader);
+			currentMove = GetUserInput.getUserCharInput("Choose your next move: t for throwing letters, w for adding a word to board, s for saving the game, h for help screen, q for exit", consoleReader);
 
 			switch (currentMove) {
 			case 't': throwLetter(playerList.get(i)); 
@@ -256,7 +254,6 @@ public class Game{
 			          validInput = true; 
 			          break;
 			case 'h': printHelpScreen();
-					  validInput = true;
 					  break;
 			case 's': saveCurrentGame();
 			          validInput = true;
@@ -380,9 +377,11 @@ public class Game{
 			board.removeLetter(row, column);
 		}
 		if(dictionary.contains(userWord)) {
+			int addedPoints = calcScore(startRow, startCol, endRow, endCol);
 			player.removeLetter(letterIndex);
 			player.insertLetter(lettersSet.getLetter());
-			player.setScore(calcScore(startRow, startCol, endRow, endCol));
+			player.setScore(addedPoints);
+			System.out.println("\n\nVery Good - you made the word " + userWord + " you gained " + addedPoints + " more pointes\n\n");
 		}
 		else {
 			board.removeLetter(row, column);
@@ -482,6 +481,7 @@ public class Game{
 				player.insertLetter(lettersSet.getLetter());
 			}
 			player.setScore(userWord.length());
+			System.out.println("Very Good - you made the word " + userWord + " you gained " + userWord.length() + " more pointes");
 		}
 		else {
 			for (int i = 0; i < usedLetters.size(); i++) {

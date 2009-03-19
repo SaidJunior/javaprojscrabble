@@ -14,41 +14,40 @@ SETTING THE PREFERENCES
 =======================
 Once you have created a new game, you have to choose the rules set:
 1) Basic ('b'):
-   Each cell is worth exactly one point, and the program decides 
-   by herself what is the longest word that was created.
+   Each cell is worth exactly one point. If you created more than one VALID	word, 
+   you will automatically get points for the longest one. You can place as many letter that you 
+   currently have.
 2) Advanced ('a'):
-   Each cell has a random weight (1-4) and the user has to decide
-   which word he wants to be counted.
+   Each cell has a random weight (1-4). You can place only ONE letter at each turn. 
+   When you want to announce a word you should enter the exact start and end coordinations.
 
 Now you have to choose the number of players (1-4), and the 
 names of the players (length less then 50).
 
 PLAYING THE GAME
 ================
-Ok, what you see now is basically 15X15 table with a random 
-word in the middle. Your job is to selct letters from your 
-letter set in the bottom and place it on the board to creare 
-a meaningful word.
+Ok, what you see now is a 15X15 table with a random 
+word in the middle. Your job is to select letters from your 
+letters set in the bottom and place it on the board to create 
+a English valid word. A word can be  
 You can select 't' to substitute one of your letters with 
-a letter from the main letter set.
+a letter from the main letter set. A letter can be placed horizontally OR vertically.
 You can select 'w' for adding a letter to the board. 
-'s' is for saving the game, and 'q' is for exit.
+'s' is for saving the game, and 'q' is for print the record list and exit the application.
 
 Once you select 't' you will be asked to enter the index of the
-letter you want to swap. 
+letter you want to swap. You can swap up to 3 letters. After that the turn will be passed to the 
+next player. 
 Once you select 'w' it will ask you for the coordinates of the
-new letter. If you enter invalid values such as a place that
-has no neighboring letters or a table cell, it will not approve.
-
-Now it all depends which game rule you selected: 
-If you are in the basic mode the program decides herself which
-word to takem abd if you are in the advanced mode, you will be 
-asked to enter the start and end coordinates of the word.
+new letter. Entering the letters must be in a LEFT TO RIGHT/ UP TO DOWN order. 
+If you entered an invalid values such as not empty board cells it will not approve, 
+and you would lose your turn. Notice that you MUST use in your placed word at least one
+already existing letter.
 
 Now it's time for your opponent to play...
 
-The game ends once everyone letter sets are empty and the 
-main letter set is also empty. Then the winner will be determined.
+The game ends when the main letter set has got empty or one of the players pressed 'q'. 
+The winner is the player with the highest score.
 
 =====================
 
