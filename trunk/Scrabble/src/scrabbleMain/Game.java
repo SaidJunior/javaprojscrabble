@@ -70,8 +70,10 @@ public class Game{
 					break;
 				}
 			}
-			if (turnInd % numberOfPlayers == 0)
-				turnInd = 0;
+			if(numberOfPlayers != 0){
+				if (turnInd % numberOfPlayers == 0)
+					turnInd = 0;
+			}
 		}
 		printExitScreen();
 		updateRecordList();
@@ -132,6 +134,7 @@ public class Game{
 	private static int parseUserStartInput() { //ask the user if start a new game or to load 
 		char startInput = 0;
 		boolean validInput = false;
+		int returnValue = 0;
 		
 		do {
 			startInput = GetUserInput.getUserCharInput("Enter 'n' for a new game, 'l' for loading a game, 'h' for help or 'q' to exit", consoleReader);
@@ -146,6 +149,7 @@ public class Game{
 			          break;
 			case 'h': printHelpScreen();
 					  validInput = true;
+					  returnValue = parseUserStartInput();
 			          break;
 			
 			case 'q': return 1;
@@ -155,7 +159,7 @@ public class Game{
 			 
 		} while (validInput == false);
 		
-		return 0;
+		return returnValue;
 	}
 
 	private static boolean loadGame() {
@@ -232,7 +236,7 @@ public class Game{
 		boolean validInput = false;
 		
 		do {
-			currentMove = GetUserInput.getUserCharInput("choose your next move: t for throwing letters, w for adding a word to board, s for saving the game, q for exit", consoleReader);
+			currentMove = GetUserInput.getUserCharInput("Choose your next move: t for throwing letters, w for adding a word to board, s for saving the game, q for exit", consoleReader);
 
 			switch (currentMove) {
 			case 't': throwLetter(playerList.get(i)); 
@@ -254,7 +258,7 @@ public class Game{
 			case 's': saveCurrentGame();
 			          validInput = true;
 			          break;
-			default: System.out.println("input is not valid, please try again");
+			default: System.out.println("Input is not valid, please try again");
 			}
 		} while (validInput == false);
 	}
@@ -369,7 +373,7 @@ public class Game{
 		//board.printBoard();
 		userWord = board.getWord(startRow, startCol, endRow, endCol);
 		if (userWord == null) {
-			System.out.println("given indeces are not valid, you lost your turn");
+			System.out.println("Given indeces are not valid, you lost your turn");
 			board.removeLetter(row, column);
 		}
 		if(dictionary.contains(userWord)) {
@@ -403,9 +407,9 @@ public class Game{
 		System.out.println("\n\nENTER LETTERS FROM RIGHT TO LEFT OR UP TO DOWN!!!!\n\n");
 		do {
 			System.out.println("Choose a letter to place in order to make a word");
-			row         = GetUserInput.getUsetIntgerInput(0, rows - 1, "enter letter row number", consoleReader);
-			column      = GetUserInput.getUsetIntgerInput(0, columns - 1, "enter letter column number", consoleReader);
-			letterIndex = GetUserInput.getUsetIntgerInput(0, player.getNumberOfLetters() - 1, "enter the index of the wanted letter", consoleReader);
+			row         = GetUserInput.getUsetIntgerInput(0, rows - 1, "Enter letter row number", consoleReader);
+			column      = GetUserInput.getUsetIntgerInput(0, columns - 1, "Enter letter column number", consoleReader);
+			letterIndex = GetUserInput.getUsetIntgerInput(0, player.getNumberOfLetters() - 1, "Enter the index of the wanted letter", consoleReader);
 	
 			//check if cell already taken
 			if (board.isCellFree(row, column) == false) {
@@ -423,12 +427,12 @@ public class Game{
 			System.out.println();
 			
 			do {
-				addMoreLetters = GetUserInput.getUserCharInput("do you want to place another letter?(y,n)", consoleReader);
+				addMoreLetters = GetUserInput.getUserCharInput("Do you want to place another letter?(y,n)", consoleReader);
 				if ((addMoreLetters == 'n') || (addMoreLetters == 'y')) {
 					validInput = true;
 				}
 				else {
-					System.out.println("please enter y/n");
+					System.out.println("Please enter y/n");
 				}
 			} while (validInput == false);
 			
@@ -459,7 +463,7 @@ public class Game{
 		if (((validByCols == false) && (validByRows == false)) || 
 			((validByRows == true) && (validContinueRow == false)) ||
 			((validByCols == true) && (validContinueCol == false))) {
-			System.out.println("your letters do not placed by one colunm or one row or you have holes in your word- you lost your turn");
+			System.out.println("Your letters do not placed by one colunm or one row or you have holes in your word- you lost your turn");
 			for (int i = 0; i < usedLetters.size(); i++) {
 				board.removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
 				player.insertLetter(usedLetters.get(i).letter);
@@ -615,7 +619,7 @@ public class Game{
 				maxScore = playerList.get(i).getScore();
 				maxScorePlayer = i;
 			}
-			System.out.println("player: " + playerList.get(i).getName() + " scored: " + playerList.get(i).getScore());
+			System.out.println("Player: " + playerList.get(i).getName() + " scored: " + playerList.get(i).getScore());
 		}
 		System.out.println("The winner is: " + playerList.get(maxScorePlayer).getName());
 		System.out.println("\n\n\n");
