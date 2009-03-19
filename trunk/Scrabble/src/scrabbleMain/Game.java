@@ -44,7 +44,7 @@ public class Game{
 	public static void main(String[] args) {
 		int returnStartInputValue = 0;
 		
-		System.out.println("WELLCOME TO SCABBLE");
+		System.out.println("WELCOME TO SCABBLE");
 		
 		returnStartInputValue = parseUserStartInput(); 
 		
