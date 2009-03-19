@@ -30,7 +30,7 @@ public class RecordList implements Serializable {
 		}
 		this.recordList.get(score).add(name);
 		if(this.recordList.size()>19){
-			int minScore=this.recordList.firstKey();
+			Integer minScore=this.recordList.firstKey();
 			this.recordList.remove(minScore);
 		}
 		}
@@ -39,8 +39,10 @@ public class RecordList implements Serializable {
  * his score
  */	
 	public void printRecordList(){
-		for (int key : this.recordList.descendingKeySet()) {
-			for(String name:recordList.get(key)){
+		Set<Integer> scores = this.recordList.descendingKeySet();
+		for (Integer key : scores) {
+			LinkedList<String> names = this.recordList.get(key);
+			for(String name:names){
 				System.out.print(name + "  ");
 				System.out.println(key);
 			}

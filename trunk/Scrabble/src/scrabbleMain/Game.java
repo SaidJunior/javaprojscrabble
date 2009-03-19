@@ -45,6 +45,7 @@ public class Game{
 		returnStartInputValue = parseUserStartInput(); 
 		
 		if (returnStartInputValue == 1)  { // quit the game
+			updateRecordList();
 			printRecordList();
 			return;
 		}
@@ -117,8 +118,10 @@ public class Game{
 		    recordList= (RecordList) data.readObject();
 			data.close();
 			file.close();
+			if(!(playerList.size()==0)){
 			for(Player player:playerList){
 				recordList.updatePlayer(player.getName(),player.getScore());
+			}
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("File Error while loading.");
