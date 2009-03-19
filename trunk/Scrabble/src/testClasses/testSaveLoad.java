@@ -34,7 +34,7 @@ public class testSaveLoad extends TestCase{
 	{
 		SimpleObj obj1 = new SimpleObj("obj1",1);
 		
-		String name = "simpleTest";
+		String name = "simpleTest.scrabble";
 		
 		try {
 			FileOutputStream file = new FileOutputStream(savedGamesPath + name);		  

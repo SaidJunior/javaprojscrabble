@@ -33,9 +33,13 @@ public class Game{
 	static char mode;  //indicates the chosen rules set
 	private static RecordList     recordList      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	
+	//indicates whether the current game is saved
+	private static boolean isSaved = true;
+	
 	//Path to hold all saved games at.
 	private static String savedGamesPath = "src/Saved_Games/";
 	private static String savedRecordList ="src/RecordList/fileRecordList";
+	private static String fileSuffix = ".scrabble";
 	
 	public static void main(String[] args) {
 		int returnStartInputValue = 0;
@@ -49,6 +53,7 @@ public class Game{
 			printRecordList();
 			return;
 		}
+		isSaved = false;
 		
 		while ((lettersSet.getLetterSetSize() > 0) && (finishGame == false)) {
 			for( ; turnInd < numberOfPlayers; turnInd++) {
@@ -76,6 +81,7 @@ public class Game{
 					turnInd = 0;
 			}
 		}
+		//saveBeforeExit();
 		printExitScreen();
 		updateRecordList();
 		printRecordList();
@@ -172,11 +178,12 @@ public class Game{
 			System.out.println("Please enter a vaild name. ");
 			return succ;
 		}
-		if (!checkIfExist(currentName))
+		if (!checkIfExist(currentName + fileSuffix))
 		{
 			System.out.println("A game named: " + currentName + " does not exists.");
 			return succ;
 		}
+		currentName += fileSuffix;
 					
 		try {
 			FileInputStream file = new FileInputStream(savedGamesPath + currentName);
@@ -242,13 +249,15 @@ public class Game{
 			switch (currentMove) {
 			case 't': throwLetter(playerList.get(i)); 
 					  validInput = true; 
+					  isSaved = false;
 					  break;
 			case 'w': 
 					  if(mode == 'b') 
 						  placeWordBasic(playerList.get(i)); 
 					  else
 						  placeWordAdvanced(playerList.get(i));
-			          validInput = true; 
+			          validInput = true;
+			          isSaved = false;
 			          break;
 			case 'q': finishGame = true; 
 			          validInput = true; 
@@ -257,13 +266,26 @@ public class Game{
 					  break;
 			case 's': saveCurrentGame();
 			          validInput = true;
+			          isSaved = true;
 			          break;
 			default: System.out.println("Input is not valid, please try again");
 			}
 		} while (validInput == false);
 	}
 	
-	
+	public static void saveBeforeExit()
+	{
+		if (!isSaved)
+		{
+			System.out.println("Current game is not saved. Would you like to save the game before exit? (y/n)");
+			
+			if (true)
+			{
+				saveCurrentGame();
+			}
+			
+		}
+	}
 
 	private static void saveCurrentGame() {
 		
@@ -275,6 +297,7 @@ public class Game{
 			turnInd--;
 			return;
 		}
+		currentName += fileSuffix;
 		//check if such a game already exists.
 		if(checkIfExist(currentName))
 		{
