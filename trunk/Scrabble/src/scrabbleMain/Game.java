@@ -33,9 +33,7 @@ public class Game{
 	static char mode;  //indicates the chosen rules set
 	private static RecordList     recordList      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	
-	//indicates whether the current game is saved
-	private static boolean isSaved = true;
-	
+	private static boolean isSaved = false;
 	//Path to hold all saved games at.
 	private static String savedGamesPath = "src/Saved_Games/";
 	private static String savedRecordList ="src/RecordList/fileRecordList";
@@ -53,7 +51,6 @@ public class Game{
 			printRecordList();
 			return;
 		}
-		isSaved = false;
 		
 		while ((lettersSet.getLetterSetSize() > 0) && (finishGame == false)) {
 			for( ; turnInd < numberOfPlayers; turnInd++) {
@@ -81,7 +78,8 @@ public class Game{
 					turnInd = 0;
 			}
 		}
-		//saveBeforeExit();
+
+		saveBeforeExit();
 		printExitScreen();
 		updateRecordList();
 		printRecordList();
@@ -184,7 +182,7 @@ public class Game{
 			return succ;
 		}
 		currentName += fileSuffix;
-					
+		
 		try {
 			FileInputStream file = new FileInputStream(savedGamesPath + currentName);
 			ObjectInputStream data = new ObjectInputStream(file);
@@ -256,7 +254,7 @@ public class Game{
 						  placeWordBasic(playerList.get(i)); 
 					  else
 						  placeWordAdvanced(playerList.get(i));
-			          validInput = true;
+			          validInput = true; 
 			          isSaved = false;
 			          break;
 			case 'q': finishGame = true; 
@@ -266,26 +264,39 @@ public class Game{
 					  break;
 			case 's': saveCurrentGame();
 			          validInput = true;
-			          isSaved = true;
 			          break;
 			default: System.out.println("Input is not valid, please try again");
 			}
 		} while (validInput == false);
 	}
 	
+
 	public static void saveBeforeExit()
 	{
-		if (!isSaved)
+		boolean validInput = false;
+		char answer;
+		while (!isSaved)
 		{
-			System.out.println("Current game is not saved. Would you like to save the game before exit? (y/n)");
+			String message = "Current game is not saved. Would you like to save the game before exit? (y/n)";
 			
-			if (true)
+			do {
+				answer = GetUserInput.getUserCharInput(message, consoleReader);
+				if ((answer == 'n') || (answer == 'y')) {
+					validInput = true;
+				}
+			} while (validInput == false);
+			
+			if (answer == 'y')
 			{
 				saveCurrentGame();
 			}
-			
+			if (answer == 'n')
+			{
+				return;
+			}
 		}
 	}
+
 
 	private static void saveCurrentGame() {
 		
@@ -333,6 +344,7 @@ public class Game{
 		}
 		//after saving the game, player get to play again
 		turnInd--;
+		isSaved = true;
 	}
 	
 
