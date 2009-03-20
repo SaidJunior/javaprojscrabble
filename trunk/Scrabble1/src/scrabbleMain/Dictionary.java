@@ -22,7 +22,7 @@ public class Dictionary {
 
 		try{
 			BufferedReader in = 
-				new BufferedReader(new FileReader("src/resources/Words.txt"));
+				new BufferedReader(new FileReader(Game.getPath()+"resources/Words.txt"));
 			String str;
 			while ((str = in.readLine()) != null){
 				words.add(str);
