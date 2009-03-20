@@ -17,6 +17,8 @@ import java.util.TreeMap;
 
 
 public class Game{
+
+	
 	private final static int rows          = 15;
 	private final static int columns       = 15;
 	private final static int maxNameLength = 50;
@@ -338,8 +340,6 @@ public class Game{
 	}
 	
 
-/* Helper function. Checks if a file exists before saving it as a game.
- */
 	public static boolean checkIfExist(String fileName){
 		
 		File file = new File(savedGamesPath + fileName);
@@ -350,7 +350,7 @@ public class Game{
 	private static void printHelpScreen() {
 		try{
 			BufferedReader in = 
-				new BufferedReader(new FileReader("src/resources/help_file.txt"));
+				new BufferedReader(new FileReader(getPath()+"resources/help_file.txt"));
 			String str;
 			while ((str = in.readLine()) != null)
 				System.out.println(str);	
@@ -665,10 +665,17 @@ public class Game{
 		}
 	}
 	
+	public static String getPath(){
+		File f = new File("src/");
+		if (f.exists())
+			return "src/";
+		return "";
+		
+	}
+	
 	public void printInfo()
 	{
 		
 	}
-	
 	
 }
