@@ -17,7 +17,7 @@ public class LettersSet implements Serializable{
 	
 	public LettersSet() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(Game.getPath()+"resources/letterDestribution.txt"));
+			BufferedReader in = new BufferedReader(new FileReader("resources/letterDestribution.txt"));
 			String str;
 			while ((str = in.readLine()) != null) {
 				number = Integer.parseInt(str.substring(1));

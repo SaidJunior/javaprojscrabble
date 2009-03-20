@@ -37,8 +37,8 @@ public class Game{
 	
 	private static boolean isSaved = false;
 	//Path to hold all saved games at.
-	private static String savedGamesPath = "src/Saved_Games/";
-	private static String savedRecordList ="src/RecordList/fileRecordList";
+	private static String savedGamesPath = "Saved_Games/";
+	private static String savedRecordList ="RecordList/fileRecordList";
 	private static String fileSuffix = ".scrabble";
 	
 	public static void main(String[] args) {
@@ -350,7 +350,7 @@ public class Game{
 	private static void printHelpScreen() {
 		try{
 			BufferedReader in = 
-				new BufferedReader(new FileReader(getPath()+"resources/help_file.txt"));
+				new BufferedReader(new FileReader("resources/help_file.txt"));
 			String str;
 			while ((str = in.readLine()) != null)
 				System.out.println(str);	
@@ -665,13 +665,13 @@ public class Game{
 		}
 	}
 	
-	public static String getPath(){
+	/*public static String getPath(){
 		File f = new File("src/");
 		if (f.exists())
 			return "src/";
 		return "";
 		
-	}
+	}*/
 	
 	public void printInfo()
 	{
