@@ -244,8 +244,8 @@ public class Game{
 		boolean validInput = false;
 		
 		do {
-			currentMove = GetUserInput.getUserCharInput("Choose your next move: t for throwing letters, w for adding a word to board, s for saving the game, h for help screen, q for exit", consoleReader);
-
+			currentMove = GetUserInput.getUserCharInput("Choose your next move:\n" +
+					"t for throwing letters, w for adding a word to board, s for saving the game, h for help screen, i for game-information, q for exit", consoleReader);
 			switch (currentMove) {
 			case 't': throwLetter(playerList.get(i)); 
 					  validInput = true; 
@@ -267,6 +267,9 @@ public class Game{
 			case 's': saveCurrentGame();
 			          validInput = true;
 			          break;
+			case 'i': printInfo();
+					  validInput = true;
+					  break;
 			default: System.out.println("Input is not valid, please try again");
 			}
 		} while (validInput == false);
@@ -406,7 +409,7 @@ public class Game{
 			player.removeLetter(letterIndex);
 			player.insertLetter(lettersSet.getLetter());
 			player.setScore(addedPoints);
-			System.out.println("\n\nVery Good - you made the word " + userWord + " you gained " + addedPoints + " more pointes\n\n");
+			System.out.println("\n\nVery Good - you made the word: " + userWord + ". You gained " + addedPoints + " more pointes\n\n");
 		}
 		else {
 			board.removeLetter(row, column);
@@ -506,7 +509,7 @@ public class Game{
 				player.insertLetter(lettersSet.getLetter());
 			}
 			player.setScore(userWord.length());
-			System.out.println("Very Good - you made the word " + userWord + " you gained " + userWord.length() + " more pointes");
+			System.out.println("Very Good - you made the word: " + userWord + ". You gained " + userWord.length() + " more pointes");
 		}
 		else {
 			for (int i = 0; i < usedLetters.size(); i++) {
@@ -621,7 +624,7 @@ public class Game{
 				do {
 					System.out.print("Enter Name Of Player(Length less than 50) " + i + ":");
 					playerName = consoleReader.readLine();
-				} while (playerName.length() > maxNameLength);
+				} while (playerName.length() > maxNameLength || !checkIfValidName(playerName));
 				
 				Player newPlayer = new Player(playerName);
 				
@@ -640,7 +643,7 @@ public class Game{
 	}
 	
 	private static void printExitScreen() {
-		int maxScore = -1;
+		/*int maxScore = -1;
 		int maxScorePlayer = 0;
 		for (int i = 0; i < numberOfPlayers; i++) {
 			if (maxScore < playerList.get(i).getScore()) {
@@ -648,7 +651,8 @@ public class Game{
 				maxScorePlayer = i;
 			}
 			System.out.println("Player: " + playerList.get(i).getName() + " scored: " + playerList.get(i).getScore());
-		}
+		}*/
+		int maxScorePlayer = printPlayersScores();
 		System.out.println("The winner is: " + playerList.get(maxScorePlayer).getName());
 		System.out.println("\n\n\n");
 	}
@@ -673,9 +677,28 @@ public class Game{
 		
 	}*/
 	
-	public void printInfo()
+	/* Prints current scores for all players.
+	 * Returns index of current winner of the game.
+	 * */
+	private static int printPlayersScores()
 	{
-		
+		int maxScore = -1;
+		int maxScorePlayer = 0;
+		for (int i = 0; i < numberOfPlayers; i++) {
+			if (maxScore < playerList.get(i).getScore()) {
+				maxScore = playerList.get(i).getScore();
+				maxScorePlayer = i;
+			}
+			System.out.println("Player: " + playerList.get(i).getName() + " scored: " + playerList.get(i).getScore());
+		}
+		return maxScorePlayer;
 	}
 	
+	private static void printInfo()
+	{
+		int currentWinner = printPlayersScores();
+		System.out.println("\nCurret Winner is: " + playerList.get(currentWinner).getName());
+		System.out.println("Total letters left: " + lettersSet.getLetterSetSize() );
+		turnInd--;
+	}
 }
