@@ -659,7 +659,7 @@ public class MainWindow1 extends javax.swing.JFrame {
     		letters = new BufferedImage[27];
     		
     		for (int i = 1; i <= 27; i++){
-    			String path = "C:/workspace/Scrabble/src/scrabble/Letters/"+i+".jpg";
+    			String path = "resources/Letters/"+i+".jpg";
     			Image img = Toolkit.getDefaultToolkit().getImage(path);
     			letters[i-1] = resize(toBufferedImage(img),28,28);
     		}
