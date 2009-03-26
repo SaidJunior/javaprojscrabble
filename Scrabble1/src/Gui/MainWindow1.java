@@ -214,8 +214,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 
         currentPlayer.setFont(new java.awt.Font("Tahoma", 1, 12));
         currentPlayer.setText("Now Playing: _______");
-
-        letterSack.setIcon(new javax.swing.ImageIcon(getClass().getResource("letterSackThumb.jpg"))); // NOI18N
+        
+        letterSack.setIcon(new javax.swing.ImageIcon(getClass().getResource("GuiResources/letterSackThumb.jpg"))); // NOI18N
         letterSack.setText("Total Letters Left...");
         letterSack.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Letter Sack", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12), new java.awt.Color(0, 0, 0))); // NOI18N
 
