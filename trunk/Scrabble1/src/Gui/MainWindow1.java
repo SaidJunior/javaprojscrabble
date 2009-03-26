@@ -11,7 +11,26 @@
 
 package Gui;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.PixelGrabber;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+
+
 /**
  *
  * @author Roy
@@ -50,7 +69,7 @@ public class MainWindow1 extends javax.swing.JFrame {
         scoreBoard = new javax.swing.JLabel();
         changeLetter = new javax.swing.JButton();
         extraButton1 = new javax.swing.JButton();
-        gameBoard = new javax.swing.JLabel();
+        gameBoard = new DrawPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         gameMenu = new javax.swing.JMenu();
         newGameMenuItem = new javax.swing.JMenuItem();
@@ -216,9 +235,6 @@ public class MainWindow1 extends javax.swing.JFrame {
             }
         });
 
-        gameBoard.setBackground(new java.awt.Color(153, 51, 255));
-        gameBoard.setText("Game Board");
-        gameBoard.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jMenuBar1.setBackground(new java.awt.Color(153, 153, 255));
 
@@ -370,7 +386,7 @@ public class MainWindow1 extends javax.swing.JFrame {
                                 .addComponent(extraButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(gameBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(gameBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -398,7 +414,7 @@ public class MainWindow1 extends javax.swing.JFrame {
                             .addContainerGap()))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(62, 62, 62)
-                .addComponent(gameBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(gameBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(287, Short.MAX_VALUE))
         );
 
@@ -515,7 +531,7 @@ public class MainWindow1 extends javax.swing.JFrame {
     private javax.swing.JLabel currentPlayer;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JButton extraButton1;
-    private javax.swing.JLabel gameBoard;
+    private JPanel gameBoard;
     private javax.swing.JMenu gameMenu;
     private javax.swing.JSeparator gameMenuSeparator;
     private javax.swing.JComboBox gameTypeCombo;
@@ -539,5 +555,202 @@ public class MainWindow1 extends javax.swing.JFrame {
     private javax.swing.JLabel scoreBoard;
     private javax.swing.JMenu viewMenu;
     // End of variables declaration//GEN-END:variables
+ public class DrawPanel extends JPanel{
+    	
+    	public BufferedImage letters[];
+    	int letterCoordsX[] = new int[7];
+    	int letterId[] =new int[7];
+    	public  int letterMovedcoord = 80;
+    	public int [][] usedLettersId = new int[7][3];
+        public int []usedLetters = new int[7];
+    	
+    	public DrawPanel(){
+    		loadLetters();
+    	}
+    	
+    	public void drawTable(Graphics g){
+    		for(int i=0; i<15; i++){
+    			for(int j=0; j<15; j++){
+    				g.drawRect(j*28, i*28, 28, 28);
+    			}
+    		}
+    	}
+    	
+    	public void drawLetterSet(Graphics g){
+    		for (int i = 0; i < 7; i++){
+    			g.drawRect(i*40+80, 440, 28, 28);
+    			letterCoordsX[i] = i*40+80;
+    		}
+    	}
+    	  public int letterListener(java.awt.event.MouseEvent evt) {
+    	    	Point point = evt.getPoint();
+    	    	int x = point.x;
+    	    	int y = point.y;
+    	    	if(y>420 && x<360){
+    	    		return x;
+    	    	}
+    	    	else {
+    	    		if(y>0 && y<420 && x>0 && x<420){
+    	    			return 500;
+    	    		}
+    	    		return 1000;
+    	    	}
+    	    }
+    	    
+    	    private void addLetterToBoard(int x, int y){
+    	    	int i= (letterMovedcoord-80)/40;
+    	    	BufferedImage letterImage = letters[letterId[i]];
+    	    	usedLettersId[i][0] = letterId[i];
+    	    	usedLettersId[i][1] = x/28;
+    	    	usedLettersId[i][2] = y/28;
+    	    	if(usedLetters[i]==0){
+    	    	usedLetters[i]=1;
+    	    	drawImage(letterImage,this.getGraphics(), ((x/28)*28), ((y/28)*28));
+    	    	drawImage(letters[26],this.getGraphics(), letterCoordsX[i],440);
+    	    	}
+    	     	
+    	    }
+    	    
+    	    public int [][] addToTableResultPerTurn(){
+    	    	return usedLettersId;	
+    	    }
+    	
+    	public void paintComponent(Graphics g1) {
+    		super.paintComponent(g1); // JPanel draws background
+    		drawTable(g1);
+    		drawLetterSet(g1);
+    		placeRandomLetters(g1);
+    		this.addMouseListener(new java.awt.event.MouseAdapter(){
+        	  public void mouseClicked(java.awt.event.MouseEvent evt) {
+                  int i =letterListener(evt);
+                  if(i<500){
+                	  letterMovedcoord = i;
+                  }
+                  else {
+                	 if(i==500){
+                		 addLetterToBoard(evt.getPoint().x,evt.getPoint().y);
+                	 }
+                  }
+              }
+        });
+    	
+
+    	}
+    	
+    	public void drawImage(BufferedImage b, Graphics g, int x, int y){
+    		Graphics2D g2 = (Graphics2D)g;
+			g2.drawImage(b, null, x, y);
+
+    	}
+  
+    	
+    	public void placeRandomLetters(Graphics g){
+    		Random generator = new Random();
+    		
+    		
+    		for (int i = 0; i < 7; i++){
+    			int r = generator.nextInt(26);
+    			letterId[i] = r;
+    			drawImage(letters[r], g, letterCoordsX[i], 440);
+    		}
+    	}
+    	
+    	public void loadLetters(){
+    		letters = new BufferedImage[27];
+    		
+    		for (int i = 1; i <= 27; i++){
+    			String path = "C:/workspace/Scrabble/src/scrabble/Letters/"+i+".jpg";
+    			Image img = Toolkit.getDefaultToolkit().getImage(path);
+    			letters[i-1] = resize(toBufferedImage(img),28,28);
+    		}
+    	}
+    	
+    	private BufferedImage resize(BufferedImage image, int width, int height) {
+    		BufferedImage resizedImage = new BufferedImage(width, height,
+    		BufferedImage.TYPE_INT_ARGB);
+    		Graphics2D g = resizedImage.createGraphics();
+    		g.drawImage(image, 0, 0, width, height, null);
+    		g.dispose();
+    		return resizedImage;
+    		} 
+    	
+    	// This method returns true if the specified image has transparent
+		// pixels
+        public boolean hasAlpha(Image image) {
+            // If buffered image, the color model is readily available
+            if (image instanceof BufferedImage) {
+                BufferedImage bimage = (BufferedImage)image;
+                return bimage.getColorModel().hasAlpha();
+            }
+        
+            // Use a pixel grabber to retrieve the image's color model;
+            // grabbing a single pixel is usually sufficient
+             PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
+            try {
+                pg.grabPixels();
+            } catch (InterruptedException e) {
+            }
+        
+            // Get the image's color model
+            ColorModel cm = pg.getColorModel();
+            return cm.hasAlpha();
+        }
+
+    	
+    	 public BufferedImage toBufferedImage(Image image) {
+    	        if (image instanceof BufferedImage) {
+    	            return (BufferedImage)image;
+    	        }
+    	    
+    	        // This code ensures that all the pixels in the image are loaded
+    	        image = new ImageIcon(image).getImage();
+    	    
+    	        // Determine if the image has transparent pixels; for this
+				// method's
+    	        // implementation, see e661 Determining If an Image Has
+				// Transparent Pixels
+    	        boolean hasAlpha = hasAlpha(image);
+    	    
+    	        // Create a buffered image with a format that's compatible with
+				// the screen
+    	        BufferedImage bimage = null;
+    	        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    	        try {
+    	            // Determine the type of transparency of the new buffered
+					// image
+    	            int transparency = Transparency.OPAQUE;
+    	            if (hasAlpha) {
+    	                transparency = Transparency.BITMASK;
+    	            }
+    	    
+    	            // Create the buffered image
+    	            GraphicsDevice gs = ge.getDefaultScreenDevice();
+    	            GraphicsConfiguration gc = gs.getDefaultConfiguration();
+    	            bimage = gc.createCompatibleImage(
+    	                image.getWidth(null), image.getHeight(null), transparency);
+    	        } catch (HeadlessException e) {
+    	            // The system does not have a screen
+    	        }
+    	    
+    	        if (bimage == null) {
+    	            // Create a buffered image using the default color model
+    	            int type = BufferedImage.TYPE_INT_RGB;
+    	            if (hasAlpha) {
+    	                type = BufferedImage.TYPE_INT_ARGB;
+    	            }
+    	            bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
+    	        }
+    	    
+    	        // Copy image to buffered image
+    	        Graphics g = bimage.createGraphics();
+    	    
+    	        // Paint the image onto the buffered image
+    	        g.drawImage(image, 0, 0, null);
+    	        g.dispose();
+    	    
+    	        return bimage;
+    	    }
+
+    }
 
 }
