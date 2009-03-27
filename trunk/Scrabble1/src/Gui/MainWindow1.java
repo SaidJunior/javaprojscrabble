@@ -558,6 +558,7 @@ public class MainWindow1 extends javax.swing.JFrame {
  public class DrawPanel extends JPanel{
     	
     	public BufferedImage letters[];
+    	public BufferedImage exchangeLetters;
     	int letterCoordsX[] = new int[7];
     	int letterId[] =new int[7];
     	public  int letterMovedcoord = 80;
@@ -574,6 +575,13 @@ public class MainWindow1 extends javax.swing.JFrame {
     				g.drawRect(j*28, i*28, 28, 28);
     			}
     		}
+    	}
+    	public void drawExchangePlace(Graphics g){
+    		String path = "resources/Letters/Exchange.jpg";
+			Image img = Toolkit.getDefaultToolkit().getImage(path);
+			exchangeLetters = resize(toBufferedImage(img),90,90);
+			drawImage(exchangeLetters, g,380 , 425);
+    		
     	}
     	
     	public void drawLetterSet(Graphics g){
@@ -610,8 +618,15 @@ public class MainWindow1 extends javax.swing.JFrame {
     	    	}
     	     	
     	    }
-    	    
-    	    public int [][] addToTableResultPerTurn(){
+    	 /*
+    	  * This function returns the players actions on his turn 
+    	  * The function returns a 2D int [7][3] 
+    	  * if the player changed letters then on the place [6][0] will be written 500
+    	  * and the letters id that have been changed will be written on [0][0],[1][0],[2][0]
+    	  * if the player put letters on the table the result is going to be that on the places [i][0] will be the id letter
+    	  * on [i][1] the x coordinate and on [i][2] the y coordinate
+    	  */   
+    	    public int [][] ResultPerTurn(){
     	    	return usedLettersId;	
     	    }
     	
@@ -620,6 +635,7 @@ public class MainWindow1 extends javax.swing.JFrame {
     		drawTable(g1);
     		drawLetterSet(g1);
     		placeRandomLetters(g1);
+    		drawExchangePlace(g1);
     		this.addMouseListener(new java.awt.event.MouseAdapter(){
         	  public void mouseClicked(java.awt.event.MouseEvent evt) {
                   int i =letterListener(evt);
@@ -646,8 +662,6 @@ public class MainWindow1 extends javax.swing.JFrame {
     	
     	public void placeRandomLetters(Graphics g){
     		Random generator = new Random();
-    		
-    		
     		for (int i = 0; i < 7; i++){
     			int r = generator.nextInt(26);
     			letterId[i] = r;
