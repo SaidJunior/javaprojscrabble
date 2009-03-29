@@ -39,6 +39,7 @@ public class Game{
 	//Path to hold all saved games at.
 	private static String savedGamesPath = "Saved_Games/";
 	private static String savedRecordList ="RecordList/fileRecordList";
+	private static String savedRecordListAdvanced ="RecordList/fileRecordListAdvanced";
 	private static String fileSuffix = ".scrabble";
 	
 	public static void main(String[] args) {
@@ -96,7 +97,11 @@ public class Game{
 		FileOutputStream file;
 		
 			try {
-				file = new FileOutputStream(savedRecordList);
+				if(mode=='a'){
+					file = new FileOutputStream(savedRecordListAdvanced);	
+				}else{
+					file = new FileOutputStream(savedRecordList);
+				}
 				ObjectOutputStream data = new ObjectOutputStream(file);
 //				recordList.updatePlayer("First Player", 10);
 				data.writeObject(recordList);
@@ -119,7 +124,11 @@ public class Game{
 	private static void updateRecordList() {
 		FileInputStream file;
 		try {
-			file = new FileInputStream(savedRecordList);
+			if(mode=='a'){
+				file = new FileInputStream(savedRecordListAdvanced);	
+			}else{
+				file = new FileInputStream(savedRecordList);
+			}
 			ObjectInputStream data = new ObjectInputStream(file);
 		    recordList= (RecordList) data.readObject();
 			data.close();
