@@ -17,14 +17,18 @@ package NewGUI;
  */
 public class PlayersNamesDialog extends javax.swing.JDialog {
 
-
-    
+	private static String name1 = "";
+	private static String name2 = "";
+	private static String name3 = "";
+	private static String name4 = "";
+	
+	
     public void initNames()
     {
-        this.Player1TextField.setText(MainWindow1.getPlayer1());
-        this.Player2TextField.setText(MainWindow1.getPlayer2());
-        this.Player3TextField.setText(MainWindow1.getPlayer3());
-        this.Player4TextField.setText(MainWindow1.getPlayer4());
+        this.Player1TextField.setText(getName1());
+        this.Player2TextField.setText(getName2());
+        this.Player3TextField.setText(getName3());
+        this.Player4TextField.setText(getName4());
     }
 
     public void setGameParameters(int numPlayers){       
@@ -32,6 +36,8 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         {
             this.Player2Label.setEnabled(true);
             this.Player2TextField.setEnabled(true);
+            PlayersNamesDialog.setName3("");
+            PlayersNamesDialog.setName4("");
         }else
         {
             if(numPlayers == 3)
@@ -40,6 +46,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
                 this.Player2TextField.setEnabled(true);
                 this.Player3Label.setEnabled(true);
                 this.Player3TextField.setEnabled(true);
+                PlayersNamesDialog.setName4("");
             }
             else
             {
@@ -51,6 +58,12 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
                     this.Player3TextField.setEnabled(true);
                     this.Player4Label.setEnabled(true);
                     this.Player4TextField.setEnabled(true);
+                }
+                else
+                {
+                    PlayersNamesDialog.setName2("");
+                    PlayersNamesDialog.setName3("");
+                    PlayersNamesDialog.setName4("");
                 }
 
             }
@@ -211,24 +224,27 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 }//GEN-LAST:event_Player1TextFieldActionPerformed
 
     /*
-     * This methos will be used to start a new game.
-     * all game params are global and located in MainWindow1.
+     * This methos will be used to start a new game. get all game params from this method.
      * */
     private void StartGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartGameButtonActionPerformed
-        MainWindow1.setScoreBoardText("game type: " + MainWindow1.getGameType() + "\n" +
-                "num of players: " + MainWindow1.getNumOfPlayers() + "\n" +
-                "first plater name: " + MainWindow1.getPlayer1() );
-       
+    	//get all names:
+    	setNamesActionPerformed();
+    	//this is where the game starts. here is an example of how to get all game params:
+    	System.out.println("game type: " + NewGameDialog.getGameType());
+    	System.out.println("num of players: " + NewGameDialog.getNumOfPlayers());
+    	System.out.println("first player name: " + PlayersNamesDialog.getName1());
+
+
+
         //dispose new game window at the end
+        NewGameDialog.initGameParamsToDefault();
+        initNamesToDefault();
         dispose();
 }//GEN-LAST:event_StartGameButtonActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
-        // TODO add your handling code here:
-        MainWindow1.setPlayer1(Player1TextField.getText());
-        MainWindow1.setPlayer2(Player2TextField.getText());
-        MainWindow1.setPlayer3(Player3TextField.getText());
-        MainWindow1.setPlayer4(Player4TextField.getText());
+    	setNamesActionPerformed();
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 NewGameDialog nGDialog = new NewGameDialog(new javax.swing.JFrame(), true);
@@ -248,7 +264,8 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
         // TODO add your handling code here:
-        MainWindow1.initGameParamsToDefault();
+        initNamesToDefault();
+        NewGameDialog.initGameParamsToDefault();
         this.dispose();
 }//GEN-LAST:event_CancelActionPerformed
 
@@ -285,5 +302,55 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     private javax.swing.JButton StartGameButton;
     private javax.swing.JLabel WelcomeLabel;
     // End of variables declaration//GEN-END:variables
+
+
+	public static String getName1() {
+		return name1;
+	}
+
+	public static void setName1(String name1) {
+		PlayersNamesDialog.name1 = name1;
+	}
+
+	public static String getName2() {
+		return name2;
+	}
+
+	public static void setName2(String name2) {
+		PlayersNamesDialog.name2 = name2;
+	}
+
+	public static String getName3() {
+		return name3;
+	}
+
+	public static void setName3(String name3) {
+		PlayersNamesDialog.name3 = name3;
+	}
+
+	public static String getName4() {
+		return name4;
+	}
+
+	public static void setName4(String name4) {
+		PlayersNamesDialog.name4 = name4;
+	}
+	
+	public static void initNamesToDefault()
+	{
+		PlayersNamesDialog.setName1("");
+		PlayersNamesDialog.setName2("");
+		PlayersNamesDialog.setName3("");
+		PlayersNamesDialog.setName4("");
+	}
+	
+	public void setNamesActionPerformed()
+	{
+    	setName1(Player1TextField.getText());
+    	setName2(Player2TextField.getText());
+    	setName3(Player3TextField.getText());
+    	setName4(Player4TextField.getText());
+	}
+
 
 }
