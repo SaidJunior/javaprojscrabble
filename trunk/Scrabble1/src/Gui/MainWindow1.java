@@ -10,6 +10,8 @@
  */
 
 package Gui;
+import scrabbleMain.Board;
+import scrabbleMain.Player;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,6 +26,7 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -37,9 +40,24 @@ import javax.swing.JPanel;
  */
 public class MainWindow1 extends javax.swing.JFrame {
 
-    /** Creates new form mainWindow */
+    public boolean changeLetterFlag = false; // a flag that is set once the user press the button change letter
+	public boolean addWordFlag = false; //set when the user press addWord
+	public boolean moveProgress = false; //a flag that is true once a 'move' is in progress
+	public resultAddLetter resultAdd = null; //a result for the logic of the addWord operation
+	public resultSwapLetter resultSwap = null; //a result for the logic of the swapWord operation
+	public Board board; //the board;
+	public Player player; // the current player
+	/** Creates new form mainWindow */
     public MainWindow1() {
         initComponents();
+    }
+    
+    public void setBoard(Board b){
+    	board = b;
+    }
+    
+    public void setPlayer(Player p){
+    	player = p;
     }
 
     /** This method is called from within the constructor to
@@ -437,9 +455,7 @@ public class MainWindow1 extends javax.swing.JFrame {
        scoreBoard.setText("Exit game from menu");
 }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void extraButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extraButton1ActionPerformed
-        scoreBoard.setText("extra button");
-    }//GEN-LAST:event_extraButton1ActionPerformed
+    
 
     private void newGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameMenuItemActionPerformed
         newGameDialog.show();
@@ -465,14 +481,23 @@ public class MainWindow1 extends javax.swing.JFrame {
          scoreBoard.setText("Exit game from key");
     }//GEN-LAST:event_exitMenuItemKeyPressed
 
+    private void extraButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extraButton1ActionPerformed
+        
+    }//GEN-LAST:event_extraButton1ActionPerformed
+    
     private void changeLetterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeLetterActionPerformed
         //change letter button
-        scoreBoard.setText("Change letter");
+        //scoreBoard.setText("Change letter");
+    	changeLetterFlag = true; //set the change letter flag
+    	moveProgress = true;  //the move has just begun!
     }//GEN-LAST:event_changeLetterActionPerformed
 
     private void addWordToBoardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addWordToBoardActionPerformed
        //Add Word button
-        scoreBoard.setText("Add Word");
+        //scoreBoard.setText("Add Word");
+    	
+    	addWordFlag = true; //set the add letter flag
+    	moveProgress = true; //the move has just begun!
     }//GEN-LAST:event_addWordToBoardActionPerformed
 
     private void helpMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItem1ActionPerformed
@@ -560,10 +585,10 @@ public class MainWindow1 extends javax.swing.JFrame {
     	public BufferedImage letters[];
     	public BufferedImage exchangeLetters;
     	int letterCoordsX[] = new int[7];
-    	int letterId[] =new int[7];
+    	int letterId[] =new int[7]; 
     	public  int letterMovedcoord = 80;
-    	public int [][] usedLettersId = new int[7][3];
-        public int []usedLetters = new int[7];
+    	public int [][] usedLettersId = new int[7][3]; //don't need this
+        public int []usedLetters = new int[7]; //don't need this too
     	
     	public DrawPanel(){
     		loadLetters();
@@ -576,6 +601,38 @@ public class MainWindow1 extends javax.swing.JFrame {
     			}
     		}
     	}
+    	
+    	public int letterToNumber(char c){
+    		char letters[] = {'a','b','c','d','e','f','g','h','i','j','k',
+    							'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+    		
+    		for (int i = 0; i < letters.length; i++)
+    			if (letters[i] == c)
+    				return i + 1;
+    		
+    		return -1;
+    	}
+    	
+    	//draws the board from the logic
+    	public void drawBoard(Graphics g, Board b){
+    		for (int i = 0; i < 15; i++)
+    			for (int j = 0; j < 15; j++){
+    				g.drawRect(j*28, i*28, 28, 28);
+    				int id = letterToNumber(b.getLetter(i,j));
+    				drawImage(letters[id], g, j*28, i*28);
+    			}
+    	}
+    	
+    	//draws player letters
+    	public void drawPlayerLetters(Graphics g, Player p){
+    		for (int i = 0; i < 7; i++){
+    			int id = letterToNumber(p.getLetter(i));
+    			g.drawRect(letterCoordsX[i], 440, 28, 28);
+    			drawImage(letters[id], g, letterCoordsX[i], 440);
+    		}
+    	}
+    	
+    	// draws a picture of the exchange
     	public void drawExchangePlace(Graphics g){
     		String path = "resources/Letters/Exchange.jpg";
 			Image img = Toolkit.getDefaultToolkit().getImage(path);
@@ -584,6 +641,7 @@ public class MainWindow1 extends javax.swing.JFrame {
     		
     	}
     	
+    	//will not be needed 
     	public void drawLetterSet(Graphics g){
     		for (int i = 0; i < 7; i++){
     			g.drawRect(i*40+80, 440, 28, 28);
@@ -594,28 +652,34 @@ public class MainWindow1 extends javax.swing.JFrame {
     	    	Point point = evt.getPoint();
     	    	int x = point.x;
     	    	int y = point.y;
-    	    	if(y>420 && x<360){
+        		System.out.println(x+","+y);
+    	    	if(inSquare(x,y)){ //if pressed the letter set
+    	    		moveProgress = true; //start the move
+    	    		if (changeLetterFlag) //if we want to swap a letter
+    	    			resultSwap = new resultSwapLetter((x-80)/40); //calculate the index
     	    		return x;
     	    	}
+    	    	else if (changeLetterFlag && inLetterSack(evt.getX(), evt.getY())) //if we swap letter
+    	    		return 600;
     	    	else {
-    	    		if(y>0 && y<420 && x>0 && x<420){
+    	    		if(y>0 && y<420 && x>0 && x<420){ //if we place the letter on board
     	    			return 500;
     	    		}
     	    		return 1000;
     	    	}
     	    }
     	    
-    	    private void addLetterToBoard(int x, int y){
+    	    private void addLetterToBoard(int x, int y){  
     	    	int i= (letterMovedcoord-80)/40;
-    	    	BufferedImage letterImage = letters[letterId[i]];
-    	    	usedLettersId[i][0] = letterId[i];
+    	    	resultAdd = new resultAddLetter(i, x/28, y/28);
+    	    	BufferedImage letterImage = letters[letterId[i]]; //will be removed
+    	    	/*usedLettersId[i][0] = letterId[i];
     	    	usedLettersId[i][1] = x/28;
     	    	usedLettersId[i][2] = y/28;
     	    	if(usedLetters[i]==0){
-    	    	usedLetters[i]=1;
-    	    	drawImage(letterImage,this.getGraphics(), ((x/28)*28), ((y/28)*28));
-    	    	drawImage(letters[26],this.getGraphics(), letterCoordsX[i],440);
-    	    	}
+    	    	usedLetters[i]=1;*/
+    	    	drawImage(letterImage,this.getGraphics(), ((x/28)*28), ((y/28)*28)); //will be removed
+    	    	drawImage(letters[26],this.getGraphics(), letterCoordsX[i],440); //will be removed
     	     	
     	    }
     	 /*
@@ -626,33 +690,66 @@ public class MainWindow1 extends javax.swing.JFrame {
     	  * if the player put letters on the table the result is going to be that on the places [i][0] will be the id letter
     	  * on [i][1] the x coordinate and on [i][2] the y coordinate
     	  */   
-    	    public int [][] ResultPerTurn(){
+    	    public int [][] ResultPerTurn(){ //don't need this
     	    	return usedLettersId;	
     	    }
     	
+    	/*
+    	 * checks if we clicked in a valid square
+    	 */
+    	private boolean inSquare(int x, int y){
+    		
+    		for (int i = 0; i < 7; i++){
+    			if (( x >= letterCoordsX[i] && x <= letterCoordsX[i] + 28) &&
+    					( y >= 440 && y <= 440 + 28))
+    				return true;
+    		}
+    		return false;
+    	}
+    	
+    	/*
+    	 * checks if we are in the letter sack
+    	 */
+    	private boolean inLetterSack(int x, int y){
+    		return ( x >= 380 && x <= 380 + 90 ) &&
+    				( y >= 425 && y <= 425 + 90 );
+    	}
+    	
     	public void paintComponent(Graphics g1) {
     		super.paintComponent(g1); // JPanel draws background
-    		drawTable(g1);
-    		drawLetterSet(g1);
-    		placeRandomLetters(g1);
+    		drawTable(g1); //will be removed
+    		drawLetterSet(g1);//will be removed
+    		placeRandomLetters(g1);//will be removed
+    		
+    		/*//this will be added once the logic will pass a board and a player
+    		 * drawBoard(g1, board);
+    		 * drawPlayerLetters(g1, p); p - the current player
+    		 */
     		drawExchangePlace(g1);
     		this.addMouseListener(new java.awt.event.MouseAdapter(){
-        	  public void mouseClicked(java.awt.event.MouseEvent evt) {
-                  int i =letterListener(evt);
-                  if(i<500){
-                	  letterMovedcoord = i;
+        	  public void mousePressed(java.awt.event.MouseEvent evt) {
+                  if ( addWordFlag || changeLetterFlag){
+                	  int i =letterListener(evt);
+                	  if(i<500 && addWordFlag){ //if place word on board
+                		  letterMovedcoord = i;  
+                	  }
+                	  else if (i != 1000){ //if legal
+                		  if(i==500){//if add word
+                			  addLetterToBoard(evt.getPoint().x,evt.getPoint().y);
+                		    
+                		  }
+                		  
+                		  moveProgress = false; //end of operation
+                	  }
                   }
-                  else {
-                	 if(i==500){
-                		 addLetterToBoard(evt.getPoint().x,evt.getPoint().y);
-                	 }
-                  }
-              }
-        });
+        	  }
+    		});
+    		
     	
 
     	}
     	
+    	//draws a given image
     	public void drawImage(BufferedImage b, Graphics g, int x, int y){
     		Graphics2D g2 = (Graphics2D)g;
 			g2.drawImage(b, null, x, y);
@@ -766,5 +863,28 @@ public class MainWindow1 extends javax.swing.JFrame {
     	    }
 
     }
+ 
+ 	//this class has data for the logic once a letter has been placed
+ 	public class resultAddLetter{
+ 		public int index; //the index of the letter in the maagar
+ 		public int x,y; //the new coordinates of the word in the table
+ 		public resultAddLetter(int index, int x, int y){
+ 			this.index = index;
+ 			this.x = x;
+ 			this.y = y;
+ 		}
+
+ 	}
+ 	
+ 	//this class has data for the logic once a letter is swaped
+ 	public class resultSwapLetter{
+ 		public int index; //the index of the letter i
+ 		
+ 		public resultSwapLetter(int index){
+ 			this.index = index;
+ 		}
+ 	}
+ 	
+
 
 }
