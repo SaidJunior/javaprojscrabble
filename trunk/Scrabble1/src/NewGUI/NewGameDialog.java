@@ -17,9 +17,16 @@ package NewGUI;
  */
 public class NewGameDialog extends javax.swing.JDialog {
 
+	//game parameters, default values. 
+	// 0 = basic game, 1 = advance game
+	private static int gameType = 0;
+	private static int numOfPlayers = 1;
+	
     public void setGameParameters(){
-        NumOfPlayersComboBox.setSelectedIndex(MainWindow1.getNumOfPlayers()-1);
-        if (MainWindow1.getGameType() == 0)
+        //NumOfPlayersComboBox.setSelectedIndex(MainWindow1.getNumOfPlayers()-1);
+        NumOfPlayersComboBox.setSelectedIndex(getNumOfPlayers() - 1);
+        //if (MainWindow1.getGameType() == 0)
+        if (getGameType() == 0)
         {
             AdvanceGameRadioButton.setSelected(false);
             SimpleGameRadioButton.setSelected(true);
@@ -165,26 +172,29 @@ public class NewGameDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (AdvanceGameRadioButton.isSelected())
             SimpleGameRadioButton.setSelected(false);
-        MainWindow1.setGameType(1);
+        //MainWindow1.setGameType(1);
+        setGameType(1);
 }//GEN-LAST:event_AdvanceGameRadioButtonActionPerformed
 
     private void SimpleGameRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimpleGameRadioButtonActionPerformed
         // TODO add your handling code here:
         if (SimpleGameRadioButton.isSelected())
             AdvanceGameRadioButton.setSelected(false);
-        MainWindow1.setGameType(0);
+        //MainWindow1.setGameType(0);
+        setGameType(0);
 }//GEN-LAST:event_SimpleGameRadioButtonActionPerformed
 
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
         // TODO add your handling code here:
-        MainWindow1.initGameParamsToDefault();
+        //MainWindow1.initGameParamsToDefault();
         //dispose new game window at the end
         this.dispose();
 }//GEN-LAST:event_CancelActionPerformed
 
     private void NumOfPlayersComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumOfPlayersComboBoxActionPerformed
         // TODO add your handling code here:
-        MainWindow1.setNumOfPlayers(NumOfPlayersComboBox.getSelectedIndex() + 1);
+        //MainWindow1.setNumOfPlayers(NumOfPlayersComboBox.getSelectedIndex() + 1);
+        setNumOfPlayers(NumOfPlayersComboBox.getSelectedIndex() + 1);
     }//GEN-LAST:event_NumOfPlayersComboBoxActionPerformed
 
     private void NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextActionPerformed
@@ -192,7 +202,8 @@ public class NewGameDialog extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 PlayersNamesDialog pNDialog = new PlayersNamesDialog(new javax.swing.JFrame(), true);
-                pNDialog.setGameParameters(MainWindow1.getNumOfPlayers());
+                //pNDialog.setGameParameters(MainWindow1.getNumOfPlayers());
+                pNDialog.setGameParameters(getNumOfPlayers());
                 pNDialog.initNames();
                 pNDialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -241,5 +252,30 @@ public class NewGameDialog extends javax.swing.JDialog {
     private javax.swing.JRadioButton SimpleGameRadioButton;
     private javax.swing.JLabel WelcomeLabel;
     // End of variables declaration//GEN-END:variables
+
+	public static int getGameType() {
+		return gameType;
+	}
+
+
+	public static void setGameType(int gameType) {
+		NewGameDialog.gameType = gameType;
+	}
+
+
+	public static int getNumOfPlayers() {
+		return numOfPlayers;
+	}
+
+
+	public static void setNumOfPlayers(int numOfPlayers) {
+		NewGameDialog.numOfPlayers = numOfPlayers;
+	}
+	
+	public static void initGameParamsToDefault()
+	{
+		NewGameDialog.setGameType(0);
+		NewGameDialog.setNumOfPlayers(1);
+	}
 
 }
