@@ -507,10 +507,12 @@ public class MainWindow1 extends javax.swing.JFrame {
      * it currently pops up a default message that is configurable.
      */
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
-        scoreBoard.setText("extra button");
-        this.openGeneralMessage("Bitch Message", "Extra Button!");
+        //scoreBoard.setText("extra button");
+        //this.openGeneralMessage("Bitch Message", "Extra Button!");
         changeLetterFlag = false;
         addWordFlag = false;
+        changeLetter.setEnabled(true);
+        addWordToBoard.setEnabled(true);
         
 }//GEN-LAST:event_doneButtonActionPerformed
 
@@ -543,14 +545,16 @@ public class MainWindow1 extends javax.swing.JFrame {
      */
     private void changeLetterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeLetterActionPerformed
         //change letter button
-        scoreBoard.setText("Change letter");
+        //scoreBoard.setText("Change letter");
         changeLetterFlag = true;
+        addWordToBoard.setEnabled(false);
     }//GEN-LAST:event_changeLetterActionPerformed
 
     private void addWordToBoardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addWordToBoardActionPerformed
        //Add Word button
-        scoreBoard.setText("Add Word");
+        //scoreBoard.setText("Add Word");
         addWordFlag = true;
+        changeLetter.setEnabled(false);
     }//GEN-LAST:event_addWordToBoardActionPerformed
 
     private void helpMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItem1ActionPerformed
@@ -792,7 +796,7 @@ public class MainWindow1 extends javax.swing.JFrame {
   	//    	else if (changeLetterFlag && inLetterSack(evt.getX(), evt.getY())) //if we swap letter
   	 //   		return 600;
   	    	else {
-  	    		if(y>0 && y<420 && x>0 && x<420){ //if we place the letter on board
+  	    		if(addWordFlag && y>0 && y<420 && x>0 && x<420){ //if we place the letter on board
   	    			return 500;
   	    		}
   	    		return 1000;
