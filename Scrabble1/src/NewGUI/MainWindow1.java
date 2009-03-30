@@ -9,10 +9,12 @@
  * Created on 23/03/2009, 22:41:51
  */
 
-package Gui;
+package NewGUI;
+
+import java.awt.*;
+import javax.swing.*;
 import scrabbleMain.Board;
 import scrabbleMain.Player;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -33,6 +35,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
+import Gui.MainWindow1.resultAddLetter;
+import Gui.MainWindow1.resultSwapLetter;
+
 
 /**
  *
@@ -40,6 +45,14 @@ import javax.swing.JPanel;
  */
 public class MainWindow1 extends javax.swing.JFrame {
 
+
+    /** Creates new form mainWindow */
+    public MainWindow1() {
+        initComponents();
+    }
+    
+    // general return value parameter. will be used in file choosers
+    private int returnVal = 0;
     public boolean changeLetterFlag = false; // a flag that is set once the user press the button change letter
 	public boolean addWordFlag = false; //set when the user press addWord
 	public boolean moveProgress = false; //a flag that is true once a 'move' is in progress
@@ -48,9 +61,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	public Board board; //the board;
 	public Player player; // the current player
 	/** Creates new form mainWindow */
-    public MainWindow1() {
-        initComponents();
-    }
+
     
     public void setBoard(Board b){
     	board = b;
@@ -59,6 +70,7 @@ public class MainWindow1 extends javax.swing.JFrame {
     public void setPlayer(Player p){
     	player = p;
     }
+
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -69,24 +81,28 @@ public class MainWindow1 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        saveGameChooser = new javax.swing.JFileChooser();
-        loadGameChooser = new javax.swing.JFileChooser();
-        bestResultsPage = new javax.swing.JFrame();
-        bestResultsData = new javax.swing.JLabel();
-        newGameDialog = new javax.swing.JDialog();
-        gameTypeCombo = new javax.swing.JComboBox();
-        gameTypeText = new javax.swing.JLabel();
-        numPlayersText = new javax.swing.JLabel();
-        numPlayersCombo = new javax.swing.JComboBox();
-        newGameNextbutton = new javax.swing.JButton();
-        helpPage = new javax.swing.JFrame();
-        helpData = new javax.swing.JLabel();
+        generalMessage = new javax.swing.JOptionPane();
+        helpPage = new javax.swing.JDialog();
+        okHelpButton = new javax.swing.JButton();
+        helpText1 = new javax.swing.JScrollPane();
+        helpjTextPane1 = new javax.swing.JTextPane();
+        helpText2 = new javax.swing.JScrollPane();
+        helpjTextPane2 = new javax.swing.JTextPane();
+        bestResultsPageBasic = new javax.swing.JDialog();
+        okBestBasicButton = new javax.swing.JButton();
+        bestBasicjScrollPane = new javax.swing.JScrollPane();
+        bestBasicjTextPane = new javax.swing.JTextPane();
+        bestResultsPageAdvanced = new javax.swing.JDialog();
+        okBestAdvancedButton = new javax.swing.JButton();
+        bestAdvancedjScrollPane = new javax.swing.JScrollPane();
+        bestAdvancedjTextPane = new javax.swing.JTextPane();
         addWordToBoard = new javax.swing.JButton();
         currentPlayer = new javax.swing.JLabel();
         letterSack = new javax.swing.JLabel();
         scoreBoard = new javax.swing.JLabel();
         changeLetter = new javax.swing.JButton();
-        extraButton1 = new javax.swing.JButton();
+        doneButton = new javax.swing.JButton();
+        playStatus = new javax.swing.JLabel();
         gameBoard = new DrawPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         gameMenu = new javax.swing.JMenu();
@@ -104,124 +120,146 @@ public class MainWindow1 extends javax.swing.JFrame {
         helpMenuSeparator1 = new javax.swing.JSeparator();
         aboutUsMenuItem1 = new javax.swing.JMenuItem();
 
-        saveGameChooser.setDialogTitle("Save Game");
-        saveGameChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        saveGameChooser.addActionListener(new java.awt.event.ActionListener() {
+        generalMessage.setMessageType(2);
+
+        helpPage.setMinimumSize(new java.awt.Dimension(645, 566));
+        helpPage.setResizable(false);
+
+        okHelpButton.setFont(new java.awt.Font("Tahoma", 0, 36));
+        okHelpButton.setText("Ok");
+        okHelpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveGameChooserActionPerformed(evt);
+                okHelpButtonActionPerformed(evt);
             }
         });
 
-        loadGameChooser.setDialogTitle("Load a Game ");
+        helpjTextPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        helpjTextPane1.setContentType("rich text");
+        helpjTextPane1.setEditable(false);
+        helpjTextPane1.setText("===================\nWELCOME TO SCRABBLE\n===================\n\nFor some background on the game please visit http://en.wikipedia.org/wiki/Scrabble\n\nTHE BEGINNING\n=============\nOnce you start the application you enter 'n' for starting\na new game, or if you want to load an existing game enter 'l'.\nTo get some help press 'h', and to exit press 'q'.\n\nSETTING THE PREFERENCES\n=======================\nOnce you have created a new game, you have to choose the rules set:\n1) Basic ('b'):\n   Each cell is worth exactly one point, and the program decides \n   by herself what is the longest word that was created.\n2) Advanced ('a'):\n   Each cell has a random weight (1-4) and the user has to decide\n   which word he wants to be counted.\n\nNow you have to choose the number of players (1-4), and the \nnames of the players (length less then 50).");
+        helpjTextPane1.setMinimumSize(new java.awt.Dimension(408, 342));
+        helpText1.setViewportView(helpjTextPane1);
 
-        bestResultsPage.setTitle("Best Results");
-        bestResultsPage.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        bestResultsPage.setMinimumSize(new java.awt.Dimension(600, 600));
-
-        bestResultsData.setText("jLabel1");
-
-        javax.swing.GroupLayout bestResultsPageLayout = new javax.swing.GroupLayout(bestResultsPage.getContentPane());
-        bestResultsPage.getContentPane().setLayout(bestResultsPageLayout);
-        bestResultsPageLayout.setHorizontalGroup(
-            bestResultsPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bestResultsPageLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(bestResultsData, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
-        bestResultsPageLayout.setVerticalGroup(
-            bestResultsPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bestResultsPageLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(bestResultsData, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
-        );
-
-        newGameDialog.setTitle("New Game");
-        newGameDialog.setMinimumSize(new java.awt.Dimension(400, 200));
-
-        gameTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Basic", "Advanced" }));
-        gameTypeCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gameTypeComboActionPerformed(evt);
-            }
-        });
-
-        gameTypeText.setText("Choose basic or advanced game:");
-
-        numPlayersText.setText("Choose number of players:");
-
-        numPlayersCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4" }));
-        numPlayersCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                numPlayersComboActionPerformed(evt);
-            }
-        });
-
-        newGameNextbutton.setText("Next");
-
-        javax.swing.GroupLayout newGameDialogLayout = new javax.swing.GroupLayout(newGameDialog.getContentPane());
-        newGameDialog.getContentPane().setLayout(newGameDialogLayout);
-        newGameDialogLayout.setHorizontalGroup(
-            newGameDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(newGameDialogLayout.createSequentialGroup()
-                .addGap(162, 162, 162)
-                .addComponent(newGameNextbutton)
-                .addContainerGap(176, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newGameDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(newGameDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(newGameDialogLayout.createSequentialGroup()
-                        .addComponent(gameTypeText, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(gameTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(newGameDialogLayout.createSequentialGroup()
-                        .addComponent(numPlayersText, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(numPlayersCombo, 0, 73, Short.MAX_VALUE)))
-                .addGap(84, 84, 84))
-        );
-        newGameDialogLayout.setVerticalGroup(
-            newGameDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(newGameDialogLayout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
-                .addGroup(newGameDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(gameTypeText)
-                    .addComponent(gameTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(newGameDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(numPlayersText)
-                    .addComponent(numPlayersCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(newGameNextbutton)
-                .addGap(27, 27, 27))
-        );
-
-        helpPage.setTitle("Help me...");
-        helpPage.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        helpPage.setMinimumSize(new java.awt.Dimension(600, 600));
-
-        helpData.setText("load help data from file");
+        helpjTextPane2.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        helpjTextPane2.setContentType("rich text");
+        helpjTextPane2.setEditable(false);
+        helpjTextPane2.setText("PLAYING THE GAME\n================\nOk, what you see now is basically 15X15 table with a random \nword in the middle. Your job is to selct letters from your \nletter set in the bottom and place it on the board to creare \na meaningful word.\nYou can select 't' to substitute one of your letters with \na letter from the main letter set.\nYou can select 'w' for adding a letter to the board. \n's' is for saving the game, and 'q' is for exit.\n\nOnce you select 't' you will be asked to enter the index of the\nletter you want to swap. \nOnce you select 'w' it will ask you for the coordinates of the\nnew letter. If you enter invalid values such as a place that\nhas no neighboring letters or a table cell, it will not approve.\n\nNow it all depends which game rule you selected: \nIf you are in the basic mode the program decides herself which\nword to takem abd if you are in the advanced mode, you will be \nasked to enter the start and end coordinates of the word.\n\nNow it's time for your opponent to play...\n\nThe game ends once everyone letter sets are empty and the \nmain letter set is also empty. Then the winner will be determined.");
+        helpText2.setViewportView(helpjTextPane2);
 
         javax.swing.GroupLayout helpPageLayout = new javax.swing.GroupLayout(helpPage.getContentPane());
         helpPage.getContentPane().setLayout(helpPageLayout);
         helpPageLayout.setHorizontalGroup(
             helpPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(helpPageLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(helpData, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(helpText1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(helpText2, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, helpPageLayout.createSequentialGroup()
+                .addContainerGap(225, Short.MAX_VALUE)
+                .addComponent(okHelpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(216, 216, 216))
         );
         helpPageLayout.setVerticalGroup(
             helpPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(helpPageLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(helpData, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(helpPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(helpText2)
+                    .addComponent(helpText1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(okHelpButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        bestResultsPageBasic.setMinimumSize(new java.awt.Dimension(645, 566));
+
+        okBestBasicButton.setFont(new java.awt.Font("Tahoma", 0, 36));
+        okBestBasicButton.setText("Ok");
+        okBestBasicButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okBestBasicButtonActionPerformed(evt);
+            }
+        });
+
+        bestBasicjTextPane.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        bestBasicjTextPane.setEditable(false);
+        bestBasicjTextPane.setText("this is were you insert the text for best reults- basic");
+        bestBasicjTextPane.setAutoscrolls(false);
+        bestBasicjScrollPane.setViewportView(bestBasicjTextPane);
+
+        javax.swing.GroupLayout bestResultsPageBasicLayout = new javax.swing.GroupLayout(bestResultsPageBasic.getContentPane());
+        bestResultsPageBasic.getContentPane().setLayout(bestResultsPageBasicLayout);
+        bestResultsPageBasicLayout.setHorizontalGroup(
+            bestResultsPageBasicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bestResultsPageBasicLayout.createSequentialGroup()
+                .addGroup(bestResultsPageBasicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(bestResultsPageBasicLayout.createSequentialGroup()
+                        .addGap(221, 221, 221)
+                        .addComponent(okBestBasicButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(bestResultsPageBasicLayout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(bestBasicjScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(60, Short.MAX_VALUE))
+        );
+        bestResultsPageBasicLayout.setVerticalGroup(
+            bestResultsPageBasicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bestResultsPageBasicLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bestBasicjScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(okBestBasicButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        bestResultsPageAdvanced.setMinimumSize(new java.awt.Dimension(645, 566));
+
+        okBestAdvancedButton.setFont(new java.awt.Font("Tahoma", 0, 36));
+        okBestAdvancedButton.setText("Ok");
+        okBestAdvancedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okBestAdvancedButtonActionPerformed(evt);
+            }
+        });
+
+        bestAdvancedjTextPane.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        bestAdvancedjTextPane.setEditable(false);
+        bestAdvancedjTextPane.setText("this is were you insert the text for best reults- advanced");
+        bestAdvancedjTextPane.setAutoscrolls(false);
+        bestAdvancedjScrollPane.setViewportView(bestAdvancedjTextPane);
+
+        javax.swing.GroupLayout bestResultsPageAdvancedLayout = new javax.swing.GroupLayout(bestResultsPageAdvanced.getContentPane());
+        bestResultsPageAdvanced.getContentPane().setLayout(bestResultsPageAdvancedLayout);
+        bestResultsPageAdvancedLayout.setHorizontalGroup(
+            bestResultsPageAdvancedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bestResultsPageAdvancedLayout.createSequentialGroup()
+                .addGroup(bestResultsPageAdvancedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(bestResultsPageAdvancedLayout.createSequentialGroup()
+                        .addGap(221, 221, 221)
+                        .addComponent(okBestAdvancedButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(bestResultsPageAdvancedLayout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(bestAdvancedjScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(76, Short.MAX_VALUE))
+        );
+        bestResultsPageAdvancedLayout.setVerticalGroup(
+            bestResultsPageAdvancedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bestResultsPageAdvancedLayout.createSequentialGroup()
+                .addContainerGap(36, Short.MAX_VALUE)
+                .addComponent(bestAdvancedjScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(okBestAdvancedButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         addWordToBoard.setText("Add Word");
         addWordToBoard.addActionListener(new java.awt.event.ActionListener() {
@@ -231,33 +269,42 @@ public class MainWindow1 extends javax.swing.JFrame {
         });
 
         currentPlayer.setFont(new java.awt.Font("Tahoma", 1, 12));
+        currentPlayer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         currentPlayer.setText("Now Playing: _______");
-        
-        letterSack.setIcon(new javax.swing.ImageIcon(getClass().getResource("GuiResources/letterSackThumb.jpg"))); // NOI18N
-        letterSack.setText("Total Letters Left...");
-        letterSack.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Letter Sack", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12), new java.awt.Color(0, 0, 0))); // NOI18N
 
-        scoreBoard.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Score Board", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+        letterSack.setText("Total Letters Left...");
+        letterSack.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Letter Sack", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+
+        scoreBoard.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Score Board", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
         changeLetter.setText("Change Letter");
+        changeLetter.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                changeLetterComponentAdded(evt);
+            }
+            public void componentRemoved(java.awt.event.ContainerEvent evt) {
+                changeLetterComponentRemoved(evt);
+            }
+        });
         changeLetter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeLetterActionPerformed(evt);
             }
         });
 
-        extraButton1.setText("End Turn");
-        extraButton1.addActionListener(new java.awt.event.ActionListener() {
+        doneButton.setText("Done!");
+        doneButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                endTurnActionPerformed(evt);
+                doneButtonActionPerformed(evt);
             }
         });
-      
 
+        playStatus.setText("play status will be presented here");
+        playStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Play Status", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
-        jMenuBar1.setBackground(new java.awt.Color(153, 153, 255));
-
-        gameMenu.setBackground(new java.awt.Color(153, 153, 255));
+        //gameBoard.setText("game board will be presented here");
+       
+        
         gameMenu.setText("Game");
         gameMenu.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -329,12 +376,9 @@ public class MainWindow1 extends javax.swing.JFrame {
 
         jMenuBar1.add(gameMenu);
 
-        viewMenu.setBackground(new java.awt.Color(153, 153, 255));
         viewMenu.setText("View");
         jMenuBar1.add(viewMenu);
-        viewMenu.getAccessibleContext().setAccessibleParent(viewMenu);
 
-        bestResults.setBackground(new java.awt.Color(153, 153, 255));
         bestResults.setText("Hall Of Fame");
 
         bestBasic.setText("Best Results - Basic Game");
@@ -355,7 +399,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 
         jMenuBar1.add(bestResults);
 
-        helpMenu1.setBackground(new java.awt.Color(153, 153, 255));
         helpMenu1.setText("Help");
 
         helpMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
@@ -386,80 +429,94 @@ public class MainWindow1 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scoreBoard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(letterSack, javax.swing.GroupLayout.PREFERRED_SIZE, 147, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(scoreBoard, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                            .addComponent(playStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 143, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(122, 122, 122)
-                                .addComponent(currentPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(changeLetter, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)
-                                .addComponent(addWordToBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)
-                                .addComponent(extraButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(15, 15, 15)
+                                .addComponent(doneButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(10, 10, 10))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
+                        .addComponent(letterSack, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(changeLetter, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(163, 163, 163)
+                                .addComponent(addWordToBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(currentPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
                         .addComponent(gameBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(264, 264, 264)
-                .addComponent(scoreBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(playStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(doneButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(scoreBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(gameBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 480, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(changeLetter, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(58, 58, 58)
-                                .addComponent(currentPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(letterSack, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap()))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(extraButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(addWordToBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap()))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(gameBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(287, Short.MAX_VALUE))
+                        .addGap(81, 81, 81)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(changeLetter, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addWordToBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(currentPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(letterSack, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(25, 25, 25))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-  
+
     private void saveMenuItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveMenuItemMouseClicked
         // TODO add your handling code here:
 }//GEN-LAST:event_saveMenuItemMouseClicked
 
     private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuItemActionPerformed
-       loadGameChooser.showOpenDialog(MainWindow1.this);
+       gameFileChooser.startLoadChooser();
 }//GEN-LAST:event_loadMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        saveGameChooser.showSaveDialog(MainWindow1.this);
+          gameFileChooser.startSaveChooser();
 }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-       scoreBoard.setText("Exit game from menu");
+     ExitScreen.startExitScreen(MainWindow1.this);
 }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    
+    /*
+     * This is the event from done button.
+     * it currently pops up a default message that is configurable.
+     */
+    private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
+        scoreBoard.setText("extra button");
+        this.openGeneralMessage("Bitch Message", "Extra Button!");
+        changeLetterFlag = false;
+        addWordFlag = false;
+        
+}//GEN-LAST:event_doneButtonActionPerformed
 
     private void newGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameMenuItemActionPerformed
-        newGameDialog.show();
+        //Start a new game from menu.      
+         NewGameDialog.startNewGame();
     }//GEN-LAST:event_newGameMenuItemActionPerformed
 
     private void gameMenuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_gameMenuKeyPressed
@@ -467,74 +524,84 @@ public class MainWindow1 extends javax.swing.JFrame {
     }//GEN-LAST:event_gameMenuKeyPressed
 
     private void newGameMenuItemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newGameMenuItemKeyPressed
-        newGameDialog.show();
+         NewGameDialog.startNewGame();
     }//GEN-LAST:event_newGameMenuItemKeyPressed
 
     private void saveMenuItemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_saveMenuItemKeyPressed
-       saveGameChooser.showSaveDialog(MainWindow1.this);
+             gameFileChooser.startSaveChooser();
     }//GEN-LAST:event_saveMenuItemKeyPressed
 
     private void loadMenuItemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loadMenuItemKeyPressed
-     loadGameChooser.showOpenDialog(MainWindow1.this);
+            gameFileChooser.startLoadChooser();
     }//GEN-LAST:event_loadMenuItemKeyPressed
 
     private void exitMenuItemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_exitMenuItemKeyPressed
-         scoreBoard.setText("Exit game from key");
+     ExitScreen.startExitScreen(MainWindow1.this);
     }//GEN-LAST:event_exitMenuItemKeyPressed
 
-    private void endTurnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extraButton1ActionPerformed
-    	changeLetterFlag = false;
-    	addWordFlag = false;
-    }//GEN-LAST:event_extraButton1ActionPerformed
-    
+    /* Change letter Button
+     */
     private void changeLetterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeLetterActionPerformed
         //change letter button
-        //scoreBoard.setText("Change letter");
-    	changeLetterFlag = true; //set the change letter flag
-    	moveProgress = true;  //the move has just begun!
+        scoreBoard.setText("Change letter");
+        changeLetterFlag = true;
     }//GEN-LAST:event_changeLetterActionPerformed
 
     private void addWordToBoardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addWordToBoardActionPerformed
        //Add Word button
-        //scoreBoard.setText("Add Word");
-    	
-    	addWordFlag = true; //set the add letter flag
-    	moveProgress = true; //the move has just begun!
+        scoreBoard.setText("Add Word");
+        addWordFlag = true;
     }//GEN-LAST:event_addWordToBoardActionPerformed
 
     private void helpMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItem1ActionPerformed
-     helpPage.show();
-    }//GEN-LAST:event_helpMenuItem1ActionPerformed
+        helpPage.setVisible(true);
+}//GEN-LAST:event_helpMenuItem1ActionPerformed
 
     private void helpMenuItem1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_helpMenuItem1KeyPressed
-        helpPage.show();
-    }//GEN-LAST:event_helpMenuItem1KeyPressed
+        helpPage.setVisible(true);
+}//GEN-LAST:event_helpMenuItem1KeyPressed
 
-    private void saveGameChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameChooserActionPerformed
-        //save a game
-          scoreBoard.setText("Save Game");
-    }//GEN-LAST:event_saveGameChooserActionPerformed
+    private void changeLetterComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_changeLetterComponentAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_changeLetterComponentAdded
+
+    private void changeLetterComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_changeLetterComponentRemoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_changeLetterComponentRemoved
+
+    private void okHelpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okHelpButtonActionPerformed
+        helpPage.dispose();
+}//GEN-LAST:event_okHelpButtonActionPerformed
+
+    private void okBestBasicButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBestBasicButtonActionPerformed
+        bestResultsPageBasic.dispose();
+}//GEN-LAST:event_okBestBasicButtonActionPerformed
+
+    private void okBestAdvancedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBestAdvancedButtonActionPerformed
+        bestResultsPageAdvanced.dispose();
+}//GEN-LAST:event_okBestAdvancedButtonActionPerformed
 
     private void bestBasicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bestBasicActionPerformed
-        bestResultsPage.setTitle("BestReults- Basic Game");
-        bestResultsPage.show();
-         bestResultsData.setText("set results here\nBest Results-basic");
+        bestResultsPageBasic.setVisible(true);
     }//GEN-LAST:event_bestBasicActionPerformed
 
     private void bestAdvancedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bestAdvancedActionPerformed
-       bestResultsPage.setTitle("BestReults- Advanced Game");
-        bestResultsPage.show();
-       bestResultsData.setText("set results here\nBest Results-advanced");
+        bestResultsPageAdvanced.setVisible(true);
     }//GEN-LAST:event_bestAdvancedActionPerformed
 
-    private void gameTypeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameTypeComboActionPerformed
-        // TODO add your handling code here:
-}//GEN-LAST:event_gameTypeComboActionPerformed
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       ExitScreen.startExitScreen(MainWindow1.this);
+    }//GEN-LAST:event_formWindowClosing
 
-    private void numPlayersComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numPlayersComboActionPerformed
-        // TODO add your handling code here:
-}//GEN-LAST:event_numPlayersComboActionPerformed
-
+    /*
+     * This method is used to display a general message.
+     * it can be used only inside MainWindow1
+     */
+    public void openGeneralMessage(String title, String text)
+    {
+//        generalMessage.setMessage(text);
+       generalMessage.showMessageDialog(MainWindow1.this, text, title, 2);
+    }
     /**
     * @param args the command line arguments
     */
@@ -544,44 +611,53 @@ public class MainWindow1 extends javax.swing.JFrame {
                 new MainWindow1().setVisible(true);
             }
         });
+        return;
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutUsMenuItem1;
     private javax.swing.JButton addWordToBoard;
     private javax.swing.JMenuItem bestAdvanced;
+    private javax.swing.JScrollPane bestAdvancedjScrollPane;
+    private javax.swing.JTextPane bestAdvancedjTextPane;
     private javax.swing.JMenuItem bestBasic;
+    private javax.swing.JScrollPane bestBasicjScrollPane;
+    private javax.swing.JTextPane bestBasicjTextPane;
     private javax.swing.JMenu bestResults;
-    private javax.swing.JLabel bestResultsData;
-    private javax.swing.JFrame bestResultsPage;
+    private javax.swing.JDialog bestResultsPageAdvanced;
+    private javax.swing.JDialog bestResultsPageBasic;
     private javax.swing.JButton changeLetter;
     private javax.swing.JLabel currentPlayer;
+    private javax.swing.JButton doneButton;
     private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JButton extraButton1;
     private JPanel gameBoard;
     private javax.swing.JMenu gameMenu;
     private javax.swing.JSeparator gameMenuSeparator;
-    private javax.swing.JComboBox gameTypeCombo;
-    private javax.swing.JLabel gameTypeText;
-    private javax.swing.JLabel helpData;
+    private javax.swing.JOptionPane generalMessage;
     private javax.swing.JMenu helpMenu1;
     private javax.swing.JMenuItem helpMenuItem1;
     private javax.swing.JSeparator helpMenuSeparator1;
-    private javax.swing.JFrame helpPage;
+    private javax.swing.JDialog helpPage;
+    private javax.swing.JScrollPane helpText1;
+    private javax.swing.JScrollPane helpText2;
+    private javax.swing.JTextPane helpjTextPane1;
+    private javax.swing.JTextPane helpjTextPane2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel letterSack;
-    private javax.swing.JFileChooser loadGameChooser;
     private javax.swing.JMenuItem loadMenuItem;
-    private javax.swing.JDialog newGameDialog;
     private javax.swing.JMenuItem newGameMenuItem;
-    private javax.swing.JButton newGameNextbutton;
-    private javax.swing.JComboBox numPlayersCombo;
-    private javax.swing.JLabel numPlayersText;
-    private javax.swing.JFileChooser saveGameChooser;
+    private javax.swing.JButton okBestAdvancedButton;
+    private javax.swing.JButton okBestBasicButton;
+    private javax.swing.JButton okHelpButton;
+    private javax.swing.JLabel playStatus;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JLabel scoreBoard;
     private javax.swing.JMenu viewMenu;
     // End of variables declaration//GEN-END:variables
+
+
+
  public class DrawPanel extends JPanel{
     	
     	public BufferedImage letters[];
@@ -723,6 +799,7 @@ public class MainWindow1 extends javax.swing.JFrame {
   	    	}
   	    }
     	public void paintComponent(Graphics g1) {
+    		
     		super.paintComponent(g1); // JPanel draws background
     		drawTable(g1); //will be removed
     		drawLetterSet(g1);//will be removed
@@ -735,6 +812,7 @@ public class MainWindow1 extends javax.swing.JFrame {
     		//drawExchangePlace(g1);
     		this.addMouseListener(new java.awt.event.MouseAdapter(){
         	  public void mousePressed(java.awt.event.MouseEvent evt) {
+        		  System.out.println("WE reached the paint Component");
                   if ( addWordFlag || changeLetterFlag){
                 	  int i =letterListener(evt);
                 	  if(i<500 && addWordFlag){ //if place word on board
@@ -895,4 +973,9 @@ public class MainWindow1 extends javax.swing.JFrame {
  	
 
 
+
+
+
+
 }
+
