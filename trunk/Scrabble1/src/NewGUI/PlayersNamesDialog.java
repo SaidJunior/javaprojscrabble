@@ -245,7 +245,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     	playerNames[2] = name3;
     	playerNames[3] = name4;
     	
-    	MainWindow1.createPlayerList(playerNames);
+    	MainWindow1.createPlayerList(playerNames); // what's this shit?!
     	//END_LOGIC
     	
     	MainWindow = new MainWindow1();
