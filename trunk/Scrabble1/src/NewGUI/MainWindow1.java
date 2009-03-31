@@ -22,6 +22,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Transparency;
@@ -699,7 +700,10 @@ public class MainWindow1 extends javax.swing.JFrame {
     	public void drawBoard(Graphics g, Board b){
     		for (int i = 0; i < 15; i++)
     			for (int j = 0; j < 15; j++){
-    				g.drawRect(j*28, i*28, 28, 28);
+    				g.setColor(java.awt.Color.black);
+    				g.draw3DRect(j*28, i*28, 28, 28, true);
+    				g.fill3DRect(j*28, i*28, 28, 28, true);
+ //   				g.drawRect(j*28, i*28, 28, 28);
     				int id = letterToNumber(b.getLetter(i,j));
     				drawImage(letters[id], g, j*28, i*28);
     			}
@@ -716,11 +720,11 @@ public class MainWindow1 extends javax.swing.JFrame {
     	
     	// draws a picture of the exchange
     
-    	public void drawExchangePlace(Graphics g){
-    		String path = "resources/Letters/Exchange.jpg";
+    	public void drawImage(Graphics g){
+    		String path = "resources/Letters/smily.jpg";
 			Image img = Toolkit.getDefaultToolkit().getImage(path);
-			exchangeLetters = resize(toBufferedImage(img),90,90);
-			drawImage(exchangeLetters, g,380 , 425);
+	    	BufferedImage animated = resize(toBufferedImage(img),80,80);
+			drawImage(animated, g,380 , 425);
     		
     	}
     	
@@ -813,10 +817,9 @@ public class MainWindow1 extends javax.swing.JFrame {
     		 * drawBoard(g1, board);
     		 * drawPlayerLetters(g1, p); p - the current player
     		 */
-    		//drawExchangePlace(g1);
+    		drawImage(g1);
     		this.addMouseListener(new java.awt.event.MouseAdapter(){
         	  public void mousePressed(java.awt.event.MouseEvent evt) {
-        		  System.out.println("WE reached the paint Component");
                   if ( addWordFlag || changeLetterFlag){
                 	  int i =letterListener(evt);
                 	  if(i<500 && addWordFlag){ //if place word on board
@@ -860,7 +863,9 @@ public class MainWindow1 extends javax.swing.JFrame {
     		letters = new BufferedImage[27];
     		
     		for (int i = 1; i <= 27; i++){
-    			String path = "resources/Letters/"+i+".jpg";
+    			String path;
+    		
+    			path = "resources/Letters/"+i+".jpg";
     			Image img = Toolkit.getDefaultToolkit().getImage(path);
     			letters[i-1] = resize(toBufferedImage(img),28,28);
     		}
