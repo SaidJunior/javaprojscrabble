@@ -14,6 +14,7 @@ package NewGUI;
 import java.awt.*;
 import javax.swing.*;
 import scrabbleMain.Board;
+import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -29,6 +30,9 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -46,7 +50,8 @@ import Gui.MainWindow1.resultSwapLetter;
  */
 public class MainWindow1 extends javax.swing.JFrame {
 
-
+	private static GameLogic G = new GameLogic();
+	
     /** Creates new form mainWindow */
     public MainWindow1() {
         initComponents();
@@ -137,14 +142,14 @@ public class MainWindow1 extends javax.swing.JFrame {
         helpjTextPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         helpjTextPane1.setContentType("rich text");
         helpjTextPane1.setEditable(false);
-        helpjTextPane1.setText("===================\nWELCOME TO SCRABBLE\n===================\n\nFor some background on the game please visit http://en.wikipedia.org/wiki/Scrabble\n\nTHE BEGINNING\n=============\nOnce you start the application you enter 'n' for starting\na new game, or if you want to load an existing game enter 'l'.\nTo get some help press 'h', and to exit press 'q'.\n\nSETTING THE PREFERENCES\n=======================\nOnce you have created a new game, you have to choose the rules set:\n1) Basic ('b'):\n   Each cell is worth exactly one point, and the program decides \n   by herself what is the longest word that was created.\n2) Advanced ('a'):\n   Each cell has a random weight (1-4) and the user has to decide\n   which word he wants to be counted.\n\nNow you have to choose the number of players (1-4), and the \nnames of the players (length less then 50).");
+        helpjTextPane1.setText(parseFileToString("resources/help_file1.txt"));
         helpjTextPane1.setMinimumSize(new java.awt.Dimension(408, 342));
         helpText1.setViewportView(helpjTextPane1);
 
         helpjTextPane2.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         helpjTextPane2.setContentType("rich text");
         helpjTextPane2.setEditable(false);
-        helpjTextPane2.setText("PLAYING THE GAME\n================\nOk, what you see now is basically 15X15 table with a random \nword in the middle. Your job is to selct letters from your \nletter set in the bottom and place it on the board to creare \na meaningful word.\nYou can select 't' to substitute one of your letters with \na letter from the main letter set.\nYou can select 'w' for adding a letter to the board. \n's' is for saving the game, and 'q' is for exit.\n\nOnce you select 't' you will be asked to enter the index of the\nletter you want to swap. \nOnce you select 'w' it will ask you for the coordinates of the\nnew letter. If you enter invalid values such as a place that\nhas no neighboring letters or a table cell, it will not approve.\n\nNow it all depends which game rule you selected: \nIf you are in the basic mode the program decides herself which\nword to takem abd if you are in the advanced mode, you will be \nasked to enter the start and end coordinates of the word.\n\nNow it's time for your opponent to play...\n\nThe game ends once everyone letter sets are empty and the \nmain letter set is also empty. Then the winner will be determined.");
+        helpjTextPane2.setText(parseFileToString("resources/help_file2.txt"));
         helpText2.setViewportView(helpjTextPane2);
 
         javax.swing.GroupLayout helpPageLayout = new javax.swing.GroupLayout(helpPage.getContentPane());
@@ -223,10 +228,11 @@ public class MainWindow1 extends javax.swing.JFrame {
                 okBestAdvancedButtonActionPerformed(evt);
             }
         });
-
+        
+        
         bestAdvancedjTextPane.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         bestAdvancedjTextPane.setEditable(false);
-        bestAdvancedjTextPane.setText("this is were you insert the text for best reults- advanced");
+        bestAdvancedjTextPane.setText(G.getRecordList().toString());
         bestAdvancedjTextPane.setAutoscrolls(false);
         bestAdvancedjScrollPane.setViewportView(bestAdvancedjTextPane);
 
@@ -980,11 +986,24 @@ public class MainWindow1 extends javax.swing.JFrame {
  		}
  	}
  	
-
-
-
-
-
-
+ 	private String parseFileToString(String FileName) {
+    	StringBuffer str  = new StringBuffer();
+		String       line = null;
+    	
+		try{
+			BufferedReader in = 
+				new BufferedReader(new FileReader(FileName));
+			
+			while ((line = in.readLine()) != null) {
+				str.append(line + "\n");
+			}
+		}
+		catch(IOException e){
+			System.out.println("IO Error. Loading the help file failed. Please try again later");
+		}
+	
+		return str.toString();
+		
+	}
 }
 
