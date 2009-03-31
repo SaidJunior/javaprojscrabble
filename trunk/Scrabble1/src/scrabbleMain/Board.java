@@ -32,7 +32,7 @@ public class Board implements Serializable{
 				setScore(i, j, oddsArray[generator.nextInt(10)]);
 	}
 	
-	public void printBoard(){
+	public void printBoard(char mode){
 		
 		System.out.print("          ");
 		for (int i = 0; i < width; i++) {
@@ -44,8 +44,9 @@ public class Board implements Serializable{
 		for(int i = 0; i < length; i++ ){
 			System.out.format("%8d| ", i);
 			for(int j = 0; j < width; j++){
-				if (Game.mode == 'a' && isCellFree(i, j))
+				if((mode == 'a') && isCellFree(i, j)) {
 					System.out.format("%2d ", CellArray[i][j].type);
+				}
 				else
 					System.out.format("%2c ",CellArray[i][j].letter);
 			}

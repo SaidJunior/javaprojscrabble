@@ -1,0 +1,29 @@
+PLAYING THE GAME
+================
+Ok, what you see now is basically 15X15 table with a random 
+word in the middle. Your job is to selct letters from your 
+letter set in the bottom and place it on the board to creare 
+a meaningful word.
+You can select 't' to substitute one of your letters with 
+a letter from the main letter set.
+You can select 'w' for adding a letter to the board. 
+'s' is for saving the game, and 'q' is for exit.
+
+Once you select 't' you will be asked to enter the index of the
+letter you want to swap. 
+Once you select 'w' it will ask you for the coordinates of the
+new letter. If you enter invalid values such as a place that
+has no neighboring letters or a table cell, it will not approve.
+
+Now it all depends which game rule you selected: 
+If you are in the basic mode the program decides herself which
+word to takem abd if you are in the advanced mode, you will be 
+asked to enter the start and end coordinates of the word.
+
+Now it's time for your opponent to play...
+
+The game ends once everyone letter sets are empty and the 
+main letter set is also empty. Then the winner will be determined.
+
+=====================
+

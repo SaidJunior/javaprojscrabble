@@ -257,13 +257,13 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     private static String checkIfValidNames()
     {
     	String message = "";
-    	if (!Game.checkIfValidName(name1))
+    	if (!checkIfValidName(name1))
     		message += "Please type a valid name for player1. \n";
-    	if (NewGameDialog.getNumOfPlayers() > 1 && !Game.checkIfValidName(name2))
+    	if (NewGameDialog.getNumOfPlayers() > 1 && !checkIfValidName(name2))
     		message += "Please type a valid name for player2. \n";
-    	if (NewGameDialog.getNumOfPlayers() > 2 && !Game.checkIfValidName(name3))
+    	if (NewGameDialog.getNumOfPlayers() > 2 && !checkIfValidName(name3))
     		message += "Please type a valid name for player3. \n";
-    	if (NewGameDialog.getNumOfPlayers() > 3 && !Game.checkIfValidName(name4))
+    	if (NewGameDialog.getNumOfPlayers() > 3 && !checkIfValidName(name4))
     		message += "Please type a valid name for player4. \n";
 
     	return message;
@@ -379,5 +379,9 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     	setName4(Player4TextField.getText());
 	}
 
-
+	private static boolean checkIfValidName(String name) {
+		if (name == null || "".equals(name) || name.startsWith(" "))
+			return false;
+		return true;
+	}
 }

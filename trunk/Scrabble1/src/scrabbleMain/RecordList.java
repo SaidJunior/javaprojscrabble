@@ -28,7 +28,8 @@ public class RecordList implements Serializable {
 			int minScore=this.recordList.firstKey();
 			this.recordList.remove(minScore);
 		}
-		}
+	}
+	
 	public void printRecordList(){
 		for (int key : this.recordList.descendingKeySet()) {
 			for(String name:recordList.get(key)){
@@ -37,8 +38,20 @@ public class RecordList implements Serializable {
 			}
 		} 
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer outString = new StringBuffer();
 		
+		for (int key : this.recordList.descendingKeySet()) {
+			for(String name:recordList.get(key)){
+				outString.append(name + "  " + key + "\n");
+			}
+		} 
+		return outString.toString();
 	}
+		
+}
 	
 /*	private String[][] recordList= new String[21][2];
 	private int size;
