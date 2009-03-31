@@ -69,7 +69,7 @@ public class StartWindow extends javax.swing.JFrame {
 
         welcomeLabel.setFont(new java.awt.Font("Informal Roman", 1, 36)); // NOI18N
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        welcomeLabel.setText("Welcome to SCRAMBBLE!");
+        welcomeLabel.setText("Welcome to SCRABBLE!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,9 +116,10 @@ public class StartWindow extends javax.swing.JFrame {
 }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
-
-
-        NewGameDialog.startNewGame();
+    	this.setVisible(false);
+    	NewGameDialog.startNewGame();
+       
+        
 }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

@@ -238,13 +238,16 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     		GeneralMessage.stratGeneralMessage(this, message, "Names feed problem");
     		return;
     	}
-    	
+    	MainWindow = new MainWindow1();
+        MainWindow.setVisible(true);
+
     	
     	
     	//this is where the game starts. here is an example of how to get all game params:
     	System.out.println("game type: " + NewGameDialog.getGameType());
     	System.out.println("num of players: " + NewGameDialog.getNumOfPlayers());
     	System.out.println("first player name: " + PlayersNamesDialog.getName1());
+    	
     	//check if all names are valid
     	
 
@@ -328,6 +331,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     private javax.swing.JTextField Player4TextField;
     private javax.swing.JButton StartGameButton;
     private javax.swing.JLabel WelcomeLabel;
+    public  MainWindow1 MainWindow;
     // End of variables declaration//GEN-END:variables
 
 

@@ -18,9 +18,10 @@ package NewGUI;
 public class NewGameDialog extends javax.swing.JDialog {
 
 	//game parameters, default values. 
-	// 0 = basic game, 1 = advance game
+	// 0 = basic game, 1 = advance game, 0 = BlueLettersColor
 	private static int gameType = 0;
 	private static int numOfPlayers = 1;
+	private static int lettersColor = 0;
 	
     public void setGameParameters(){
         //NumOfPlayersComboBox.setSelectedIndex(MainWindow1.getNumOfPlayers()-1);
@@ -29,6 +30,17 @@ public class NewGameDialog extends javax.swing.JDialog {
         if (getGameType() == 0)
         {
             AdvanceGameRadioButton.setSelected(false);
+            SimpleGameRadioButton.setSelected(true);
+        }
+        else
+        {
+            AdvanceGameRadioButton.setSelected(true);
+            SimpleGameRadioButton.setSelected(false);
+        }
+        
+        if (getLetterColor() == 0)
+        {
+            RedLettersColorRadioButton.setSelected(false);
             SimpleGameRadioButton.setSelected(true);
         }
         else
@@ -62,10 +74,13 @@ public class NewGameDialog extends javax.swing.JDialog {
         AdvanceGameRadioButton = new javax.swing.JRadioButton();
         SimpleGameRadioButton = new javax.swing.JRadioButton();
         Cancel = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        BlueLettersColorRadioButton = new javax.swing.JRadioButton();
+        RedLettersColorRadioButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        Next.setFont(new java.awt.Font("Tahoma", 1, 14));
+        Next.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         Next.setText("Next >");
         Next.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,13 +88,13 @@ public class NewGameDialog extends javax.swing.JDialog {
             }
         });
 
-        WelcomeLabel.setFont(new java.awt.Font("Tahoma", 1, 14));
+        WelcomeLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         WelcomeLabel.setText("Welcome to Scrabble!");
 
-        SelectNumOfPlayersLabel.setFont(new java.awt.Font("Tahoma", 1, 12));
+        SelectNumOfPlayersLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         SelectNumOfPlayersLabel.setText("Select Number Of Players:");
 
-        SelectGameTypeLabel.setFont(new java.awt.Font("Tahoma", 1, 12));
+        SelectGameTypeLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         SelectGameTypeLabel.setText("Select Game Type:");
 
         NumOfPlayersComboBox.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -90,7 +105,7 @@ public class NewGameDialog extends javax.swing.JDialog {
             }
         });
 
-        AdvanceGameRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12));
+        AdvanceGameRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         AdvanceGameRadioButton.setText("Advance Game");
         AdvanceGameRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,7 +113,7 @@ public class NewGameDialog extends javax.swing.JDialog {
             }
         });
 
-        SimpleGameRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12));
+        SimpleGameRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         SimpleGameRadioButton.setSelected(true);
         SimpleGameRadioButton.setText("Simple Game");
         SimpleGameRadioButton.addActionListener(new java.awt.event.ActionListener() {
@@ -107,11 +122,31 @@ public class NewGameDialog extends javax.swing.JDialog {
             }
         });
 
-        Cancel.setFont(new java.awt.Font("Tahoma", 1, 14));
+        Cancel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         Cancel.setText("Cancel");
         Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("Select Letters Color :");
+
+        BlueLettersColorRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        BlueLettersColorRadioButton.setSelected(true);
+        BlueLettersColorRadioButton.setText("Blue Letters");
+        BlueLettersColorRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	BlueRadioButtonActionPerformed(evt);
+            }
+        });
+
+        RedLettersColorRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        RedLettersColorRadioButton.setText("Red Letters");
+        RedLettersColorRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	RedRadioButtonActionPerformed(evt);
             }
         });
 
@@ -120,27 +155,32 @@ public class NewGameDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(WelcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(SelectNumOfPlayersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(SelectGameTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(NumOfPlayersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(AdvanceGameRadioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(SimpleGameRadioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(SelectNumOfPlayersLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
+                    .addComponent(SelectGameTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BlueLettersColorRadioButton)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
-                        .addComponent(Next, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(NumOfPlayersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AdvanceGameRadioButton))
+                        .addGap(7, 7, 7))
+                    .addComponent(SimpleGameRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(RedLettersColorRadioButton))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(156, Short.MAX_VALUE)
+                .addComponent(Next, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(35, Short.MAX_VALUE)
+                .addComponent(WelcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -148,21 +188,29 @@ public class NewGameDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(WelcomeLabel)
-                .addGap(30, 30, 30)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SelectNumOfPlayersLabel)
                     .addComponent(NumOfPlayersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SelectGameTypeLabel)
-                    .addComponent(SimpleGameRadioButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(AdvanceGameRadioButton))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(SelectGameTypeLabel)
+                        .addComponent(SimpleGameRadioButton)))
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(BlueLettersColorRadioButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(AdvanceGameRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(RedLettersColorRadioButton)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Next, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -176,13 +224,27 @@ public class NewGameDialog extends javax.swing.JDialog {
         setGameType(1);
 }//GEN-LAST:event_AdvanceGameRadioButtonActionPerformed
 
-    private void SimpleGameRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimpleGameRadioButtonActionPerformed
+    private void SimpleGameRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         // TODO add your handling code here:
         if (SimpleGameRadioButton.isSelected())
             AdvanceGameRadioButton.setSelected(false);
         //MainWindow1.setGameType(0);
         setGameType(0);
+}                                                     
+    
+   private void BlueRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimpleGameRadioButtonActionPerformed
+        // TODO add your handling code here:
+        if (BlueLettersColorRadioButton.isSelected())
+        	RedLettersColorRadioButton.setSelected(false);
+        setLetterColor(0);
 }//GEN-LAST:event_SimpleGameRadioButtonActionPerformed
+    private void RedRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                      
+        // TODO add your handling code here:
+        if (RedLettersColorRadioButton.isSelected())
+        	BlueLettersColorRadioButton.setSelected(false);
+        setLetterColor(1);
+}                                                     
+
 
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
         // TODO add your handling code here:
@@ -251,15 +313,26 @@ public class NewGameDialog extends javax.swing.JDialog {
     private javax.swing.JLabel SelectNumOfPlayersLabel;
     private javax.swing.JRadioButton SimpleGameRadioButton;
     private javax.swing.JLabel WelcomeLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JRadioButton BlueLettersColorRadioButton;
+    private javax.swing.JRadioButton RedLettersColorRadioButton;
     // End of variables declaration//GEN-END:variables
 
 	public static int getGameType() {
 		return gameType;
 	}
-
-
+	
+	
 	public static void setGameType(int gameType) {
 		NewGameDialog.gameType = gameType;
+	}
+	
+	public static int getLetterColor(){
+		return lettersColor;
+	}
+	
+	public static void setLetterColor(int lettersColor){
+		NewGameDialog.lettersColor = lettersColor;
 	}
 
 
@@ -276,6 +349,7 @@ public class NewGameDialog extends javax.swing.JDialog {
 	{
 		NewGameDialog.setGameType(0);
 		NewGameDialog.setNumOfPlayers(1);
+		NewGameDialog.setLetterColor(0);
 	}
 
 }
