@@ -618,7 +618,7 @@ public class Game{
 		
 	}
 
-	private static boolean checkIfValidName(String name) {
+	public static boolean checkIfValidName(String name) {
 		if (name == null || "".equals(name) || name.startsWith(" "))
 			return false;
 		return true;

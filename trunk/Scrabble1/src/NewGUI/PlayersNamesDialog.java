@@ -11,6 +11,8 @@
 
 package NewGUI;
 
+import scrabbleMain.Game;
+
 /**
  *
  * @author Erez Reshef
@@ -229,12 +231,22 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     private void StartGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartGameButtonActionPerformed
     	//get all names:
     	setNamesActionPerformed();
+    	//check if names are valid 
+    	String message = checkIfValidNames();
+    	if (!"".equals(message))
+    	{
+    		GeneralMessage.stratGeneralMessage(this, message, "Names feed problem");
+    		return;
+    	}
+    	
+    	
+    	
     	//this is where the game starts. here is an example of how to get all game params:
     	System.out.println("game type: " + NewGameDialog.getGameType());
     	System.out.println("num of players: " + NewGameDialog.getNumOfPlayers());
     	System.out.println("first player name: " + PlayersNamesDialog.getName1());
-
-
+    	//check if all names are valid
+    	
 
         //dispose new game window at the end
         NewGameDialog.initGameParamsToDefault();
@@ -242,6 +254,21 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         dispose();
 }//GEN-LAST:event_StartGameButtonActionPerformed
 
+    private static String checkIfValidNames()
+    {
+    	String message = "";
+    	if (!Game.checkIfValidName(name1))
+    		message += "Please type a valid name for player1. \n";
+    	if (NewGameDialog.getNumOfPlayers() > 1 && !Game.checkIfValidName(name2))
+    		message += "Please type a valid name for player2. \n";
+    	if (NewGameDialog.getNumOfPlayers() > 2 && !Game.checkIfValidName(name3))
+    		message += "Please type a valid name for player3. \n";
+    	if (NewGameDialog.getNumOfPlayers() > 3 && !Game.checkIfValidName(name4))
+    		message += "Please type a valid name for player4. \n";
+
+    	return message;
+    }
+    
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
     	setNamesActionPerformed();
 
