@@ -28,6 +28,10 @@ public class gameFileChooser extends javax.swing.JFrame {
     public static int getReturnVal() {
         return returnVal;
     }
+    
+    public static String getFileName(){
+    	return  jFileChooser1.getSelectedFile().getName();
+    }
 
     public static void setReturnVal(int returnVal) {
         gameFileChooser.returnVal = returnVal;
@@ -146,7 +150,7 @@ public class gameFileChooser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFileChooser jFileChooser1;
+    private static javax.swing.JFileChooser jFileChooser1;
     // End of variables declaration//GEN-END:variables
 
 }
