@@ -113,6 +113,13 @@ public class StartWindow extends javax.swing.JFrame {
 
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
         gameFileChooser.startLoadChooser();
+        String name = gameFileChooser.getFileName();
+        boolean successLoad = scrabbleMain.GameGui.loadGame(name);
+        //System.out.println(path);
+        MainWindow1 MainWindow = new MainWindow1();
+        MainWindow.setVisible(true);
+        if (successLoad)
+        	MainWindow.initGameWindow();
 }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
