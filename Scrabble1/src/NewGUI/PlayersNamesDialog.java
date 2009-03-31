@@ -238,16 +238,26 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     		GeneralMessage.stratGeneralMessage(this, message, "Names feed problem");
     		return;
     	}
+    	//LOGIC
+    	String[] playerNames = new String[4];
+    	playerNames[0] = name1;
+    	playerNames[1] = name2;
+    	playerNames[2] = name3;
+    	playerNames[3] = name4;
+    	
+    	MainWindow1.createPlayerList(playerNames);
+    	//END_LOGIC
+    	
     	MainWindow = new MainWindow1();
         MainWindow.setVisible(true);
 
     	
     	
     	//this is where the game starts. here is an example of how to get all game params:
-    	System.out.println("game type: " + NewGameDialog.getGameType());
-    	System.out.println("num of players: " + NewGameDialog.getNumOfPlayers());
-    	System.out.println("first player name: " + PlayersNamesDialog.getName1());
-    	
+//    	System.out.println("game type: " + NewGameDialog.getGameType());
+//    	System.out.println("num of players: " + NewGameDialog.getNumOfPlayers());
+//    	System.out.println("first player name: " + PlayersNamesDialog.getName1());
+//    	
     	//check if all names are valid
     	
 

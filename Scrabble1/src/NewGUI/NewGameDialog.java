@@ -272,7 +272,12 @@ public class NewGameDialog extends javax.swing.JDialog {
                         System.exit(0);
                     }
                 });
-                 //dispose new game window at the end
+                //LOGIC
+                MainWindow1.initGameLogic();
+                MainWindow1.setNumberOfPlayers(numOfPlayers);
+                MainWindow1.setGameMode(gameType);
+                
+                //dispose new game window at the end
                 dispose();
                 pNDialog.setLocation(100, 100);
                 pNDialog.setVisible(true);

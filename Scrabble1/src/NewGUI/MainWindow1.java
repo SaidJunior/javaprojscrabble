@@ -51,7 +51,7 @@ import Gui.MainWindow1.resultSwapLetter;
 public class MainWindow1 extends javax.swing.JFrame {
 
 	private static GameLogic G = new GameLogic();
-	
+        
     /** Creates new form mainWindow */
     public MainWindow1() {
         initComponents();
@@ -60,21 +60,21 @@ public class MainWindow1 extends javax.swing.JFrame {
     // general return value parameter. will be used in file choosers
     private int returnVal = 0;
     public boolean changeLetterFlag = false; // a flag that is set once the user press the button change letter
-	public boolean addWordFlag = false; //set when the user press addWord
-	public boolean moveProgress = false; //a flag that is true once a 'move' is in progress
-	public resultAddLetter resultAdd = null; //a result for the logic of the addWord operation
-	public resultSwapLetter resultSwap = null; //a result for the logic of the swapWord operation
-	public Board board; //the board;
-	public Player player; // the current player
-	/** Creates new form mainWindow */
+        public boolean addWordFlag = false; //set when the user press addWord
+        public boolean moveProgress = false; //a flag that is true once a 'move' is in progress
+        public resultAddLetter resultAdd = null; //a result for the logic of the addWord operation
+        public resultSwapLetter resultSwap = null; //a result for the logic of the swapWord operation
+        public Board board; //the board;
+        public Player player; // the current player
+        /** Creates new form mainWindow */
 
     
     public void setBoard(Board b){
-    	board = b;
+        board = b;
     }
     
     public void setPlayer(Player p){
-    	player = p;
+        player = p;
     }
 
 
@@ -670,228 +670,228 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 
  public class DrawPanel extends JPanel{
-    	
-    	public BufferedImage letters[];
-    	public BufferedImage exchangeLetters;
-    	int letterCoordsX[] = new int[7];
-    	int letterId[] =new int[7]; 
-    	public  int letterMovedcoord = 80;
-    	public int [][] usedLettersId = new int[7][3]; //don't need this
+        
+        public BufferedImage letters[];
+        public BufferedImage exchangeLetters;
+        int letterCoordsX[] = new int[7];
+        int letterId[] =new int[7]; 
+        public  int letterMovedcoord = 80;
+        public int [][] usedLettersId = new int[7][3]; //don't need this
         public int []usedLetters = new int[7]; //don't need this too
-    	
-    	public DrawPanel(){
-    		loadLetters();
-    	}
-    	
-    	public void drawTable(Graphics g){
-    		for(int i=0; i<15; i++){
-    			for(int j=0; j<15; j++){
-    				g.drawRect(j*28, i*28, 28, 28);
-    			}
-    		}
-    	}
-    	
-    	public int letterToNumber(char c){
-    		char letters[] = {'a','b','c','d','e','f','g','h','i','j','k',
-    							'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-    		
-    		for (int i = 0; i < letters.length; i++)
-    			if (letters[i] == c)
-    				return i + 1;
-    		
-    		return -1;
-    	}
-    	
-    	//draws the board from the logic
-    	public void drawBoard(Graphics g, Board b){
-    		for (int i = 0; i < 15; i++)
-    			for (int j = 0; j < 15; j++){
-    				g.setColor(java.awt.Color.black);
-    				g.draw3DRect(j*28, i*28, 28, 28, true);
-    				g.fill3DRect(j*28, i*28, 28, 28, true);
- //   				g.drawRect(j*28, i*28, 28, 28);
-    				int id = letterToNumber(b.getLetter(i,j));
-    				drawImage(letters[id], g, j*28, i*28);
-    			}
-    	}
-    	
-    	//draws player letters
-    	public void drawPlayerLetters(Graphics g, Player p){
-    		for (int i = 0; i < 7; i++){
-    			int id = letterToNumber(p.getLetter(i));
-    			g.drawRect(letterCoordsX[i], 440, 28, 28);
-    			drawImage(letters[id], g, letterCoordsX[i], 440);
-    		}
-    	}
-    	
-    	// draws a picture of the exchange
+        
+        public DrawPanel(){
+                loadLetters();
+        }
+        
+        public void drawTable(Graphics g){
+                for(int i=0; i<15; i++){
+                        for(int j=0; j<15; j++){
+                                g.drawRect(j*28, i*28, 28, 28);
+                        }
+                }
+        }
+        
+        public int letterToNumber(char c){
+                char letters[] = {'a','b','c','d','e','f','g','h','i','j','k',
+                                                        'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+                
+                for (int i = 0; i < letters.length; i++)
+                        if (letters[i] == c)
+                                return i + 1;
+                
+                return -1;
+        }
+        
+        //draws the board from the logic
+        public void drawBoard(Graphics g, Board b){
+                for (int i = 0; i < 15; i++)
+                        for (int j = 0; j < 15; j++){
+                                g.setColor(java.awt.Color.black);
+                                g.draw3DRect(j*28, i*28, 28, 28, true);
+                                g.fill3DRect(j*28, i*28, 28, 28, true);
+ //                             g.drawRect(j*28, i*28, 28, 28);
+                                int id = letterToNumber(b.getLetter(i,j));
+                                drawImage(letters[id], g, j*28, i*28);
+                        }
+        }
+        
+        //draws player letters
+        public void drawPlayerLetters(Graphics g, Player p){
+                for (int i = 0; i < 7; i++){
+                        int id = letterToNumber(p.getLetter(i));
+                        g.drawRect(letterCoordsX[i], 440, 28, 28);
+                        drawImage(letters[id], g, letterCoordsX[i], 440);
+                }
+        }
+        
+        // draws a picture of the exchange
     
-    	public void drawImage(Graphics g){
-    		String path = "resources/Letters/smily.jpg";
-			Image img = Toolkit.getDefaultToolkit().getImage(path);
-	    	BufferedImage animated = resize(toBufferedImage(img),80,80);
-			drawImage(animated, g,380 , 425);
-    		
-    	}
-    	
-    	//will not be needed 
-    	public void drawLetterSet(Graphics g){
-    		for (int i = 0; i < 7; i++){
-    			g.drawRect(i*40+80, 440, 28, 28);
-    			letterCoordsX[i] = i*40+80;
-    		}
-    	}
+        public void drawImage(Graphics g){
+                String path = "resources/Letters/smily.jpg";
+                        Image img = Toolkit.getDefaultToolkit().getImage(path);
+                BufferedImage animated = resize(toBufferedImage(img),80,80);
+                        drawImage(animated, g,380 , 425);
+                
+        }
+        
+        //will not be needed 
+        public void drawLetterSet(Graphics g){
+                for (int i = 0; i < 7; i++){
+                        g.drawRect(i*40+80, 440, 28, 28);
+                        letterCoordsX[i] = i*40+80;
+                }
+        }
  
-    	    
-    	    private void addLetterToBoard(int x, int y){  
-    	    	int i= (letterMovedcoord-80)/40;
-    	    	resultAdd = new resultAddLetter(i, x/28, y/28);
-    	    	BufferedImage letterImage = letters[letterId[i]]; //will be removed
-    	    	/*usedLettersId[i][0] = letterId[i];
-    	    	usedLettersId[i][1] = x/28;
-    	    	usedLettersId[i][2] = y/28;
-    	    	if(usedLetters[i]==0){
-    	    	usedLetters[i]=1;*/
-    	    	drawImage(letterImage,this.getGraphics(), ((x/28)*28), ((y/28)*28)); //will be removed
-    	    	drawImage(letters[26],this.getGraphics(), letterCoordsX[i],440); //will be removed
-    	     	
-    	    }
-    	 /*
-    	  * This function returns the players actions on his turn 
-    	  * The function returns a 2D int [7][3] 
-    	  * if the player changed letters then on the place [6][0] will be written 500
-    	  * and the letters id that have been changed will be written on [0][0],[1][0],[2][0]
-    	  * if the player put letters on the table the result is going to be that on the places [i][0] will be the id letter
-    	  * on [i][1] the x coordinate and on [i][2] the y coordinate
-    	  */   
-    	    public int [][] ResultPerTurn(){ //don't need this
-    	    	return usedLettersId;	
-    	    }
-    	
-    	/*
-    	 * checks if we clicked in a valid square
-    	 */
-    	private boolean inSquare(int x, int y){
-    		
-    		for (int i = 0; i < 7; i++){
-    			if (( x >= letterCoordsX[i] && x <= letterCoordsX[i] + 28) &&
-    					( y >= 440 && y <= 440 + 28))
-    				return true;
-    		}
-    		return false;
-    	}
-    	
-    	/*
-    	 * checks if we are in the letter sack
-    	 */
-    	private boolean inLetterSack(int x, int y){
-    		return ( x >= 380 && x <= 380 + 90 ) &&
-    				( y >= 425 && y <= 425 + 90 );
-    	}
-     	  public int letterListener(java.awt.event.MouseEvent evt) {
-  	    	Point point = evt.getPoint();
-  	    	int x = point.x;
-  	    	int y = point.y;
-      		System.out.println(x+","+y);
-  	    	if(inSquare(x,y)){ //if pressed the letter set
-  	    		moveProgress = true; //start the move
-  	    		if (changeLetterFlag) {
-  	    			//if we want to swap a letter
-  	    		    moveProgress = false;
-  	    			resultSwap = new resultSwapLetter((x-80)/40); //calculate the index
-  	    			return 600;
-  	    		}
-  	    		    return x;
-  	    	}
-  	//    	else if (changeLetterFlag && inLetterSack(evt.getX(), evt.getY())) //if we swap letter
-  	 //   		return 600;
-  	    	else {
-  	    		if(addWordFlag && y>0 && y<420 && x>0 && x<420){ //if we place the letter on board
-  	    			return 500;
-  	    		}
-  	    		return 1000;
-  	    	}
-  	    }
-    	public void paintComponent(Graphics g1) {
-    		
-    		super.paintComponent(g1); // JPanel draws background
-    		drawTable(g1); //will be removed
-    		drawLetterSet(g1);//will be removed
-    		placeRandomLetters(g1);//will be removed
-    		
-    		/*//this will be added once the logic will pass a board and a player
-    		 * drawBoard(g1, board);
-    		 * drawPlayerLetters(g1, p); p - the current player
-    		 */
-    		drawImage(g1);
-    		this.addMouseListener(new java.awt.event.MouseAdapter(){
-        	  public void mousePressed(java.awt.event.MouseEvent evt) {
+            
+            private void addLetterToBoard(int x, int y){  
+                int i= (letterMovedcoord-80)/40;
+                resultAdd = new resultAddLetter(i, x/28, y/28);
+                BufferedImage letterImage = letters[letterId[i]]; //will be removed
+                /*usedLettersId[i][0] = letterId[i];
+                usedLettersId[i][1] = x/28;
+                usedLettersId[i][2] = y/28;
+                if(usedLetters[i]==0){
+                usedLetters[i]=1;*/
+                drawImage(letterImage,this.getGraphics(), ((x/28)*28), ((y/28)*28)); //will be removed
+                drawImage(letters[26],this.getGraphics(), letterCoordsX[i],440); //will be removed
+                
+            }
+         /*
+          * This function returns the players actions on his turn 
+          * The function returns a 2D int [7][3] 
+          * if the player changed letters then on the place [6][0] will be written 500
+          * and the letters id that have been changed will be written on [0][0],[1][0],[2][0]
+          * if the player put letters on the table the result is going to be that on the places [i][0] will be the id letter
+          * on [i][1] the x coordinate and on [i][2] the y coordinate
+          */   
+            public int [][] ResultPerTurn(){ //don't need this
+                return usedLettersId;   
+            }
+        
+        /*
+         * checks if we clicked in a valid square
+         */
+        private boolean inSquare(int x, int y){
+                
+                for (int i = 0; i < 7; i++){
+                        if (( x >= letterCoordsX[i] && x <= letterCoordsX[i] + 28) &&
+                                        ( y >= 440 && y <= 440 + 28))
+                                return true;
+                }
+                return false;
+        }
+        
+        /*
+         * checks if we are in the letter sack
+         */
+        private boolean inLetterSack(int x, int y){
+                return ( x >= 380 && x <= 380 + 90 ) &&
+                                ( y >= 425 && y <= 425 + 90 );
+        }
+          public int letterListener(java.awt.event.MouseEvent evt) {
+                Point point = evt.getPoint();
+                int x = point.x;
+                int y = point.y;
+                System.out.println(x+","+y);
+                if(inSquare(x,y)){ //if pressed the letter set
+                        moveProgress = true; //start the move
+                        if (changeLetterFlag) {
+                                //if we want to swap a letter
+                            moveProgress = false;
+                                resultSwap = new resultSwapLetter((x-80)/40); //calculate the index
+                                return 600;
+                        }
+                            return x;
+                }
+        //      else if (changeLetterFlag && inLetterSack(evt.getX(), evt.getY())) //if we swap letter
+         //             return 600;
+                else {
+                        if(addWordFlag && y>0 && y<420 && x>0 && x<420){ //if we place the letter on board
+                                return 500;
+                        }
+                        return 1000;
+                }
+            }
+        public void paintComponent(Graphics g1) {
+                
+                super.paintComponent(g1); // JPanel draws background
+                drawTable(g1); //will be removed
+                drawLetterSet(g1);//will be removed
+                placeRandomLetters(g1);//will be removed
+                
+                /*//this will be added once the logic will pass a board and a player
+                 * drawBoard(g1, board);
+                 * drawPlayerLetters(g1, p); p - the current player
+                 */
+                drawImage(g1);
+                this.addMouseListener(new java.awt.event.MouseAdapter(){
+                  public void mousePressed(java.awt.event.MouseEvent evt) {
                   if ( addWordFlag || changeLetterFlag){
-                	  int i =letterListener(evt);
-                	  if(i<500 && addWordFlag){ //if place word on board
-                		  letterMovedcoord = i;  
-                	  }
-                	  else if (i != 1000){ //if legal
-                		  if(i==500){//if add word
-                			  addLetterToBoard(evt.getPoint().x,evt.getPoint().y);
-                		    
-                		  }
-                		  
-                		  moveProgress = false; //end of operation
-                	  }
+                          int i =letterListener(evt);
+                          if(i<500 && addWordFlag){ //if place word on board
+                                  letterMovedcoord = i;  
+                          }
+                          else if (i != 1000){ //if legal
+                                  if(i==500){//if add word
+                                          addLetterToBoard(evt.getPoint().x,evt.getPoint().y);
+                                    
+                                  }
+                                  
+                                  moveProgress = false; //end of operation
+                          }
                   }
-        	  }
-    		});
-    		
-    	
+                  }
+                });
+                
+        
 
-    	}
+        }
     
-    	
-    	//draws a given image
-    	public void drawImage(BufferedImage b, Graphics g, int x, int y){
-    		Graphics2D g2 = (Graphics2D)g;
-			g2.drawImage(b, null, x, y);
+        
+        //draws a given image
+        public void drawImage(BufferedImage b, Graphics g, int x, int y){
+                Graphics2D g2 = (Graphics2D)g;
+                        g2.drawImage(b, null, x, y);
 
-    	}
+        }
   
-    	
-    	public void placeRandomLetters(Graphics g){
-    		Random generator = new Random();
-    		for (int i = 0; i < 7; i++){
-    			int r = generator.nextInt(26);
-    			letterId[i] = r;
-    			drawImage(letters[r], g, letterCoordsX[i], 440);
-    		}
-    	}
-    	
-    	public void loadLetters(){
-    		letters = new BufferedImage[27];
-   		int mode = NewGameDialog.getLetterColor();
-    		for (int i = 1; i <= 27; i++){
-    			String path;
-    			if(mode==0){
-    			path = "resources/Letters/"+i+".jpg";
-    			}
-    			else{
-    				path =  "resources/Letter2/"+i+".jpg";
-    			}
-    			Image img = Toolkit.getDefaultToolkit().getImage(path);
-    			letters[i-1] = resize(toBufferedImage(img),28,28);
-    		}
-    	}
-    	
-    	private BufferedImage resize(BufferedImage image, int width, int height) {
-    		BufferedImage resizedImage = new BufferedImage(width, height,
-    		BufferedImage.TYPE_INT_ARGB);
-    		Graphics2D g = resizedImage.createGraphics();
-    		g.drawImage(image, 0, 0, width, height, null);
-    		g.dispose();
-    		return resizedImage;
-    		} 
-    	
-    	// This method returns true if the specified image has transparent
-		// pixels
+        
+        public void placeRandomLetters(Graphics g){
+                Random generator = new Random();
+                for (int i = 0; i < 7; i++){
+                        int r = generator.nextInt(26);
+                        letterId[i] = r;
+                        drawImage(letters[r], g, letterCoordsX[i], 440);
+                }
+        }
+        
+        public void loadLetters(){
+                letters = new BufferedImage[27];
+                int mode = NewGameDialog.getLetterColor();
+                for (int i = 1; i <= 27; i++){
+                        String path;
+                        if(mode==0){
+                        path = "resources/Letters/"+i+".jpg";
+                        }
+                        else{
+                                path =  "resources/Letter2/"+i+".jpg";
+                        }
+                        Image img = Toolkit.getDefaultToolkit().getImage(path);
+                        letters[i-1] = resize(toBufferedImage(img),28,28);
+                }
+        }
+        
+        private BufferedImage resize(BufferedImage image, int width, int height) {
+                BufferedImage resizedImage = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(image, 0, 0, width, height, null);
+                g.dispose();
+                return resizedImage;
+                } 
+        
+        // This method returns true if the specified image has transparent
+                // pixels
         public boolean hasAlpha(Image image) {
             // If buffered image, the color model is readily available
             if (image instanceof BufferedImage) {
@@ -912,102 +912,123 @@ public class MainWindow1 extends javax.swing.JFrame {
             return cm.hasAlpha();
         }
 
-    	
-    	 public BufferedImage toBufferedImage(Image image) {
-    	        if (image instanceof BufferedImage) {
-    	            return (BufferedImage)image;
-    	        }
-    	    
-    	        // This code ensures that all the pixels in the image are loaded
-    	        image = new ImageIcon(image).getImage();
-    	    
-    	        // Determine if the image has transparent pixels; for this
-				// method's
-    	        // implementation, see e661 Determining If an Image Has
-				// Transparent Pixels
-    	        boolean hasAlpha = hasAlpha(image);
-    	    
-    	        // Create a buffered image with a format that's compatible with
-				// the screen
-    	        BufferedImage bimage = null;
-    	        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    	        try {
-    	            // Determine the type of transparency of the new buffered
-					// image
-    	            int transparency = Transparency.OPAQUE;
-    	            if (hasAlpha) {
-    	                transparency = Transparency.BITMASK;
-    	            }
-    	    
-    	            // Create the buffered image
-    	            GraphicsDevice gs = ge.getDefaultScreenDevice();
-    	            GraphicsConfiguration gc = gs.getDefaultConfiguration();
-    	            bimage = gc.createCompatibleImage(
-    	                image.getWidth(null), image.getHeight(null), transparency);
-    	        } catch (HeadlessException e) {
-    	            // The system does not have a screen
-    	        }
-    	    
-    	        if (bimage == null) {
-    	            // Create a buffered image using the default color model
-    	            int type = BufferedImage.TYPE_INT_RGB;
-    	            if (hasAlpha) {
-    	                type = BufferedImage.TYPE_INT_ARGB;
-    	            }
-    	            bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
-    	        }
-    	    
-    	        // Copy image to buffered image
-    	        Graphics g = bimage.createGraphics();
-    	    
-    	        // Paint the image onto the buffered image
-    	        g.drawImage(image, 0, 0, null);
-    	        g.dispose();
-    	    
-    	        return bimage;
-    	    }
+        
+         public BufferedImage toBufferedImage(Image image) {
+                if (image instanceof BufferedImage) {
+                    return (BufferedImage)image;
+                }
+            
+                // This code ensures that all the pixels in the image are loaded
+                image = new ImageIcon(image).getImage();
+            
+                // Determine if the image has transparent pixels; for this
+                                // method's
+                // implementation, see e661 Determining If an Image Has
+                                // Transparent Pixels
+                boolean hasAlpha = hasAlpha(image);
+            
+                // Create a buffered image with a format that's compatible with
+                                // the screen
+                BufferedImage bimage = null;
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                try {
+                    // Determine the type of transparency of the new buffered
+                                        // image
+                    int transparency = Transparency.OPAQUE;
+                    if (hasAlpha) {
+                        transparency = Transparency.BITMASK;
+                    }
+            
+                    // Create the buffered image
+                    GraphicsDevice gs = ge.getDefaultScreenDevice();
+                    GraphicsConfiguration gc = gs.getDefaultConfiguration();
+                    bimage = gc.createCompatibleImage(
+                        image.getWidth(null), image.getHeight(null), transparency);
+                } catch (HeadlessException e) {
+                    // The system does not have a screen
+                }
+            
+                if (bimage == null) {
+                    // Create a buffered image using the default color model
+                    int type = BufferedImage.TYPE_INT_RGB;
+                    if (hasAlpha) {
+                        type = BufferedImage.TYPE_INT_ARGB;
+                    }
+                    bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
+                }
+            
+                // Copy image to buffered image
+                Graphics g = bimage.createGraphics();
+            
+                // Paint the image onto the buffered image
+                g.drawImage(image, 0, 0, null);
+                g.dispose();
+            
+                return bimage;
+            }
 
     }
  
- 	//this class has data for the logic once a letter has been placed
- 	public class resultAddLetter{
- 		public int index; //the index of the letter in the maagar
- 		public int x,y; //the new coordinates of the word in the table
- 		public resultAddLetter(int index, int x, int y){
- 			this.index = index;
- 			this.x = x;
- 			this.y = y;
- 		}
+        //this class has data for the logic once a letter has been placed
+        public class resultAddLetter{
+                public int index; //the index of the letter in the maagar
+                public int x,y; //the new coordinates of the word in the table
+                public resultAddLetter(int index, int x, int y){
+                        this.index = index;
+                        this.x = x;
+                        this.y = y;
+                }
 
- 	}
- 	
- 	//this class has data for the logic once a letter is swaped
- 	public class resultSwapLetter{
- 		public int index; //the index of the letter i
- 		
- 		public resultSwapLetter(int index){
- 			this.index = index;
- 		}
- 	}
- 	
- 	private String parseFileToString(String FileName) {
-    	StringBuffer str  = new StringBuffer();
-		String       line = null;
-    	
-		try{
-			BufferedReader in = 
-				new BufferedReader(new FileReader(FileName));
-			
-			while ((line = in.readLine()) != null) {
-				str.append(line + "\n");
+        }
+        
+        //this class has data for the logic once a letter is swaped
+        public class resultSwapLetter{
+                public int index; //the index of the letter i
+                
+                public resultSwapLetter(int index){
+                        this.index = index;
+                }
+        }
+        
+        private String parseFileToString(String FileName) {
+        StringBuffer str  = new StringBuffer();
+                String       line = null;
+        
+                try{
+                        BufferedReader in = 
+                                new BufferedReader(new FileReader(FileName));
+                        
+                        while ((line = in.readLine()) != null) {
+                                str.append(line + "\n");
+                        }
+                }
+                catch(IOException e){
+                        System.out.println("IO Error. Loading the help file failed. Please try again later");
+                }
+        
+                return str.toString();
+                
+        }
+        
+        public static void initGameLogic() {
+			G = new GameLogic();
+		}
+
+		public static void setNumberOfPlayers(int numOfPlayers) {
+			G.setNumberOfPlayers(numOfPlayers);
+			System.out.println(G.getNumberOfPlayers());
+		}
+		
+		public static void createPlayerList(String[] playerNames) {
+			for (int i = 0; i < G.getNumberOfPlayers(); i++) {
+				Player newPlayer =  new Player(playerNames[i]);
+				G.getPlayerList().add(newPlayer);
+				System.out.println(G.getPlayerList().get(i).getName());
 			}
 		}
-		catch(IOException e){
-			System.out.println("IO Error. Loading the help file failed. Please try again later");
-		}
-	
-		return str.toString();
 		
-	}
+		public static void setGameMode(int gameMode) {
+			G.setMode(((gameMode == 0) ? 'b' : 'a'));
+			System.out.println(G.getMode());
+		}
 }
-
