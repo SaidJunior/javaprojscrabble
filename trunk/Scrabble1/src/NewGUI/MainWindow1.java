@@ -64,19 +64,12 @@ public class MainWindow1 extends javax.swing.JFrame {
         public boolean moveProgress = false; //a flag that is true once a 'move' is in progress
         public resultAddLetter resultAdd = null; //a result for the logic of the addWord operation
         public resultSwapLetter resultSwap = null; //a result for the logic of the swapWord operation
-        public Board board; //the board;
-        public Player player; // the current player
+        //public Board board = new Board(15, 15, ""); //the board;
+        public Player player = new Player(""); // the current player
         /** Creates new form mainWindow */
 
     
-    public void setBoard(Board b){
-        board = b;
-    }
-    
-    public void setPlayer(Player p){
-        player = p;
-    }
-
+   
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -499,10 +492,18 @@ public class MainWindow1 extends javax.swing.JFrame {
 
     private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuItemActionPerformed
        gameFileChooser.startLoadChooser();
+       String name = gameFileChooser.getFileName();
+       boolean successLoad = scrabbleMain.GameGui.loadGame(name);
+       //System.out.println(path);
+       if (successLoad)
+    	   initGameWindow();
 }//GEN-LAST:event_loadMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
           gameFileChooser.startSaveChooser();
+          String name = gameFileChooser.getFileName();
+          scrabbleMain.GameGui.saveCurrentGame(name);
+          System.out.println(name); 
 }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -613,6 +614,19 @@ public class MainWindow1 extends javax.swing.JFrame {
 //        generalMessage.setMessage(text);
        generalMessage.showMessageDialog(MainWindow1.this, text, title, 2);
     }
+    
+    public void initGameWindow(){
+    	Player p;
+    	try{
+    	p = scrabbleMain.GameGui.G.getPlayerList().get(G.getTurnInd());
+    	}
+    	catch(Exception e){
+    		p = player; //will be removed once the logic is complete
+    	}
+    	Board board = scrabbleMain.GameGui.G.getBoard();
+    	playStatus.setText("player "+p.getName()+" is playing");
+    	gameBoard.repaint();
+    }
     /**
     * @param args the command line arguments
     */
@@ -707,21 +721,30 @@ public class MainWindow1 extends javax.swing.JFrame {
                 for (int i = 0; i < 15; i++)
                         for (int j = 0; j < 15; j++){
                                 g.setColor(java.awt.Color.black);
-                                g.draw3DRect(j*28, i*28, 28, 28, true);
-                                g.fill3DRect(j*28, i*28, 28, 28, true);
- //                             g.drawRect(j*28, i*28, 28, 28);
+                                //g.draw3DRect(j*28, i*28, 28, 28, true);
+                               // g.fill3DRect(j*28, i*28, 28, 28, true);
+                                g.drawRect(j*28, i*28, 28, 28);
                                 int id = letterToNumber(b.getLetter(i,j));
-                                drawImage(letters[id], g, j*28, i*28);
+                                if (id != -1)
+                                	drawImage(letters[id], g, j*28, i*28);
                         }
         }
         
         //draws player letters
         public void drawPlayerLetters(Graphics g, Player p){
                 for (int i = 0; i < 7; i++){
-                        int id = letterToNumber(p.getLetter(i));
-                        g.drawRect(letterCoordsX[i], 440, 28, 28);
+                	int id;
+                	letterCoordsX[i] = i*40+80;
+                	try{
+                		id = letterToNumber(p.getLetter(i));
+                	}
+                	catch(Exception e){
+                		id = -1;
+                	}
+                	g.drawRect(letterCoordsX[i], 440, 28, 28);
+                    if (id != -1)
                         drawImage(letters[id], g, letterCoordsX[i], 440);
-                }
+                    }
         }
         
         // draws a picture of the exchange
@@ -815,14 +838,20 @@ public class MainWindow1 extends javax.swing.JFrame {
         public void paintComponent(Graphics g1) {
                 
                 super.paintComponent(g1); // JPanel draws background
-                drawTable(g1); //will be removed
-                drawLetterSet(g1);//will be removed
-                placeRandomLetters(g1);//will be removed
+                //drawTable(g1); //will be removed
+                //drawLetterSet(g1);//will be removed
+                //placeRandomLetters(g1);//will be removed
                 
-                /*//this will be added once the logic will pass a board and a player
-                 * drawBoard(g1, board);
-                 * drawPlayerLetters(g1, p); p - the current player
-                 */
+                 drawBoard(g1, scrabbleMain.GameGui.G.getBoard());
+                 Player p;
+                 try{
+                	p = scrabbleMain.GameGui.G.getPlayerList().get(G.getTurnInd());
+                 }
+                 catch(Exception e){
+                	 p = player; // will be removed once the logic is complete
+                 }
+                drawPlayerLetters(g1, p);
+                 
                 drawImage(g1);
                 this.addMouseListener(new java.awt.event.MouseAdapter(){
                   public void mousePressed(java.awt.event.MouseEvent evt) {
