@@ -867,11 +867,15 @@ public class MainWindow1 extends javax.swing.JFrame {
     	
     	public void loadLetters(){
     		letters = new BufferedImage[27];
-    		
+   		int mode = NewGameDialog.getLetterColor();
     		for (int i = 1; i <= 27; i++){
     			String path;
-    		
+    			if(mode==0){
     			path = "resources/Letters/"+i+".jpg";
+    			}
+    			else{
+    				path =  "resources/Letter2/"+i+".jpg";
+    			}
     			Image img = Toolkit.getDefaultToolkit().getImage(path);
     			letters[i-1] = resize(toBufferedImage(img),28,28);
     		}

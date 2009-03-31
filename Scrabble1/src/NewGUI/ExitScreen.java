@@ -95,9 +95,10 @@ public class ExitScreen extends javax.swing.JFrame {
         //all methods before exiting a game will be written here
         //use comp to close the screen and quit
        parent.dispose();
-
+       
         //close exitScreen
         this.dispose();
+        System.exit(0);
 }//GEN-LAST:event_exitOKButtonActionPerformed
 
         public static void startExitScreen(javax.swing.JFrame parent)
