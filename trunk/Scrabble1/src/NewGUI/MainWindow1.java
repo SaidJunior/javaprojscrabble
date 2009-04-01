@@ -99,10 +99,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 		addWordToBoard = new javax.swing.JButton();
 		currentPlayer = new javax.swing.JLabel();
 		letterSack = new javax.swing.JLabel();
-		scoreBoard = new javax.swing.JLabel();
+		scoreBoard = new javax.swing.JTextPane();
 		changeLetter = new javax.swing.JButton();
 		doneButton = new javax.swing.JButton();
-		playStatus = new javax.swing.JLabel();
+		playStatus = new javax.swing.JTextPane();
 		gameBoard = new DrawPanel();
 		jMenuBar1 = new javax.swing.JMenuBar();
 		gameMenu = new javax.swing.JMenu();
@@ -399,12 +399,15 @@ public class MainWindow1 extends javax.swing.JFrame {
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+		scoreBoard.setEditable(false);
+		scoreBoard.setBackground(new java.awt.Color(204, 204, 255));
+		scoreBoard.setFont(new java.awt.Font("Arial Narrow", 3, 14));
+		scoreBoard.setBorder(javax.swing.BorderFactory.createTitledBorder
+				(new javax.swing.border.LineBorder
+						(new java.awt.Color(102, 0, 0), 2, true), "Score Board", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("David", 3, 24), new java.awt.Color(204, 0, 0)));
 		
-//		Roy here you need to display a list of all player names and their current scores. All you need is here
-//		for (int i = 0; i < GameGui.getG().getNumberOfPlayers(); i++) {
-//			GameGui.getG().getPlayerList().get(i).getName(); 
-//			GameGui.getG().getPlayerList().get(i).getScore();
-//		}
+		updateScoreBoard();
+
 		changeLetter.setText("Change Letter");
 		changeLetter
 				.addContainerListener(new java.awt.event.ContainerAdapter() {
@@ -430,14 +433,18 @@ public class MainWindow1 extends javax.swing.JFrame {
 			}
 		});
 
-		playStatus.setText("play status will be presented here");
-		playStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Play Status",
-				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION,
-				new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+		playStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				new javax.swing.border.LineBorder(new java.awt.Color
+						(102, 0, 0), 2, true), "PlayStatus", 
+						javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, 
+						javax.swing.border.TitledBorder.DEFAULT_POSITION, 
+						new java.awt.Font("David", 3, 24), new java.awt.Color
+						(204, 0, 0))); // NOI18N
+		playStatus.setEditable(false);
+		playStatus.setFont(new java.awt.Font("Arial Narrow", 3, 15)); // NOI18N
+		playStatus.setForeground(new java.awt.Color(255, 0, 0));
+		playStatus.setBackground(new java.awt.Color(204, 204, 255));
 
-		// gameBoard.setText("game board will be presented here");
 
 		gameMenu.setText("Game");
 		gameMenu.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -807,8 +814,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_exitMenuItemActionPerformed
 
 	/*
-	 * This is the event from done button. it currently pops up a default
-	 * message that is configurable.
+	 * This is the event from done button. 
 	 */
 	private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doneButtonActionPerformed
 		if ((changeLetterFlag == false) && (addWordFlag == false)) {
@@ -828,6 +834,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 		changeLetter.setEnabled(true);
 		addWordToBoard.setEnabled(true);
 		setPlayStatusText("");
+		updateScoreBoard();
+		
 
 	}// GEN-LAST:event_doneButtonActionPerformed
 
@@ -975,9 +983,9 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private javax.swing.JButton okBestAdvancedButton;
 	private javax.swing.JButton okBestBasicButton;
 	private javax.swing.JButton okHelpButton;
-	private static javax.swing.JLabel playStatus;
+	private static javax.swing.JTextPane playStatus;
 	private javax.swing.JMenuItem saveMenuItem;
-	private javax.swing.JLabel scoreBoard;
+	private javax.swing.JTextPane scoreBoard;
 	private javax.swing.JMenu viewMenu;
 
 	// End of variables declaration//GEN-END:variables
@@ -1329,5 +1337,29 @@ public class MainWindow1 extends javax.swing.JFrame {
 	public static void setPlayStatusText(String text)
 	{
 		playStatus.setText(text);
+	}
+	
+	
+	/* This method updates the scoreBoard. Must be called after every turn. 
+	 * */
+	private void updateScoreBoard()
+	{
+		String allPlayers = "";
+		int winner = 0;
+		int winningScore = 0;
+		for (int i = 0; i < GameGui.getG().getNumberOfPlayers(); i++) {
+			int temp_score = GameGui.getG().getPlayerList().get(i).getScore();
+			if (temp_score > winningScore)
+			{
+				winningScore = temp_score;
+				winner = i;
+			}
+			allPlayers += GameGui.getG().getPlayerList().get(i).getName() + "\n"; 
+			allPlayers += temp_score + " pts\n\n";
+		}	
+		String winMessage = "Current Winner is:\n " + GameGui.getG().getPlayerList().get(winner).getName() +
+		"\n\n With a score of:\n " + winningScore + " pts";
+		allPlayers = winMessage + "\n\n" + allPlayers;
+		scoreBoard.setText(allPlayers);
 	}
 }

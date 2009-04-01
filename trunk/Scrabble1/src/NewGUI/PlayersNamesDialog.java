@@ -260,23 +260,34 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
         MainWindow = new MainWindow1();
         MainWindow.setVisible(true);
-        MainWindow.setPlayStatusText("New Game...");
-        
-
  
     }//GEN-LAST:event_StartGameButtonActionPerformed
 
     private static String checkIfValidNames()
     {
     	String message = "";
-    	if (!checkIfValidName(name1))
-    		message += "Please type a valid name for player1. \n";
-    	if (NewGameDialog.getNumOfPlayers() > 1 && !checkIfValidName(name2))
-    		message += "Please type a valid name for player2. \n";
-    	if (NewGameDialog.getNumOfPlayers() > 2 && !checkIfValidName(name3))
-    		message += "Please type a valid name for player3. \n";
-    	if (NewGameDialog.getNumOfPlayers() > 3 && !checkIfValidName(name4))
-    		message += "Please type a valid name for player4. \n";
+    	String temp = checkIfValidName(name1);
+    	if (temp != null)
+    		message += "Player1 name is not vaild: \n" + temp;
+    	
+    	if (NewGameDialog.getNumOfPlayers() > 1)
+    	{
+    		temp = checkIfValidName(name2);
+    		if (temp!= null)
+    			message += "\nPlayer2 name is not vaild: \n" + temp;
+    	}
+    	if (NewGameDialog.getNumOfPlayers() > 2)
+    	{
+    		temp = checkIfValidName(name3);
+    		if (temp!= null)
+    			message += "\nPlayer3 name is not vaild: \n" + temp;
+    	}
+    	if (NewGameDialog.getNumOfPlayers() > 3)
+    	{
+    		temp = checkIfValidName(name4);
+    		if (temp!= null)
+    			message += "\nPlayer4 name is not vaild: \n" + temp;
+    	}
 
     	return message;
     }
@@ -392,9 +403,14 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     	setName4(Player4TextField.getText());
 	}
 
-	private static boolean checkIfValidName(String name) {
-		if (name == null || "".equals(name) || name.startsWith(" "))
-			return false;
-		return true;
+	private static String checkIfValidName(String name) {
+		
+		if (name == null || "".equals(name))
+		{
+			return "Name cannot be empty"; 
+		}
+		if (name.length() > 19)		
+			return "Name length must be smaller than 20 letters.";
+		return null;
 	}
 }

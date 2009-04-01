@@ -15,7 +15,7 @@ import java.util.TreeMap;
 public class GameLogic {
 	public final  int ROWS            = 15;
 	public final  int COLUMNS         = 15;
-	public final  int MAX_NAME_LENGTH = 50;
+	public final  int MAX_NAME_LENGTH = 20;
 	
 	private  int            numberOfPlayers = 0;
 	private  boolean        finishGame      = false;
