@@ -83,6 +83,9 @@ public class GameGui {
 			G.setTurnInd(G.getTurnInd() - 1);
 			return;
 		}
+		
+		if (!currentName.endsWith(".scrabble"))
+			currentName+=".scrabble";
 		//check if such a game already exists.
 		/*if(checkIfExist(currentName))
 		{
