@@ -602,7 +602,7 @@ public class GameConsole {
 			
 			try {
 				do {
-					System.out.print("Enter Name Of Player(Length less than 50) " + i + ":");
+					System.out.print("Enter Name Of Player(Length less than 20) " + i + ":");
 					playerName = G.getConsoleReader().readLine();
 				} while (playerName.length() > G.MAX_NAME_LENGTH || !checkIfValidName(playerName));
 				
