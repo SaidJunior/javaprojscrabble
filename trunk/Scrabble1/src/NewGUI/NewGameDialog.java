@@ -11,6 +11,8 @@
 
 package NewGUI;
 
+import scrabbleMain.GameGui;
+
 /**
  *
  * @author Erez Reshef
@@ -273,9 +275,9 @@ public class NewGameDialog extends javax.swing.JDialog {
                     }
                 });
                 //LOGIC
-                MainWindow1.initGameLogic();
-                MainWindow1.setNumberOfPlayers(numOfPlayers);
-                MainWindow1.setGameMode(gameType);
+                GameGui.initGameLogic();
+                GameGui.setNumberOfPlayers(numOfPlayers);
+                GameGui.setGameMode(gameType);
                 
                 //dispose new game window at the end
                 dispose();

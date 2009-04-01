@@ -12,6 +12,7 @@
 package NewGUI;
 
 import scrabbleMain.Game;
+import scrabbleMain.GameGui;
 
 /**
  *
@@ -245,7 +246,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     	playerNames[2] = name3;
     	playerNames[3] = name4;
     	
-    	MainWindow1.createPlayerList(playerNames); // what's this shit?!
+    	GameGui.createPlayerList(playerNames); 
     	//END_LOGIC
     	
     	MainWindow = new MainWindow1();
