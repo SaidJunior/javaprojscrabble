@@ -911,14 +911,14 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}
 
 	public void initGameWindow() {
-		Player p;
-		try {
-			p = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
-		} catch (Exception e) {
-			p = player; // will be removed once the logic is complete
-		}
-		Board board = GameGui.getG().getBoard();
-		playStatus.setText("player " + p.getName() + " is playing");
+//		Player p;
+//		try {
+//			p = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
+//		} catch (Exception e) {
+//			p = player; // will be removed once the logic is complete
+//		}
+//		Board board = GameGui.getG().getBoard();
+//		playStatus.setText("player " + p.getName() + " is playing");
 		gameBoard.repaint();
 	}
 
@@ -1036,8 +1036,9 @@ public class MainWindow1 extends javax.swing.JFrame {
 					id = -1;
 				}
 				g.drawRect(letterCoordsX[i], 440, 28, 28);
-				if (id != -1)
+				if (id != -1) {
 					drawImage(letters[id], g, letterCoordsX[i], 440);
+				}
 			}
 		}
 

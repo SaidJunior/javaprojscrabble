@@ -146,6 +146,9 @@ public class GameGui {
 	public static void createPlayerList(String[] playerNames) {
 		for (int i = 0; i < G.getNumberOfPlayers(); i++) {
 			Player newPlayer = new Player(playerNames[i]);
+			for (int j = 0; j < 7; j++) {
+				newPlayer.insertLetter(G.getLettersSet().getLetter());
+			}
 			G.getPlayerList().add(newPlayer);
 			// System.out.println(G.getPlayerList().get(i).getName());
 		}
