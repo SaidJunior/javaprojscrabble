@@ -15,7 +15,7 @@ import java.util.List;
 import NewGUI.MainWindow1;
 
 public class GameGui {
-	private static GameLogic G = new GameLogic();
+	public static GameLogic G = new GameLogic();
 	
 	
 	public static boolean loadGame(String currentName) {
@@ -26,15 +26,15 @@ public class GameGui {
 //			System.out.println("Please enter a vaild name ");
 			return succ;
 		}
-		if (!checkIfExist(currentName))
+		/*if (!checkIfExist(currentName))
 		{
 //			System.out.println("A game named: " + currentName + " does not exists");
 			return succ;
-		}
+		}*/
 //		currentName += G.getFileSuffix();
 		
 		try {
-			FileInputStream file = new FileInputStream(G.getSavedGamesPath() + currentName);
+			FileInputStream file = new FileInputStream(currentName);
 			ObjectInputStream data = new ObjectInputStream(file);
 			GameEntity gameEntity = (GameEntity)data.readObject();
 			data.close();
@@ -83,7 +83,7 @@ public class GameGui {
 			return;
 		}
 		//check if such a game already exists.
-		if(checkIfExist(currentName))
+		/*if(checkIfExist(currentName))
 		{
 			System.out.println("A game with this name already exists.\n\nDo you want to overwrite it?");
 			char answer = GetUserInput.getYesOrNo(G.getConsoleReader());
@@ -93,11 +93,11 @@ public class GameGui {
 				G.setTurnInd(G.getTurnInd() - 1);
 				return;
 			}
-		}
+		}*/
 		
 		GameEntity gameEntity = new GameEntity(G.getPlayerList(), G.getLettersSet(), G.getBoard(), G.getTurnInd(), G.getMode());
 		try {
-			FileOutputStream file = new FileOutputStream(G.getSavedGamesPath() + currentName);		  
+			FileOutputStream file = new FileOutputStream(currentName);		  
 			ObjectOutputStream data = new ObjectOutputStream(file);
 			
 			data.writeObject(gameEntity);
