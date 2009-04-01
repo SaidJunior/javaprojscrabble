@@ -120,9 +120,11 @@ public class gameFileChooser extends javax.swing.JFrame {
 
                 if (getReturnVal()  != jFileChooser1.APPROVE_OPTION)
                 {
+
                     File file = jFileChooser1.getSelectedFile();
                     if (file != null)
                     {
+
                            String fileName = jFileChooser1.getSelectedFile().getName();
                            System.out.println ("file selected: " + fileName + "action: " + saveOrLoad);
                            
