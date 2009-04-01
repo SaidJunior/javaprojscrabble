@@ -19,19 +19,19 @@ public class GameGui {
 	
 	
 	public static boolean loadGame(String currentName) {
-		
+//		System.out.println(currentName);
 		boolean succ = false;
 		if (!checkIfValidName(currentName))
 		{
-			System.out.println("Please enter a vaild name ");
+//			System.out.println("Please enter a vaild name ");
 			return succ;
 		}
 		if (!checkIfExist(currentName))
 		{
-			System.out.println("A game named: " + currentName + " does not exists");
+//			System.out.println("A game named: " + currentName + " does not exists");
 			return succ;
 		}
-		//currentName += G.getFileSuffix();
+//		currentName += G.getFileSuffix();
 		
 		try {
 			FileInputStream file = new FileInputStream(G.getSavedGamesPath() + currentName);
@@ -186,8 +186,11 @@ public class GameGui {
 		
 		
 	}
-	private static List<LetterPosition> usedLetters = new ArrayList<LetterPosition>();
+	private static List<LetterPosition> usedLetters = null;
 	
+	public static void initUsedLetters() {
+		usedLetters = new ArrayList<LetterPosition>();
+	}
 	public static void addLetterToBoardBasic(int x, int y, int index) {
 		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
 		//check if cell already taken
@@ -199,6 +202,127 @@ public class GameGui {
 		G.getBoard().insertLetter(x, y, player.getLetter(index));
 		usedLetters.add(new LetterPosition(x, y, player.getLetter(index)));
 		player.removeLetter(index);
+	}
+	
+	public static void placeWordBasic() {
+		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
+		String userWord;
+		if ((usedLetters.size() == 1) && (!(G.getBoard().hasNeigbours(usedLetters.get(0).row, usedLetters.get(0).col)))) {
+//			MainWindow1.setPlayStatusText("Your placed letter has no neigbours - you lost you turn");
+			G.getBoard().removeLetter(usedLetters.get(0).row, usedLetters.get(0).col);
+			player.insertLetter(usedLetters.get(0).letter);
+			return;
+		}
+		
+		boolean validByRows      = true;
+		boolean validByCols      = true;
+		boolean validContinueRow = true;
+		boolean validContinueCol = true;
+		
+		//check that the given letter list is valid, i.e all in one col or one row and using an existing letter
+		for (int i = 1; i < usedLetters.size(); i++) {
+			if (usedLetters.get(i).row != usedLetters.get(i - 1).row) {
+				validByRows = false;
+			}
+			else {
+				validContinueRow = G.getBoard().hasleftNiegbour(usedLetters.get(i).row, usedLetters.get(i).col);
+			}
+			if (usedLetters.get(i).col != usedLetters.get(i - 1).col) {
+				validByCols = false;
+			}
+			else {
+				validContinueCol = G.getBoard().hasUpperNiegbour(usedLetters.get(i).row, usedLetters.get(i).col);
+			}
+		}
+		if (((validByCols == false) && (validByRows == false)) || 
+			((validByRows == true) && (validContinueRow == false)) ||
+			((validByCols == true) && (validContinueCol == false))) {
+//			MainWindow1.setPlayStatusText("Your letters do not placed by one colunm or one row or you have holes in your word- you lost your turn");
+			for (int i = 0; i < usedLetters.size(); i++) {
+				G.getBoard().removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
+				player.insertLetter(usedLetters.get(i).letter);
+			}
+			return;
+		}
+		
+		userWord = getWordBasic(usedLetters.get(0).row, usedLetters.get(0).col, validByRows, validByCols, usedLetters.size());
+
+		
+		if (userWord != null) {
+			for (int i = 0; i < usedLetters.size(); i++) {
+				player.insertLetter(G.getLettersSet().getLetter());
+			}
+			player.setScore(userWord.length());
+//			System.out.println("Very Good - you made the word: " + userWord + ". You gained " + userWord.length() + " more pointes");
+		}
+		else {
+			for (int i = 0; i < usedLetters.size(); i++) {
+				G.getBoard().removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
+				player.insertLetter(usedLetters.get(i).letter);
+			}
+//			System.out.println("Your word does not exist in the dictionary - you lost your turn");
+		}
+	}
+	
+	private static String getWordBasic(int row, int column, boolean validByRows, boolean validByCols,int wordLength) {
+		int rowUpperBound     = row;
+		int rowLowerBound     = row;
+		int colUpperBound     = column;
+		int colLowerBound     = column;
+		String rowLogestWord  = null;
+		String colLogestWord  = null;
+		String boardString    = null;
+		
+		//find the last not empty cell of the column
+		for(int i = row + 1; i < G.ROWS; i++) {
+			if (G.getBoard().isCellFree(i , column)) {
+				rowUpperBound = i - 1;
+				break;
+			}
+		}
+		
+		//find the first not empty cell of the column
+		for(int i = row - 1; 0 <= i; i--) {
+			if (G.getBoard().isCellFree(i , column)) {
+				rowLowerBound = i + 1;
+				break;
+			}
+		}
+		
+		for(int i = column + 1; i < G.COLUMNS; i++) {
+			if (G.getBoard().isCellFree(row , i)) {
+				colUpperBound = i - 1;
+				break;
+			}
+		}
+		
+		for(int i = column - 1; 0 <= i; i--) {
+			if (G.getBoard().isCellFree(row , i)) {
+				colLowerBound = i + 1;
+				break;
+			}
+		}
+		
+		if ((validByCols) && (rowLowerBound < rowUpperBound)) {
+			boardString = G.getBoard().getWord(rowLowerBound, column, rowUpperBound, column);
+			colLogestWord = G.getDictionary().getLongesrWord(boardString, row - rowLowerBound, row - rowLowerBound - 1 + wordLength);
+		}
+		if ((validByRows) && (colLowerBound < colUpperBound)) {
+			boardString = G.getBoard().getWord(row, colLowerBound, row, colUpperBound);
+			rowLogestWord = G.getDictionary().getLongesrWord(boardString, column - colLowerBound, column - colLowerBound - 1 + wordLength);
+		}
+		
+		if ((colLogestWord == null) && (rowLogestWord == null)) {
+			return null;
+		}
+		if (rowLogestWord == null) {
+			return colLogestWord;
+		}
+		if (colLogestWord == null) {
+			return rowLogestWord;
+		}
+		
+		return ((rowLogestWord.length() > colLogestWord.length()) ? rowLogestWord : colLogestWord);
 	}
 	
 	private static class LetterPosition {
