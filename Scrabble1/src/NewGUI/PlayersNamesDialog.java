@@ -255,18 +255,14 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         initNamesToDefault();
         dispose();
 
-        boolean newWindow = NewGameDialog.initParentScreen();
-        if (newWindow)
-        {
-        	//Started from MainWindow1, must start MainWindow1 from the begining:
-        	MainWindow = new MainWindow1();
-            MainWindow.setVisible(true);
-        }
-        else
-        {
-        	//we already have an open MainWindow1, only update new game:
-        	System.out.println("update mainWindow1");
-        }
+        //close the parent screen
+        NewGameDialog.initParentScreen();
+
+        MainWindow = new MainWindow1();
+        MainWindow.setVisible(true);
+        MainWindow.setPlayStatusText("New Game...");
+        
+
  
     }//GEN-LAST:event_StartGameButtonActionPerformed
 

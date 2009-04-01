@@ -82,7 +82,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
-		generalMessage = new javax.swing.JOptionPane();
 		helpPage = new javax.swing.JDialog();
 		okHelpButton = new javax.swing.JButton();
 		helpText1 = new javax.swing.JScrollPane();
@@ -120,8 +119,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 		helpMenuItem1 = new javax.swing.JMenuItem();
 		helpMenuSeparator1 = new javax.swing.JSeparator();
 		aboutUsMenuItem1 = new javax.swing.JMenuItem();
-
-		generalMessage.setMessageType(2);
 
 		helpPage.setMinimumSize(new java.awt.Dimension(645, 566));
 		helpPage.setResizable(false);
@@ -817,7 +814,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 	private void newGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newGameMenuItemActionPerformed
 		// Start a new game from menu.
-		NewGameDialog.startNewGame(MainWindow1.this, false);
+		NewGameDialog.startNewGame(MainWindow1.this);
 	}// GEN-LAST:event_newGameMenuItemActionPerformed
 
 	private void gameMenuKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_gameMenuKeyPressed
@@ -825,7 +822,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_gameMenuKeyPressed
 
 	private void newGameMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_newGameMenuItemKeyPressed
-		NewGameDialog.startNewGame(MainWindow1.this, false);
+		NewGameDialog.startNewGame(MainWindow1.this);
 	}// GEN-LAST:event_newGameMenuItemKeyPressed
 
 	private void saveMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_saveMenuItemKeyPressed
@@ -896,15 +893,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 		ExitScreen.startExitScreen(MainWindow1.this);
 	}// GEN-LAST:event_formWindowClosing
 
-	/*
-	 * This method is used to display a general message. it can be used only
-	 * inside MainWindow1
-	 */
-	public void openGeneralMessage(String title, String text) {
-		// generalMessage.setMessage(text);
-		generalMessage.showMessageDialog(MainWindow1.this, text, title, 2);
-	}
-
 	public void initGameWindow() {
 //		Player p;
 //		try {
@@ -949,7 +937,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private JPanel gameBoard;
 	private javax.swing.JMenu gameMenu;
 	private javax.swing.JSeparator gameMenuSeparator;
-	private javax.swing.JOptionPane generalMessage;
 	private javax.swing.JMenu helpMenu1;
 	private javax.swing.JMenuItem helpMenuItem1;
 	private javax.swing.JSeparator helpMenuSeparator1;
@@ -1319,5 +1306,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 		public resultSwapLetter(int index) {
 			this.index = index;
 		}
+	}
+	
+	public void setPlayStatusText(String text)
+	{
+		playStatus.setText(text);
 	}
 }
