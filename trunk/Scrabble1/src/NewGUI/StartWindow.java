@@ -45,6 +45,7 @@ public class StartWindow extends javax.swing.JFrame {
 
         exitButton.setFont(new java.awt.Font("Tahoma", 1, 18));
         exitButton.setText("Exit");
+        exitButton.setToolTipText("Quit Scrabble");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -53,6 +54,7 @@ public class StartWindow extends javax.swing.JFrame {
 
         loadGameButton.setFont(new java.awt.Font("Tahoma", 1, 18));
         loadGameButton.setText("Load Game");
+        loadGameButton.setToolTipText("Load an old Scrabble Game");
         loadGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadGameButtonActionPerformed(evt);
@@ -61,6 +63,7 @@ public class StartWindow extends javax.swing.JFrame {
 
         newGameButton.setFont(new java.awt.Font("Tahoma", 1, 18));
         newGameButton.setText("New Game");
+        newGameButton.setToolTipText("Start new Scrabble game");
         newGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newGameButtonActionPerformed(evt);
