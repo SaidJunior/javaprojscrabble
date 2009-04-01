@@ -24,6 +24,8 @@ public class gameFileChooser extends javax.swing.JFrame {
     private static   FileNameExtensionFilter filter = new FileNameExtensionFilter("Scrabble files","scrabble");
    //load = 0, save = 1
     private static int saveOrLoad = 0;
+    
+    private static javax.swing.JFrame parent;
 
     public static int getReturnVal() {
         return returnVal;
@@ -41,9 +43,10 @@ public class gameFileChooser extends javax.swing.JFrame {
         initComponents();
     }
 
-    public static void startLoadChooser()
+    public static void startLoadChooser(javax.swing.JFrame parent)
     {
-       saveOrLoad = 0;
+    	gameFileChooser.parent = parent;
+    	saveOrLoad = 0;
         startGameChooser("Load an old Scrabble game", "Load a game", javax.swing.JFileChooser.OPEN_DIALOG);
     }
 
@@ -118,26 +121,33 @@ public class gameFileChooser extends javax.swing.JFrame {
      */
     private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
 
-                if (getReturnVal()  != jFileChooser1.APPROVE_OPTION)
-                {
+    	File file = jFileChooser1.getSelectedFile();
+    	if (file != null)
+    	{
+    		String fileName = jFileChooser1.getSelectedFile().getName();
 
-                    File file = jFileChooser1.getSelectedFile();
-                    if (file != null)
-                    {
+    		if (saveOrLoad == 0)
+    		{
+    			boolean successLoad = scrabbleMain.GameGui.loadGame(fileName);
+    			if (successLoad)
+    			{
+    				MainWindow1 MainWindow = new MainWindow1();
+    				parent.dispose();
+    				MainWindow.setVisible(true);
+    				MainWindow.initGameWindow();
+    			}
+    			else
+    			{
+    				GeneralMessage.stratGeneralMessage(gameFileChooser.this,
+    						"Failed to load " + fileName + ".", "Error while loading");
+    			}
+    		}
+    		else if (saveOrLoad == 1)
+    		{
+    			//save methods
+    		}
+    	}
 
-                           String fileName = jFileChooser1.getSelectedFile().getName();
-                           System.out.println ("file selected: " + fileName + "action: " + saveOrLoad);
-                           
-                           if (saveOrLoad == 0)
-                           {
-                               //load methods
-                           }
-                           else if (saveOrLoad == 1)
-                           {
-                               //save methods
-                           }
-                    }
-                }       
     }//GEN-LAST:event_jFileChooser1ActionPerformed
 
     /**
