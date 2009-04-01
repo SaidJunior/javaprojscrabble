@@ -52,6 +52,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 	
 	/** Creates new form mainWindow */
 	public MainWindow1() {
+		GameGui.UploadrecordList('b');
+		GameGui.UploadrecordList('a');
 		initComponents();
 	}
 
@@ -216,8 +218,9 @@ public class MainWindow1 extends javax.swing.JFrame {
 		bestBasicjTextPane.setBackground(javax.swing.UIManager.getDefaults()
 				.getColor("Button.background"));
 		bestBasicjTextPane.setEditable(false);
+		
 		bestBasicjTextPane
-				.setText("this is were you insert the text for best reults- basic");
+				.setText(GameGui.printRecordListToLabel('b'));
 		bestBasicjTextPane.setAutoscrolls(false);
 		bestBasicjScrollPane.setViewportView(bestBasicjTextPane);
 
@@ -300,7 +303,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		bestAdvancedjTextPane.setBackground(javax.swing.UIManager.getDefaults()
 				.getColor("Button.background"));
 		bestAdvancedjTextPane.setEditable(false);
-		bestAdvancedjTextPane.setText(GameGui.getG().getRecordList().toString());
+		bestAdvancedjTextPane.setText(GameGui.printRecordListToLabel('a'));
 		bestAdvancedjTextPane.setAutoscrolls(false);
 		bestAdvancedjScrollPane.setViewportView(bestAdvancedjTextPane);
 
@@ -999,6 +1002,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private javax.swing.JMenuItem saveMenuItem;
 	private javax.swing.JTextPane scoreBoard;
 	private javax.swing.JMenu viewMenu;
+	
+
 
 	// End of variables declaration//GEN-END:variables
 
@@ -1156,7 +1161,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 			Point point = evt.getPoint();
 			int x = point.x;
 			int y = point.y;
-//			System.out.println(x + "," + y);
 			if (inSquare(x, y)) { // if pressed the letter set
 				moveProgress = true; // start the move
 				if (changeLetterFlag) {
