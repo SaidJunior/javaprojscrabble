@@ -122,7 +122,7 @@ public class StartWindow extends javax.swing.JFrame {
 }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
-    	NewGameDialog.startNewGame(StartWindow.this, true);    
+    	NewGameDialog.startNewGame(StartWindow.this);    
 }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
