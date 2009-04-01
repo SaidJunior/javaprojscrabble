@@ -13,6 +13,8 @@ package NewGUI;
 
 import java.awt.Component;
 
+import scrabbleMain.GameGui;
+
 /**
  *
  * @author Roy
@@ -94,6 +96,9 @@ public class ExitScreen extends javax.swing.JFrame {
     private void exitOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitOKButtonActionPerformed
         //all methods before exiting a game will be written here
         //use comp to close the screen and quit
+    	GameGui.updateRecordList();
+    	GameGui.saveRecordList('b');
+    	GameGui.saveRecordList('a');
        parent.dispose();
        
         //close exitScreen
