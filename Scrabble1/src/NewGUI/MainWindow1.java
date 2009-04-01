@@ -851,6 +851,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 		changeLetterFlag = true;
 		changeLetter.setEnabled(false);
 		addWordToBoard.setEnabled(false);
+		setPlayStatusText("You have 3 more letter changes allowed");
+		GameGui.initNumberOfChanges();
 	}// GEN-LAST:event_changeLetterActionPerformed
 
 	private void addWordToBoardActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addWordToBoardActionPerformed
@@ -960,7 +962,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private javax.swing.JButton okBestAdvancedButton;
 	private javax.swing.JButton okBestBasicButton;
 	private javax.swing.JButton okHelpButton;
-	private javax.swing.JLabel playStatus;
+	private static javax.swing.JLabel playStatus;
 	private javax.swing.JMenuItem saveMenuItem;
 	private javax.swing.JLabel scoreBoard;
 	private javax.swing.JMenu viewMenu;
@@ -1311,7 +1313,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		}
 	}
 	
-	public void setPlayStatusText(String text)
+	public static void setPlayStatusText(String text)
 	{
 		playStatus.setText(text);
 	}

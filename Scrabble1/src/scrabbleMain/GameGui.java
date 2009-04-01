@@ -162,15 +162,27 @@ public class GameGui {
 		G.setMode(((gameMode == 0) ? 'b' : 'a'));
 		// System.out.println(G.getMode());
 	}
-
+	private static int numberOfLetterChangesLeft = 0;
+	
+	public static void initNumberOfChanges() {
+		numberOfLetterChangesLeft = 0;
+	}
+	
 	public static void changeOneLetter(int index) {
 		Player currentPlayer = G.getPlayerList().get(G.getTurnInd());
+		if (numberOfLetterChangesLeft >= 3) {
+			MainWindow1.setPlayStatusText("You commited 3 changes, press Done buttun to next turn");
+			return;
+		}
 		if (G.getLettersSet().getLetterSetSize() > 0) {
 			currentPlayer.removeLetter(index);
 			currentPlayer.insertLetter(G.getLettersSet().getLetter());
+			numberOfLetterChangesLeft++;
+			MainWindow1.setPlayStatusText("You have " + (3 - numberOfLetterChangesLeft) + " more changes");
+			System.out.println(numberOfLetterChangesLeft);
 		}
 		else {
-			//MainWindow1.printToStatusBox("No more letters in the Letters sack");
+			MainWindow1.setPlayStatusText("No more letters in the Letters sack");
 		}
 		
 		
