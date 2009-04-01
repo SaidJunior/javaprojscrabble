@@ -386,9 +386,9 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		currentPlayer.setFont(new java.awt.Font("Tahoma", 1, 12));
 		currentPlayer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		currentPlayer.setText("Now Playing: _______");
+		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
 
-		letterSack.setText("Total Letters Left...");
+		letterSack.setText("Number of letters Left: " + GameGui.getG().getLettersSet().getLetterSetSize());
 		letterSack.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Letter Sack",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -400,7 +400,12 @@ public class MainWindow1 extends javax.swing.JFrame {
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font("Tahoma", 1, 12))); // NOI18N
-
+		
+//		Roy here you need to display a list of all player names and their current scores. All you need is here
+//		for (int i = 0; i < GameGui.getG().getNumberOfPlayers(); i++) {
+//			GameGui.getG().getPlayerList().get(i).getName(); 
+//			GameGui.getG().getPlayerList().get(i).getScore();
+//		}
 		changeLetter.setText("Change Letter");
 		changeLetter
 				.addContainerListener(new java.awt.event.ContainerAdapter() {
@@ -1001,7 +1006,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 			for (int i = 0; i < letters.length; i++)
 				if (letters[i] == c)
-					return i + 1;
+					return i;
 
 			return -1;
 		}
