@@ -9,6 +9,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import NewGUI.MainWindow1;
 
 public class GameGui {
 	private static GameLogic G = new GameLogic();
@@ -157,6 +161,45 @@ public class GameGui {
 	public static void setGameMode(int gameMode) {
 		G.setMode(((gameMode == 0) ? 'b' : 'a'));
 		// System.out.println(G.getMode());
+	}
+
+	public static void changeOneLetter(int index) {
+		Player currentPlayer = G.getPlayerList().get(G.getTurnInd());
+		if (G.getLettersSet().getLetterSetSize() > 0) {
+			currentPlayer.removeLetter(index);
+			currentPlayer.insertLetter(G.getLettersSet().getLetter());
+		}
+		else {
+			//MainWindow1.printToStatusBox("No more letters in the Letters sack");
+		}
+		
+		
+	}
+	private static List<LetterPosition> usedLetters = new ArrayList<LetterPosition>();
+	
+	public static void addLetterToBoardBasic(int x, int y, int index) {
+		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
+		//check if cell already taken
+		if (G.getBoard().isCellFree(x, y) == false) {
+		    //update player that cell is not empty
+			return;
+		}
+		
+		G.getBoard().insertLetter(x, y, player.getLetter(index));
+		usedLetters.add(new LetterPosition(x, y, player.getLetter(index)));
+		player.removeLetter(index);
+	}
+	
+	private static class LetterPosition {
+		int row;
+		int col;
+		char letter;
+		
+		private LetterPosition(int row, int col, char letter) {
+			this.row    = row;
+			this.col    = col;
+			this.letter = letter;
+		}
 	}
 
 	
