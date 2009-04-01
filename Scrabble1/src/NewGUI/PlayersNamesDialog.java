@@ -105,7 +105,8 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         WelcomeLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        WelcomeLabel.setText("Select Player Names:");
+        WelcomeLabel.setText("Type Players's Names:");
+        WelcomeLabel.setToolTipText("All names must have 1-20 letters");
 
         Player1Label.setText("Player 1:");
 
@@ -132,6 +133,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
         StartGameButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         StartGameButton.setText("Start Game!");
+        StartGameButton.setToolTipText("Let's Scrabble!!!");
         StartGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StartGameButtonActionPerformed(evt);
@@ -140,6 +142,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
         BackButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         BackButton.setText("< Back");
+        BackButton.setToolTipText("Back to previous screen");
         BackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackButtonActionPerformed(evt);
@@ -148,6 +151,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
         Cancel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         Cancel.setText("Cancel");
+        Cancel.setToolTipText("leave new game screen");
         Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelActionPerformed(evt);

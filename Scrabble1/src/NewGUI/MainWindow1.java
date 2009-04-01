@@ -375,6 +375,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		});
 
 		addWordToBoard.setText("Add Word");
+		addWordToBoard.setToolTipText("Add a new word to board");
 		addWordToBoard.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				addWordToBoardActionPerformed(evt);
@@ -409,6 +410,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		updateScoreBoard();
 
 		changeLetter.setText("Change Letter");
+		changeLetter.setToolTipText("Replace a letter with a new letter");
 		changeLetter
 				.addContainerListener(new java.awt.event.ContainerAdapter() {
 					public void componentAdded(java.awt.event.ContainerEvent evt) {
@@ -427,6 +429,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		});
 
 		doneButton.setText("Done!");
+		doneButton.setToolTipText("I'm done playing this turn");
 		doneButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doneButtonActionPerformed(evt);
@@ -449,6 +452,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		
 		
 		gameMenu.setText("Game");
+		gameMenu.setToolTipText("Game options");
 		gameMenu.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				gameMenuKeyPressed(evt);
@@ -528,9 +532,11 @@ public class MainWindow1 extends javax.swing.JFrame {
 		jMenuBar1.add(gameMenu);
 
 		viewMenu.setText("View");
+		viewMenu.setToolTipText("Graphics options");
 		jMenuBar1.add(viewMenu);
 
 		bestResults.setText("Hall Of Fame");
+		bestResults.setToolTipText("View Best results");
 
 		bestBasic.setText("Best Results - Basic Game");
 		bestBasic.addActionListener(new java.awt.event.ActionListener() {
@@ -551,6 +557,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		jMenuBar1.add(bestResults);
 
 		helpMenu1.setText("Help");
+		helpMenu1.setToolTipText("Help me...");
 
 		helpMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_H,
@@ -570,6 +577,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		helpMenu1.add(helpMenuSeparator1);
 
 		aboutUsMenuItem1.setText("About Us");
+		aboutUsMenuItem1.setToolTipText("Who are we?");
 		helpMenu1.add(aboutUsMenuItem1);
 
 		jMenuBar1.add(helpMenu1);

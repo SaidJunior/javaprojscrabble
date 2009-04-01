@@ -87,6 +87,7 @@ public class NewGameDialog extends javax.swing.JDialog {
 
         Next.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         Next.setText("Next >");
+        Next.setToolTipText("Type names for players");
         Next.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NextActionPerformed(evt);
@@ -98,6 +99,7 @@ public class NewGameDialog extends javax.swing.JDialog {
 
         SelectNumOfPlayersLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         SelectNumOfPlayersLabel.setText("Select Number Of Players:");
+        SelectNumOfPlayersLabel.setToolTipText("Number of players who will play, must be 1-4");
 
         SelectGameTypeLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         SelectGameTypeLabel.setText("Select Game Type:");
@@ -112,6 +114,7 @@ public class NewGameDialog extends javax.swing.JDialog {
 
         AdvanceGameRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         AdvanceGameRadioButton.setText("Advance Game");
+        AdvanceGameRadioButton.setToolTipText("Play advanced game");
         AdvanceGameRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AdvanceGameRadioButtonActionPerformed(evt);
@@ -121,6 +124,7 @@ public class NewGameDialog extends javax.swing.JDialog {
         SimpleGameRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         SimpleGameRadioButton.setSelected(true);
         SimpleGameRadioButton.setText("Simple Game");
+        SimpleGameRadioButton.setToolTipText("Play basic game");
         SimpleGameRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SimpleGameRadioButtonActionPerformed(evt);
@@ -129,6 +133,7 @@ public class NewGameDialog extends javax.swing.JDialog {
 
         Cancel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         Cancel.setText("Cancel");
+        Cancel.setToolTipText("leave new game screen");
         Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelActionPerformed(evt);
