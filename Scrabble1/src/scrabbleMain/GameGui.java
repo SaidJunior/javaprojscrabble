@@ -1,16 +1,19 @@
 package scrabbleMain;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class GameGui {
-	public static GameLogic G = new GameLogic();
-
+	private static GameLogic G = new GameLogic();
+	
+	
 	public static boolean loadGame(String currentName) {
 		
 		boolean succ = false;
@@ -106,6 +109,51 @@ public class GameGui {
 		//after saving the game, player get to play again
 		G.setTurnInd(G.getTurnInd() - 1);;
 		G.setIsSaved(true);
+	}
+
+	public static GameLogic getG() {
+		return G;
+	}
+	
+	public static String parseFileToString(String FileName) {
+		StringBuffer str = new StringBuffer();
+		String line = null;
+
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(FileName));
+
+			while ((line = in.readLine()) != null) {
+				str.append(line + "\n");
+			}
+		} catch (IOException e) {
+			System.out
+					.println("IO Error. Loading the help file failed. Please try again later");
+		}
+
+		return str.toString();
+
+	}
+
+	public static void initGameLogic() {
+		G = new GameLogic();
+	}
+
+	public static void setNumberOfPlayers(int numOfPlayers) {
+		G.setNumberOfPlayers(numOfPlayers);
+		// System.out.println(G.getNumberOfPlayers());
+	}
+
+	public static void createPlayerList(String[] playerNames) {
+		for (int i = 0; i < G.getNumberOfPlayers(); i++) {
+			Player newPlayer = new Player(playerNames[i]);
+			G.getPlayerList().add(newPlayer);
+			// System.out.println(G.getPlayerList().get(i).getName());
+		}
+	}
+
+	public static void setGameMode(int gameMode) {
+		G.setMode(((gameMode == 0) ? 'b' : 'a'));
+		// System.out.println(G.getMode());
 	}
 
 	
