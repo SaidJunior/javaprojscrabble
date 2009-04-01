@@ -27,18 +27,34 @@ public class GameLogic {
 	private  Board          board           = new Board(ROWS, COLUMNS, dictionary.getRandomWord());
 	private  int            turnInd         = 0;
 	private  char           mode            = 'b';  //indicates the chosen rules set
-	private  RecordList     recordList      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
-	
+	private  RecordList     recordListBasic      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
+	private  RecordList     recordListAdvanced     = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	private  boolean isSaved = false;
 	//Path to hold all saved games at.
 	private  String savedGamesPath  = "Saved_Games/";
-	private  String savedRecordList = "RecordList/fileRecordList";
-	private  String savedRecordListAdvanced  = "RecordList/fileRecordListAdvanced";
+	private  String savedRecordListPath = "RecordList/fileRecordList";
+	private  String savedRecordListAdvancedPath  = "RecordList/fileRecordListAdvanced";
 	private  String fileSuffix      = ".scrabble";
 
 
 	public  int getNumberOfPlayers() {
 		return numberOfPlayers;
+	}
+	
+	public  String getsavedRecordListPath() {
+		return this.savedRecordListPath;
+	}
+	
+	public  void setsavedRecordListPath(String new_path) {
+		this.savedRecordListPath = new_path;
+	}
+	
+	public  String getsavedRecordListAdvancedPath() {
+		return this.savedRecordListAdvancedPath;
+	}
+	
+	public  void setsavedRecordListAdvancedPath(String new_path) {
+		this.savedRecordListAdvancedPath = new_path;
 	}
 
 	public  void setNumberOfPlayers(int numberOfPlayers) {
@@ -78,12 +94,20 @@ public class GameLogic {
 	}
 
 	public  RecordList getRecordList() {
-		return recordList;
+		return recordListBasic;
 	}
 
 	public  void setRecordList(RecordList recordList) {
-		this.recordList = recordList;
+		this.recordListBasic = recordList;
 	}
+	
+	public  RecordList getRecordListAdvanced() {
+		return recordListAdvanced;
+	}
+	public  void setRecordListAdvanced(RecordList recordList) {
+		this.recordListAdvanced = recordList;
+	}
+	
 
 	public  boolean getIsSaved() {
 		return isSaved;
@@ -101,13 +125,6 @@ public class GameLogic {
 		this.savedGamesPath = savedGamesPath;
 	}
 
-	public  String getSavedRecordList() {
-		return savedRecordList;
-	}
-
-	public  void setSavedRecordList(String savedRecordList) {
-		this.savedRecordList = savedRecordList;
-	}
 
 	public  String getFileSuffix() {
 		return fileSuffix;
@@ -166,11 +183,5 @@ public class GameLogic {
 		playerList.get(turnInd).printPlayerLetters();
 	}
 
-	public String getSavedRecordListAdvanced() {
-		return savedRecordListAdvanced;
-	}
-
-	public void setSavedRecordListAdvanced(String savedRecordListAdvanced) {
-		this.savedRecordListAdvanced = savedRecordListAdvanced;
-	}
+	
 }

@@ -18,6 +18,7 @@ public class GameGui {
 	public static GameLogic G = new GameLogic();
 	
 	
+	
 	public static boolean loadGame(String currentName) {
 //		System.out.println(currentName);
 		boolean succ = false;
@@ -336,6 +337,95 @@ public class GameGui {
 			this.letter = letter;
 		}
 	}
+	
+	public static void updateRecordList() {
+		    if(G.getMode()=='b'){
+			if(!(G.getPlayerList().size()==0)){
+			for(Player player : G.getPlayerList()){
+				G.getRecordList().updatePlayer(player.getName(),player.getScore());}
+			}
+		    }else{if(!(G.getPlayerList().size()==0)){
+				for(Player player : G.getPlayerList()){
+					G.getRecordListAdvanced().updatePlayer(player.getName(),player.getScore());}
+		    }}
+	}
+	
+	public static void UploadrecordList(char a){
+		FileInputStream file;
+		try {
+			if(a == 'a'){
+                file = new FileInputStream(G.getsavedRecordListAdvancedPath());   
+			}else {
+                file = new FileInputStream(G.getsavedRecordListPath());
+			}
+			ObjectInputStream data = new ObjectInputStream(file);
+			if(a=='b'){
+		    G.setRecordList((RecordList) data.readObject());
+			}
+			if(a=='a'){
+			 G.setRecordListAdvanced((RecordList) data.readObject());
+			}
+			data.close();
+			file.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File Error while loading.");
+		} catch (IOException e) {
+			System.out.println("IO Exception while loading updateRecordList.");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Cast problem while loading.");
+		}
+		
+	}
+	
+	public static void saveRecordList(char a){
+		FileOutputStream fileo;
+		try {
+			if(a == 'a'){
+                fileo = new FileOutputStream(G.getsavedRecordListAdvancedPath());   
+			}else {
+                fileo = new FileOutputStream(G.getsavedRecordListPath());
+			}
+			ObjectOutputStream data = new ObjectOutputStream(fileo);
+//			recordList.updatePlayer("First Player", 10);
+			data.writeObject(G.getRecordList());
+			data.close();
+			fileo.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("IO error - File not found. The record list will not be printed - try again later");
+		} catch (IOException e) {
+			System.out.println("IO error. The record list will not be printed - try again later");			
+			}
+		
+	}
+	public static String printRecordListToLabel(char a) {
+		
+		StringBuffer recordListString = new StringBuffer();
+		String open = "Top Scores"+"\n"+"-----------------" + "\n";
+		recordListString.append(open);
+		recordListString.append("          " + "\n");
+		if(a=='b'){
+		for (int key : G.getRecordList().getRecordList().descendingKeySet()) {
+			for(String name:G.getRecordList().getRecordList().get(key)){
+				recordListString.append(name + "  ");
+				recordListString.append(key+ "\n");
+			}
+		} 
+		}
+		if(a=='a'){
+			for (int key : G.getRecordListAdvanced().getRecordList().descendingKeySet()) {
+				for(String name:G.getRecordListAdvanced().getRecordList().get(key)){
+					recordListString.append(name + "  ");
+					recordListString.append(key+ "\n");
+				}
+			} 
+		}
+
+		System.out.println(recordListString);
+		return recordListString.toString();
+	}
+
 
 	public static void moveToNextPlayer() {
 		G.setTurnInd((G.getTurnInd()+ 1) % G.getNumberOfPlayers());

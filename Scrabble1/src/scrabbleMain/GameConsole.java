@@ -72,11 +72,10 @@ public class GameConsole {
 		
 			try {
 				if(G.getMode() == 'a'){
-                    file = new FileOutputStream(G.getSavedRecordListAdvanced());   
+                    file = new FileOutputStream(G.getsavedRecordListAdvancedPath());   
 				}else {
-                    file = new FileOutputStream(G.getSavedRecordList());
+                    file = new FileOutputStream(G.getsavedRecordListPath());
 				}
-				file = new FileOutputStream(G.getSavedRecordList());
 				ObjectOutputStream data = new ObjectOutputStream(file);
 //				recordList.updatePlayer("First Player", 10);
 				data.writeObject(G.getRecordList());
@@ -99,7 +98,11 @@ public class GameConsole {
 	private static void updateRecordList() {
 		FileInputStream file;
 		try {
-			file = new FileInputStream(G.getSavedRecordList());
+			if(G.getMode() == 'a'){
+                file = new FileInputStream(G.getsavedRecordListAdvancedPath());   
+			}else {
+                file = new FileInputStream(G.getsavedRecordListPath());
+			}
 			ObjectInputStream data = new ObjectInputStream(file);
 		    G.setRecordList((RecordList) data.readObject());
 			data.close();
