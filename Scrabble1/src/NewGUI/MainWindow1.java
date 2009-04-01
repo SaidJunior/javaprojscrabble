@@ -811,10 +811,23 @@ public class MainWindow1 extends javax.swing.JFrame {
 	 * message that is configurable.
 	 */
 	private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doneButtonActionPerformed
+		if ((changeLetterFlag == false) && (addWordFlag == false)) {
+			setPlayStatusText("Choose add word or change letter");
+			return;
+		}
+		if (changeLetterFlag == true) {
+			GameGui.moveToNextPlayer();
+		}
+		else if (addWordFlag == true) {
+			
+		}
+		gameBoard.repaint();
+		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
 		changeLetterFlag = false;
 		addWordFlag = false;
 		changeLetter.setEnabled(true);
 		addWordToBoard.setEnabled(true);
+		setPlayStatusText("");
 
 	}// GEN-LAST:event_doneButtonActionPerformed
 
@@ -1123,7 +1136,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 			Point point = evt.getPoint();
 			int x = point.x;
 			int y = point.y;
-			System.out.println(x + "," + y);
+//			System.out.println(x + "," + y);
 			if (inSquare(x, y)) { // if pressed the letter set
 				moveProgress = true; // start the move
 				if (changeLetterFlag) {
