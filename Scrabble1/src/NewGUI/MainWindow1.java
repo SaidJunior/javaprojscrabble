@@ -433,6 +433,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 			}
 		});
 
+
+//		playStatus.setText("play status will be presented here");
 		playStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				new javax.swing.border.LineBorder(new java.awt.Color
 						(102, 0, 0), 2, true), "PlayStatus", 
@@ -444,8 +446,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 		playStatus.setFont(new java.awt.Font("Arial Narrow", 3, 15)); // NOI18N
 		playStatus.setForeground(new java.awt.Color(255, 0, 0));
 		playStatus.setBackground(new java.awt.Color(204, 204, 255));
-
-
+		
+		
 		gameMenu.setText("Game");
 		gameMenu.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -825,7 +827,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 			GameGui.moveToNextPlayer();
 		}
 		else if (addWordFlag == true) {
-			
+			GameGui.placeWordBasic();
+			GameGui.moveToNextPlayer();
 		}
 		gameBoard.repaint();
 		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
@@ -881,6 +884,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		addWordFlag = true;
 		changeLetter.setEnabled(false);
 		addWordToBoard.setEnabled(false);
+		GameGui.initUsedLetters();
 	}// GEN-LAST:event_addWordToBoardActionPerformed
 
 	private void helpMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_helpMenuItem1ActionPerformed

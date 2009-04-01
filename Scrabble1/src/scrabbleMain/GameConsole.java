@@ -449,7 +449,7 @@ public class GameConsole {
 		} while ((addMoreLetters == 'y') && (player.getNumberOfLetters() > 0)); 
 		
 		if ((usedLetters.size() == 1) && (!(G.getBoard().hasNeigbours(usedLetters.get(0).row, usedLetters.get(0).col)))) {
-			System.out.println("The given letter has no neigbours - you lost you turn");
+			System.out.println("One of your given letter has no neigbours - you lost you turn");
 			G.getBoard().removeLetter(usedLetters.get(0).row, usedLetters.get(0).col);
 			player.insertLetter(usedLetters.get(0).letter);
 			return;
