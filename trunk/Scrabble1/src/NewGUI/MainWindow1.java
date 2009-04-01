@@ -384,8 +384,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 		currentPlayer.setFont(new java.awt.Font("Tahoma", 1, 12));
 		currentPlayer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
-
-		letterSack.setText("Number of letters Left: " + GameGui.getG().getLettersSet().getLetterSetSize());
+		
+		
+		updateLetterSackBox();
+		
 		letterSack.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Letter Sack",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -777,6 +779,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
+	private void updateLetterSackBox() {
+		letterSack.setText("Number of letters Left: " + GameGui.getG().getLettersSet().getLetterSetSize());
+	}
+
 	private void saveMenuItemMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_saveMenuItemMouseClicked
 		// TODO add your handling code here:
 	}// GEN-LAST:event_saveMenuItemMouseClicked
@@ -843,6 +849,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private void changeLetterActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_changeLetterActionPerformed
 		// change letter button
 		changeLetterFlag = true;
+		changeLetter.setEnabled(false);
 		addWordToBoard.setEnabled(false);
 	}// GEN-LAST:event_changeLetterActionPerformed
 
@@ -850,6 +857,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		// Add Word button
 		addWordFlag = true;
 		changeLetter.setEnabled(false);
+		addWordToBoard.setEnabled(false);
 	}// GEN-LAST:event_addWordToBoardActionPerformed
 
 	private void helpMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_helpMenuItem1ActionPerformed
@@ -971,6 +979,26 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		public DrawPanel() {
 			loadLetters();
+			this.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mousePressed(java.awt.event.MouseEvent evt) {
+					if (addWordFlag || changeLetterFlag) {
+//						System.out.println("enter1");
+						int i = letterListener(evt);
+						if (i < 500 && addWordFlag) { // if place word on
+														// board
+							letterMovedcoord = i;
+						} else if (i != 1000) { // if legal
+							if (i == 500) {// if add word
+								addLetterToBoard(evt.getPoint().x, evt
+										.getPoint().y);
+
+							}
+
+							moveProgress = false; // end of operation
+						}
+					}
+				}
+			});
 		}
 
 		public void drawTable(Graphics g) {
@@ -1009,7 +1037,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		// draws player letters
 		public void drawPlayerLetters(Graphics g, Player p) {
-			for (int i = 0; i < 7; i++) {
+			for (int i = 0; i < p.getNumberOfLetters(); i++) {
 				int id;
 				letterCoordsX[i] = i * 40 + 80;
 				try {
@@ -1045,19 +1073,15 @@ public class MainWindow1 extends javax.swing.JFrame {
 		private void addLetterToBoard(int x, int y) {
 			int i = (letterMovedcoord - 80) / 40;
 			resultAdd = new resultAddLetter(i, x / 28, y / 28);
-			BufferedImage letterImage = letters[letterId[i]]; // will be
-																// removed
-			/*
-			 * usedLettersId[i][0] = letterId[i]; usedLettersId[i][1] = x/28;
+			
+			
+			/* usedLettersId[i][0] = letterId[i]; 
+			 * usedLettersId[i][1] = x/28;
 			 * usedLettersId[i][2] = y/28; if(usedLetters[i]==0){
 			 * usedLetters[i]=1;
 			 */
-			drawImage(letterImage, this.getGraphics(), ((x / 28) * 28),
-					((y / 28) * 28)); // will be removed
-			drawImage(letters[26], this.getGraphics(), letterCoordsX[i], 440); // will
-																				// be
-																				// removed
-
+			GameGui.addLetterToBoardBasic(y / 28, x / 28, i);
+			gameBoard.repaint();
 		}
 
 		/*
@@ -1103,9 +1127,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 				if (changeLetterFlag) {
 					// if we want to swap a letter
 					moveProgress = false;
-					resultSwap = new resultSwapLetter((x - 80) / 40); // calculate
-																		// the
-																		// index
+					resultSwap = new resultSwapLetter((x - 80) / 40); 
+					GameGui.changeOneLetter(resultSwap.index);
+					updateLetterSackBox();
+					gameBoard.repaint();
 					return 600;
 				}
 				return x;
@@ -1114,19 +1139,17 @@ public class MainWindow1 extends javax.swing.JFrame {
 			// evt.getY())) //if we swap letter
 			// return 600;
 			else {
-				if (addWordFlag && y > 0 && y < 420 && x > 0 && x < 420) { // if
-																			// we
-																			// place
-																			// the
-																			// letter
-																			// on
-																			// board
+				if ((addWordFlag == true) 
+				 && (moveProgress == true) 
+				 && (y > 0) && (y < 420) 
+				 && (x > 0) && (x < 420)) { 
 					return 500;
 				}
 				return 1000;
 			}
 		}
-
+		
+		
 		public void paintComponent(Graphics g1) {
 
 			super.paintComponent(g1); // JPanel draws background
@@ -1144,26 +1167,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 			drawPlayerLetters(g1, p);
 
 			drawImage(g1);
-			this.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mousePressed(java.awt.event.MouseEvent evt) {
-					if (addWordFlag || changeLetterFlag) {
-						int i = letterListener(evt);
-						if (i < 500 && addWordFlag) { // if place word on
-														// board
-							letterMovedcoord = i;
-						} else if (i != 1000) { // if legal
-							if (i == 500) {// if add word
-								addLetterToBoard(evt.getPoint().x, evt
-										.getPoint().y);
-
-							}
-
-							moveProgress = false; // end of operation
-						}
-					}
-				}
-			});
-
 		}
 
 		// draws a given image

@@ -31,6 +31,7 @@ public class LettersSet implements Serializable{
 		}
 	}
 	
+	//@Pre letters.size() > 0
 	public char getLetter() {
 		Random generator = new Random();
 		return letters.remove(generator.nextInt(letters.size()));
