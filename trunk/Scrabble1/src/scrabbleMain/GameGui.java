@@ -179,7 +179,6 @@ public class GameGui {
 			currentPlayer.insertLetter(G.getLettersSet().getLetter());
 			numberOfLetterChangesLeft++;
 			MainWindow1.setPlayStatusText("You have " + (3 - numberOfLetterChangesLeft) + " more changes");
-			System.out.println(numberOfLetterChangesLeft);
 		}
 		else {
 			MainWindow1.setPlayStatusText("No more letters in the Letters sack");
@@ -212,6 +211,10 @@ public class GameGui {
 			this.col    = col;
 			this.letter = letter;
 		}
+	}
+
+	public static void moveToNextPlayer() {
+		G.setTurnInd((G.getTurnInd()+ 1) % G.getNumberOfPlayers());
 	}
 
 	
