@@ -249,24 +249,26 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     	GameGui.createPlayerList(playerNames); 
     	//END_LOGIC
     	
-    	MainWindow = new MainWindow1();
-        MainWindow.setVisible(true);
-
-    	
-    	
-    	//this is where the game starts. here is an example of how to get all game params:
-//    	System.out.println("game type: " + NewGameDialog.getGameType());
-//    	System.out.println("num of players: " + NewGameDialog.getNumOfPlayers());
-//    	System.out.println("first player name: " + PlayersNamesDialog.getName1());
-//    	
-    	//check if all names are valid
-    	
-
+        //check if all names are valid
         //dispose new game window at the end
         NewGameDialog.initGameParamsToDefault();
         initNamesToDefault();
         dispose();
-}//GEN-LAST:event_StartGameButtonActionPerformed
+
+        boolean newWindow = NewGameDialog.initParentScreen();
+        if (newWindow)
+        {
+        	//Started from MainWindow1, must start MainWindow1 from the begining:
+        	MainWindow = new MainWindow1();
+            MainWindow.setVisible(true);
+        }
+        else
+        {
+        	//we already have an open MainWindow1, only update new game:
+        	System.out.println("update mainWindow1");
+        }
+ 
+    }//GEN-LAST:event_StartGameButtonActionPerformed
 
     private static String checkIfValidNames()
     {

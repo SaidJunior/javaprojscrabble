@@ -788,7 +788,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 		gameFileChooser.startLoadChooser();
 		String name = gameFileChooser.getFileName();
 		boolean successLoad = scrabbleMain.GameGui.loadGame(name);
-		// System.out.println(path);
 		if (successLoad)
 			initGameWindow();
 	}// GEN-LAST:event_loadMenuItemActionPerformed
@@ -809,8 +808,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 	 * message that is configurable.
 	 */
 	private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doneButtonActionPerformed
-		// scoreBoard.setText("extra button");
-		// this.openGeneralMessage("Bitch Message", "Extra Button!");
 		changeLetterFlag = false;
 		addWordFlag = false;
 		changeLetter.setEnabled(true);
@@ -820,7 +817,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 	private void newGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newGameMenuItemActionPerformed
 		// Start a new game from menu.
-		NewGameDialog.startNewGame();
+		NewGameDialog.startNewGame(MainWindow1.this, false);
 	}// GEN-LAST:event_newGameMenuItemActionPerformed
 
 	private void gameMenuKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_gameMenuKeyPressed
@@ -828,7 +825,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_gameMenuKeyPressed
 
 	private void newGameMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_newGameMenuItemKeyPressed
-		NewGameDialog.startNewGame();
+		NewGameDialog.startNewGame(MainWindow1.this, false);
 	}// GEN-LAST:event_newGameMenuItemKeyPressed
 
 	private void saveMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_saveMenuItemKeyPressed
@@ -848,14 +845,12 @@ public class MainWindow1 extends javax.swing.JFrame {
 	 */
 	private void changeLetterActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_changeLetterActionPerformed
 		// change letter button
-		// scoreBoard.setText("Change letter");
 		changeLetterFlag = true;
 		addWordToBoard.setEnabled(false);
 	}// GEN-LAST:event_changeLetterActionPerformed
 
 	private void addWordToBoardActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addWordToBoardActionPerformed
 		// Add Word button
-		// scoreBoard.setText("Add Word");
 		addWordFlag = true;
 		changeLetter.setEnabled(false);
 	}// GEN-LAST:event_addWordToBoardActionPerformed

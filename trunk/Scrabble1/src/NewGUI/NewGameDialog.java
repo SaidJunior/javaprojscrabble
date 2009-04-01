@@ -25,6 +25,10 @@ public class NewGameDialog extends javax.swing.JDialog {
 	private static int numOfPlayers = 1;
 	private static int lettersColor = 0;
 	
+	//holds the screen that opened this dialog
+	private static javax.swing.JFrame parent;
+	private static boolean startWindow = false;
+	
     public void setGameParameters(){
         //NumOfPlayersComboBox.setSelectedIndex(MainWindow1.getNumOfPlayers()-1);
         NumOfPlayersComboBox.setSelectedIndex(getNumOfPlayers() - 1);
@@ -288,8 +292,11 @@ public class NewGameDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_NextActionPerformed
 
 
-    public static void startNewGame()
+    public static void startNewGame(javax.swing.JFrame parent, boolean startWindow)
     {
+    	NewGameDialog.parent = parent;
+    	NewGameDialog.startWindow = startWindow;
+    	
         NewGameDialog nGDialog = new NewGameDialog(new javax.swing.JFrame(), true);
         nGDialog.setLocation(100, 100);
         nGDialog.setVisible(true);
@@ -357,6 +364,19 @@ public class NewGameDialog extends javax.swing.JDialog {
 		NewGameDialog.setGameType(0);
 		NewGameDialog.setNumOfPlayers(1);
 		NewGameDialog.setLetterColor(0);
+	}
+	
+	/* Helper method. Returns false for mainWindow1 parent screen,
+	 * or dispose the parent screen and return true.
+	 * */
+	public static boolean initParentScreen()
+	{
+		if (startWindow)
+		{
+			parent.dispose();
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -107,8 +107,7 @@ public class StartWindow extends javax.swing.JFrame {
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         ExitScreen.startExitScreen(StartWindow.this);
-        //exit screen should handle dispose
-        //dispose();
+       ;
 }//GEN-LAST:event_exitButtonActionPerformed
 
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
@@ -123,10 +122,7 @@ public class StartWindow extends javax.swing.JFrame {
 }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
-    	this.setVisible(false);
-    	NewGameDialog.startNewGame();
-       
-        
+    	NewGameDialog.startNewGame(StartWindow.this, true);    
 }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
