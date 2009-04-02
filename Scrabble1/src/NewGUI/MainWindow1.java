@@ -56,6 +56,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		GameGui.UploadrecordList('a');
 		initComponents();
 	}
+
 	
 	// general return value parameter. will be used in file choosers
 	private int returnVal = 0;
@@ -1064,10 +1065,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 		public void drawBoard(Graphics g, Board b) {
 			for (int i = 0; i < 15; i++)
 				for (int j = 0; j < 15; j++) {
-					g.setColor(java.awt.Color.black);
-					// g.draw3DRect(j*28, i*28, 28, 28, true);
-					// g.fill3DRect(j*28, i*28, 28, 28, true);
 					g.drawRect(j * 28, i * 28, 28, 28);
+					drawImage2(g,"resources/squarePicture.jpg",28,28,j*28,i*28);
 					int id = letterToNumber(b.getLetter(i, j));
 					if (id != -1)
 						drawImage(letters[id], g, j * 28, i * 28);
@@ -1093,11 +1092,12 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		// draws a picture of the exchange
 
-		public void drawImage(Graphics g) {
-			String path = "resources/Letters/smily.jpg";
+		public void drawImage2(Graphics g,String filePath,int width,int height,int x, int y) {
+//			String path = "resources/Letters/smily.jpg";80 80 380 425
+			String path = filePath;
 			Image img = Toolkit.getDefaultToolkit().getImage(path);
-			BufferedImage animated = resize(toBufferedImage(img), 80, 80);
-			drawImage(animated, g, 380, 425);
+			BufferedImage animated = resize(toBufferedImage(img), width, height);
+			drawImage(animated, g,x, y);
 
 		}
 
@@ -1209,11 +1209,11 @@ public class MainWindow1 extends javax.swing.JFrame {
 				p = player; // will be removed once the logic is complete
 			}
 			drawPlayerLetters(g1, p);
-
-			drawImage(g1);
+			drawImage2(g1,"resources/Letters/smily.jpg",80,80,380,425);
 		}
 
 		// draws a given image
+//		String path = "resources/Letters/smily.jpg";80 80 380 425
 		public void drawImage(BufferedImage b, Graphics g, int x, int y) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.drawImage(b, null, x, y);
