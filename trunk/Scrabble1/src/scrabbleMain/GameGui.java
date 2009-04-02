@@ -70,9 +70,10 @@ public class GameGui {
 	public static boolean saveCurrentGame(String currentName) {
 
 		//check if such a game already exists.
-	/*	if(checkIfExist(currentName))
+/*		if(checkIfExist(currentName))
 		{
-			NewGUI.OverWriteScreen.startUnSavedScreen(currentName);
+			NewGUI.OverWriteScreen.startOverwriteScreen(currentName);
+			
 			boolean ans = NewGUI.OverWriteScreen.getAns();
 			if (!ans)
 			{
@@ -81,8 +82,9 @@ public class GameGui {
 				return false;
 			}
 		}
-		*/
-		
+	*/	
+		if (!currentName.endsWith(".scrabble"))
+			currentName += ".scrabble";
 		GameEntity gameEntity = new GameEntity(G.getPlayerList(), G.getLettersSet(), G.getBoard(), G.getTurnInd(), G.getMode());
 		try {
 			FileOutputStream file = new FileOutputStream(currentName);		  
