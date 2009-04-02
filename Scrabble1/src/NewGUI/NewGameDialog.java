@@ -46,12 +46,12 @@ public class NewGameDialog extends javax.swing.JDialog {
         if (getLetterColor() == 0)
         {
             RedLettersColorRadioButton.setSelected(false);
-            SimpleGameRadioButton.setSelected(true);
+            BlueLettersColorRadioButton.setSelected(true);
         }
         else
         {
-            AdvanceGameRadioButton.setSelected(true);
-            SimpleGameRadioButton.setSelected(false);
+            RedLettersColorRadioButton.setSelected(true);
+            BlueLettersColorRadioButton.setSelected(false);
         }
     }
 
@@ -60,6 +60,7 @@ public class NewGameDialog extends javax.swing.JDialog {
     public NewGameDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        System.out.println("letter"+" "+ getLetterColor());
     }
 
     /** This method is called from within the constructor to
@@ -244,17 +245,19 @@ public class NewGameDialog extends javax.swing.JDialog {
     
    private void BlueRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimpleGameRadioButtonActionPerformed
         // TODO add your handling code here:
-        if (BlueLettersColorRadioButton.isSelected())
-        	RedLettersColorRadioButton.setSelected(false);
+	   
+           if( BlueLettersColorRadioButton.isSelected()){
+        	   RedLettersColorRadioButton.setSelected(false);
+           }
         setLetterColor(0);
 }//GEN-LAST:event_SimpleGameRadioButtonActionPerformed
     private void RedRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         // TODO add your handling code here:
-        if (RedLettersColorRadioButton.isSelected())
-        	BlueLettersColorRadioButton.setSelected(false);
-        setLetterColor(1);
-}                                                     
-
+            if(RedLettersColorRadioButton.isSelected()){
+            	BlueLettersColorRadioButton.setSelected(false);
+            }
+        	setLetterColor(1);                                      
+    }
 
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
         // TODO add your handling code here:
@@ -286,6 +289,8 @@ public class NewGameDialog extends javax.swing.JDialog {
                 GameGui.initGameLogic();
                 GameGui.setNumberOfPlayers(numOfPlayers);
                 GameGui.setGameMode(gameType);
+                GameGui.setLetterMode(lettersColor);
+                
                 
                 //dispose new game window at the end
                 dispose();
@@ -345,11 +350,11 @@ public class NewGameDialog extends javax.swing.JDialog {
 	}
 	
 	public static int getLetterColor(){
-		return lettersColor;
+		return NewGameDialog.lettersColor;
 	}
 	
-	public static void setLetterColor(int lettersColor){
-		NewGameDialog.lettersColor = lettersColor;
+	public static void setLetterColor(int i){
+		NewGameDialog.lettersColor = i;
 	}
 
 

@@ -21,6 +21,7 @@ public class GameLogic {
 	private  boolean        finishGame      = false;
 
 	private  List<Player>   playerList      = new ArrayList<Player>();
+	private  int            LetterMode      = 0;  
 	private  BufferedReader consoleReader   = new BufferedReader(new InputStreamReader(System.in));
 	private  LettersSet     lettersSet      = new LettersSet();
 	private  Dictionary     dictionary      = new Dictionary(ROWS, COLUMNS);
@@ -36,7 +37,12 @@ public class GameLogic {
 	private  String savedRecordListAdvancedPath  = "RecordList/fileRecordListAdvanced";
 	private  String fileSuffix      = ".scrabble";
 
-
+    public int getLetterMode(){
+    	return LetterMode;
+    }
+    public void setLetterMode(int LetterModenew){
+    	this.LetterMode = LetterModenew;
+    }
 	public  int getNumberOfPlayers() {
 		return numberOfPlayers;
 	}
