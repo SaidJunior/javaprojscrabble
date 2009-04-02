@@ -148,6 +148,7 @@ public class gameFileChooser extends javax.swing.JFrame {
     			
     			if (succ)
     			{
+    				MainWindow1.setSaved(true);
     				GeneralMessage.stratGeneralMessage(gameFileChooser.this,
     						"The Game had been saved successfuly under: " + absolut, "Saving completed");
     			}

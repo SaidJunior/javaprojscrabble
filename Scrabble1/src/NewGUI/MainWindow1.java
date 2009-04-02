@@ -57,7 +57,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		initComponents();
 	}
 
-	
+
 	// general return value parameter. will be used in file choosers
 	private int returnVal = 0;
 	public boolean changeLetterFlag = false; // a flag that is set once the
@@ -74,6 +74,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 	// public Board board = new Board(15, 15, ""); //the board;
 	public Player player = new Player(""); // the current player
 
+	private static boolean isSaved = false;
+	
 	/** Creates new form mainWindow */
 
 	/**
@@ -810,7 +812,14 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_saveMenuItemMouseClicked
 
 	private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_loadMenuItemActionPerformed
-		gameFileChooser.startLoadChooser(MainWindow1.this);
+		if (!isSaved) //check if saved
+		{
+			SaveBeforeExitScreen.startSaveBeforeExitScreen(MainWindow1.this, "load");
+		}
+		else
+		{
+			gameFileChooser.startLoadChooser(MainWindow1.this);
+		}
 
 	}// GEN-LAST:event_loadMenuItemActionPerformed
 
@@ -819,7 +828,16 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_saveMenuItemActionPerformed
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_exitMenuItemActionPerformed
-		ExitScreen.startExitScreen(MainWindow1.this);
+		
+		if (!isSaved) //check if saved
+		{
+			SaveBeforeExitScreen.startSaveBeforeExitScreen(MainWindow1.this, "exit");
+		}
+		else
+		{
+			ExitScreen.startExitScreen(MainWindow1.this);
+		}
+		
 	}// GEN-LAST:event_exitMenuItemActionPerformed
 
 	/*
@@ -838,7 +856,11 @@ public class MainWindow1 extends javax.swing.JFrame {
 			GameGui.moveToNextPlayer();
 		}
 		gameBoard.repaint();
+
+		MainWindow1.setSaved(false);
+
 		advancedLetterPlaced = false;
+
 		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
 		changeLetterFlag = false;
 		addWordFlag = false;
@@ -851,8 +873,15 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_doneButtonActionPerformed
 
 	private void newGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newGameMenuItemActionPerformed
-		// Start a new game from menu.
-		NewGameDialog.startNewGame(MainWindow1.this);
+		if (!isSaved) //check if saved
+		{
+			SaveBeforeExitScreen.startSaveBeforeExitScreen(MainWindow1.this, "new");
+		}
+		else
+		{
+			// Start a new game from menu.
+			NewGameDialog.startNewGame(MainWindow1.this);
+		}
 	}// GEN-LAST:event_newGameMenuItemActionPerformed
 
 	private void gameMenuKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_gameMenuKeyPressed
@@ -860,7 +889,15 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_gameMenuKeyPressed
 
 	private void newGameMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_newGameMenuItemKeyPressed
-		NewGameDialog.startNewGame(MainWindow1.this);
+		if (!isSaved) //check if saved
+		{
+			SaveBeforeExitScreen.startSaveBeforeExitScreen(MainWindow1.this, "new");
+		}
+		else
+		{
+			// Start a new game from menu.
+			NewGameDialog.startNewGame(MainWindow1.this);
+		}
 	}// GEN-LAST:event_newGameMenuItemKeyPressed
 
 	private void saveMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_saveMenuItemKeyPressed
@@ -868,11 +905,25 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_saveMenuItemKeyPressed
 
 	private void loadMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_loadMenuItemKeyPressed
-		gameFileChooser.startLoadChooser(MainWindow1.this);
+		if (!isSaved) //check if saved
+		{
+			SaveBeforeExitScreen.startSaveBeforeExitScreen(MainWindow1.this, "load");
+		}
+		else
+		{
+			gameFileChooser.startLoadChooser(MainWindow1.this);
+		}
 	}// GEN-LAST:event_loadMenuItemKeyPressed
 
 	private void exitMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_exitMenuItemKeyPressed
-		ExitScreen.startExitScreen(MainWindow1.this);
+		if (!isSaved) //check if saved
+		{
+			SaveBeforeExitScreen.startSaveBeforeExitScreen(MainWindow1.this, "exit");
+		}
+		else
+		{
+			ExitScreen.startExitScreen(MainWindow1.this);
+		}
 	}// GEN-LAST:event_exitMenuItemKeyPressed
 
 	/*
@@ -936,7 +987,15 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_bestAdvancedActionPerformed
 
 	private void formWindowClosing(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_formWindowClosing
-		ExitScreen.startExitScreen(MainWindow1.this);
+		if (!isSaved) //check if saved
+		{
+			SaveBeforeExitScreen.startSaveBeforeExitScreen(MainWindow1.this, "exit");
+		}
+		else
+		{
+			ExitScreen.startExitScreen(MainWindow1.this);
+		}
+		
 	}// GEN-LAST:event_formWindowClosing
 
 	public void initGameWindow() {
@@ -1385,5 +1444,13 @@ public class MainWindow1 extends javax.swing.JFrame {
 		"\n\n With a score of:\n " + winningScore + " pts";
 		allPlayers = winMessage + "\n\n" + allPlayers;
 		scoreBoard.setText(allPlayers);
+	}
+
+	public static boolean isSaved() {
+		return isSaved;
+	}
+
+	public static void setSaved(boolean isSaved) {
+		MainWindow1.isSaved = isSaved;
 	}
 }

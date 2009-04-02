@@ -20,6 +20,7 @@ import java.awt.Component;
 public class SaveBeforeExitScreen extends javax.swing.JFrame {
 
     private static javax.swing.JFrame parent;
+    private static String nextOp = "";
     /** Creates new form ExitScreen */
     public SaveBeforeExitScreen() {
         initComponents();
@@ -42,10 +43,10 @@ public class SaveBeforeExitScreen extends javax.swing.JFrame {
         setAlwaysOnTop(true);
         setResizable(false);
 
-        overwriteText.setText("text will be changed according to file name");
+        overwriteText.setText("Current game isn't saved. Would you like to save it?");
 
         overwriteNoButton.setText("No");
-        overwriteNoButton.setToolTipText("No, don't overwrite this game");
+        overwriteNoButton.setToolTipText("No, ");
         overwriteNoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 overwriteNoButtonActionPerformed(evt);
@@ -53,7 +54,7 @@ public class SaveBeforeExitScreen extends javax.swing.JFrame {
         });
 
         overwriteYesButton.setText("Yes");
-        overwriteYesButton.setToolTipText("OverWrite current game and lose old information");
+        overwriteYesButton.setToolTipText("Save current game");
         overwriteYesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 overwriteYesButtonActionPerformed(evt);
@@ -90,17 +91,24 @@ public class SaveBeforeExitScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void overwriteNoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overwriteNoButtonActionPerformed
-       //code not to overwrite the game
+    	dispose();
+    	if (SaveBeforeExitScreen.nextOp.equals("exit"))
+    		ExitScreen.startExitScreen(parent);
+    	if (SaveBeforeExitScreen.nextOp.equals("new"))
+    		NewGameDialog.startNewGame(parent);
+    	if (SaveBeforeExitScreen.nextOp.equals("load"))
+    		gameFileChooser.startLoadChooser(parent);
 }//GEN-LAST:event_overwriteNoButtonActionPerformed
 
     private void overwriteYesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overwriteYesButtonActionPerformed
+    	dispose();
+    	gameFileChooser.startSaveChooser(parent);
+}
 
-        //code to overwrite the game
-}//GEN-LAST:event_overwriteYesButtonActionPerformed
-
-        public static void startOScreen(javax.swing.JFrame parent)
+        public static void startSaveBeforeExitScreen(javax.swing.JFrame parent, String opreation)
     {
         SaveBeforeExitScreen.parent = parent;
+        SaveBeforeExitScreen.nextOp = opreation;
         SaveBeforeExitScreen exitScreen = new SaveBeforeExitScreen();
         exitScreen.setLocation(100, 100);
         exitScreen.setVisible(true);
