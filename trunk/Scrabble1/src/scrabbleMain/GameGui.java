@@ -394,7 +394,10 @@ public class GameGui {
 			}
 			ObjectOutputStream data = new ObjectOutputStream(fileo);
 //			recordList.updatePlayer("First Player", 10);
-			data.writeObject(G.getRecordList());
+			if(a=='a')
+				data.writeObject(G.getRecordList());
+			if(a=='b')
+				data.writeObject(G.getRecordListAdvanced());
 			data.close();
 			fileo.close();
 			
