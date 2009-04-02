@@ -1031,7 +1031,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 							if ((i == 500) && (advancedLetterPlaced == false)){// if add word
 								addLetterToBoard(evt.getPoint().x, evt
 										.getPoint().y);
-								advancedLetterPlaced = true;
+								if (GameGui.getG().getMode() == 'a') {
+									advancedLetterPlaced = true;
+								}
+								
 							}
 
 							moveProgress = false; // end of operation
