@@ -20,19 +20,12 @@ public class GameGui {
 	
 	
 	public static boolean loadGame(String currentName) {
-//		System.out.println(currentName);
 		boolean succ = false;
-		if (!checkIfValidName(currentName))
+
+		if (!checkIfExist(currentName))
 		{
-//			System.out.println("Please enter a vaild name ");
 			return succ;
 		}
-		/*if (!checkIfExist(currentName))
-		{
-//			System.out.println("A game named: " + currentName + " does not exists");
-			return succ;
-		}*/
-//		currentName += G.getFileSuffix();
 		
 		try {
 			FileInputStream file = new FileInputStream(currentName);
@@ -68,36 +61,27 @@ public class GameGui {
 		return true;
 	}
 	
-	private static boolean checkIfExist(String fileName){
+	public static boolean checkIfExist(String fileName){
 		
-		File file = new File(G.getSavedGamesPath() + fileName);
+		File file = new File(fileName);
 		return file.exists();		
 	}
 	
-	public static void saveCurrentGame(String currentName) {
-		
+	public static boolean saveCurrentGame(String currentName) {
 
-		if (!checkIfValidName(currentName))
-		{
-			System.out.println("Please enter a vaild name.");
-			G.setTurnInd(G.getTurnInd() - 1);
-			return;
-		}
-		
-		if (!currentName.endsWith(".scrabble"))
-			currentName+=".scrabble";
 		//check if such a game already exists.
-		/*if(checkIfExist(currentName))
+	/*	if(checkIfExist(currentName))
 		{
-			System.out.println("A game with this name already exists.\n\nDo you want to overwrite it?");
-			char answer = GetUserInput.getYesOrNo(G.getConsoleReader());
-			if (answer == 'n')
+			NewGUI.OverWriteScreen.startUnSavedScreen(currentName);
+			boolean ans = NewGUI.OverWriteScreen.getAns();
+			if (!ans)
 			{
 				//otherwise, play the turn again
 				G.setTurnInd(G.getTurnInd() - 1);
-				return;
+				return false;
 			}
-		}*/
+		}
+		*/
 		
 		GameEntity gameEntity = new GameEntity(G.getPlayerList(), G.getLettersSet(), G.getBoard(), G.getTurnInd(), G.getMode());
 		try {
@@ -117,6 +101,7 @@ public class GameGui {
 		//after saving the game, player get to play again
 		G.setTurnInd(G.getTurnInd() - 1);;
 		G.setIsSaved(true);
+		return true;
 	}
 
 	public static GameLogic getG() {

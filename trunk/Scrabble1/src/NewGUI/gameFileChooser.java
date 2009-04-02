@@ -50,7 +50,7 @@ public class gameFileChooser extends javax.swing.JFrame {
         startGameChooser("Load an old Scrabble game", "Load a game", javax.swing.JFileChooser.OPEN_DIALOG);
     }
 
-    public static void startSaveChooser()
+    public static void startSaveChooser(javax.swing.JFrame parent)
     {
         saveOrLoad = 1;
          startGameChooser("Save a Scrabble game", "Save game", javax.swing.JFileChooser.SAVE_DIALOG);
@@ -124,11 +124,11 @@ public class gameFileChooser extends javax.swing.JFrame {
     	File file = jFileChooser1.getSelectedFile();
     	if (file != null)
     	{
-    		String fileName = jFileChooser1.getSelectedFile().getName();
-
+    		String absolut = jFileChooser1.getSelectedFile().getAbsolutePath();
+    		
     		if (saveOrLoad == 0)
     		{
-    			boolean successLoad = scrabbleMain.GameGui.loadGame(fileName);
+    			boolean successLoad = scrabbleMain.GameGui.loadGame(absolut);
     			if (successLoad)
     			{
     				MainWindow1 MainWindow = new MainWindow1();
@@ -139,12 +139,23 @@ public class gameFileChooser extends javax.swing.JFrame {
     			else
     			{
     				GeneralMessage.stratGeneralMessage(gameFileChooser.this,
-    						"Failed to load " + fileName + ".", "Error while loading");
+    						"Failed to load " + absolut + ".", "Error while loading");
     			}
     		}
     		else if (saveOrLoad == 1)
     		{
-    			//save methods
+    			boolean succ = scrabbleMain.GameGui.saveCurrentGame(absolut);
+    			
+    			if (succ)
+    			{
+    				GeneralMessage.stratGeneralMessage(gameFileChooser.this,
+    						"The Game had been saved successfuly under: " + absolut, "Saving completed");
+    			}
+    			else
+    			{
+    				GeneralMessage.stratGeneralMessage(gameFileChooser.this,
+    						"The Game had not been saved", "Saving filed");
+    			}
     		}
     	}
 
