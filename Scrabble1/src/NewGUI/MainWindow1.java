@@ -813,10 +813,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_loadMenuItemActionPerformed
 
 	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_saveMenuItemActionPerformed
-		gameFileChooser.startSaveChooser();
-		String name = gameFileChooser.getFileName();
-		scrabbleMain.GameGui.saveCurrentGame(name);
-		System.out.println(name);
+		gameFileChooser.startSaveChooser(MainWindow1.this);
 	}// GEN-LAST:event_saveMenuItemActionPerformed
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_exitMenuItemActionPerformed
@@ -864,7 +861,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// GEN-LAST:event_newGameMenuItemKeyPressed
 
 	private void saveMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_saveMenuItemKeyPressed
-		gameFileChooser.startSaveChooser();
+		gameFileChooser.startSaveChooser(MainWindow1.this);
 	}// GEN-LAST:event_saveMenuItemKeyPressed
 
 	private void loadMenuItemKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_loadMenuItemKeyPressed

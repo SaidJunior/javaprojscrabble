@@ -21,6 +21,8 @@ public class OverWriteScreen extends javax.swing.JFrame {
 
     private static javax.swing.JFrame parent;
     /** Creates new form ExitScreen */
+    
+    private static boolean overWrite = false;
     public OverWriteScreen() {
         initComponents();
     }
@@ -90,19 +92,25 @@ public class OverWriteScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void unSavedNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unSavedNoActionPerformed
-       //code to force quit without saving
+       
+    	overWrite = false;
 }//GEN-LAST:event_unSavedNoActionPerformed
 
     private void unSavedYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unSavedYesActionPerformed
 
-        //code to save the game
+    	overWrite = true;
 }//GEN-LAST:event_unSavedYesActionPerformed
 
     /* This is the method that will call this class. 
      * */
-        public static void startUnSavedScreen(javax.swing.JFrame parent, String fileName)
+    
+    public static boolean getAns()
     {
-        OverWriteScreen.parent = parent;
+    	return overWrite;
+    }
+        public static void startUnSavedScreen(String fileName)
+    {
+        //OverWriteScreen.parent = parent;
         OverWriteScreen overwriteScreen = new OverWriteScreen();
         overwriteScreen.unSavedText.setText("A game with the name " + fileName + " already exists.\n" +
         		"Would you like to overwrite it?");
