@@ -128,7 +128,8 @@ public class StartWindow extends javax.swing.JFrame {
     /**
     * @param args the command line arguments
     */
-    public static void main(String args[]) {
+//    public static void main(String args[]) {
+     public static void guiMain() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new StartWindow().setVisible(true);

@@ -424,5 +424,14 @@ public class GameGui {
 		G.setTurnInd((G.getTurnInd()+ 1) % G.getNumberOfPlayers());
 	}
 
+	public static void addLetterToBoardAdvanced(int row, int column, int index) {
+		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
+		if ((G.getBoard().hasNeigbours(row, column) == false) || (G.getBoard().isCellFree(row, column) == false)) {
+			return;
+		}
+		G.getBoard().insertLetter(row, column, player.getLetter(index));
+		
+	}
+
 	
 }

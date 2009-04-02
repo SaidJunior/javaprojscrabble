@@ -20,7 +20,7 @@ public class GameConsole {
 	public static void consoleMain() {
 		int returnStartInputValue = 0;
 		
-		System.out.println("WELCOME TO SCABBLE");
+		System.out.println("WELCOME TO SCABBLE CONSOLE");
 		
 		returnStartInputValue = parseUserStartInput(); 
 		
