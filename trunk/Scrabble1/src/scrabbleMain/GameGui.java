@@ -164,8 +164,11 @@ public class GameGui {
 
 	public static void setGameMode(int gameMode) {
 		G.setMode(((gameMode == 0) ? 'b' : 'a'));
-		// System.out.println(G.getMode());
+		
 	}
+	public static void setLetterMode(int LetterMode) {
+		G.setLetterMode(LetterMode);
+		}
 	private static int numberOfLetterChangesLeft = 0;
 	
 	public static void initNumberOfChanges() {
@@ -425,7 +428,6 @@ public class GameGui {
 			} 
 		}
 
-		System.out.println(recordListString);
 		return recordListString.toString();
 	}
 

@@ -1223,10 +1223,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		public void loadLetters() {
 			letters = new BufferedImage[27];
-			int mode = NewGameDialog.getLetterColor();
+			int style = GameGui.getG().getLetterMode();
 			for (int i = 1; i <= 27; i++) {
 				String path;
-				if (mode == 0) {
+				if (style == 0) {
 					path = "resources/Letters/" + i + ".jpg";
 				} else {
 					path = "resources/Letter2/" + i + ".jpg";
