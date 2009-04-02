@@ -866,6 +866,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		addWordFlag = false;
 		changeLetter.setEnabled(true);
 		addWordToBoard.setEnabled(true);
+		updateLetterSackBox();
 		setPlayStatusText("");
 		updateScoreBoard();
 		
