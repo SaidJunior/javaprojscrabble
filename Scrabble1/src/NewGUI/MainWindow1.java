@@ -56,14 +56,15 @@ public class MainWindow1 extends javax.swing.JFrame {
 		GameGui.UploadrecordList('a');
 		initComponents();
 	}
-
+	
 	// general return value parameter. will be used in file choosers
 	private int returnVal = 0;
 	public boolean changeLetterFlag = false; // a flag that is set once the
 												// user press the button change
 												// letter
-	public boolean addWordFlag = false; // set when the user press addWord
-	public boolean moveProgress = false; // a flag that is true once a 'move'
+	public boolean addWordFlag          = false; // set when the user press addWord
+	public boolean advancedLetterPlaced = false; // set after the user placed the letter in advanced mode
+	public boolean moveProgress         = false; // a flag that is true once a 'move'
 											// is in progress
 	public resultAddLetter resultAdd = null; // a result for the logic of the
 												// addWord operation
@@ -836,6 +837,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 			GameGui.moveToNextPlayer();
 		}
 		gameBoard.repaint();
+		advancedLetterPlaced = false;
 		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
 		changeLetterFlag = false;
 		addWordFlag = false;
@@ -887,6 +889,9 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private void addWordToBoardActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addWordToBoardActionPerformed
 		// Add Word button
 		addWordFlag = true;
+		if (GameGui.getG().getMode() == 'a') {
+			setPlayStatusText("Place only one letter and press Done");
+		}
 		changeLetter.setEnabled(false);
 		addWordToBoard.setEnabled(false);
 		GameGui.initUsedLetters();
@@ -1022,10 +1027,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 														// board
 							letterMovedcoord = i;
 						} else if (i != 1000) { // if legal
-							if (i == 500) {// if add word
+							if ((i == 500) && (advancedLetterPlaced == false)){// if add word
 								addLetterToBoard(evt.getPoint().x, evt
 										.getPoint().y);
-
+								advancedLetterPlaced = true;
 							}
 
 							moveProgress = false; // end of operation
@@ -1114,6 +1119,12 @@ public class MainWindow1 extends javax.swing.JFrame {
 			 * usedLettersId[i][2] = y/28; if(usedLetters[i]==0){
 			 * usedLetters[i]=1;
 			 */
+//			if (GameGui.getG().getMode() == 'b') {
+//				GameGui.addLetterToBoardBasic(y / 28, x / 28, i);
+//			}
+//			else {
+//				GameGui.addLetterToBoardAdvanced(y / 28, x / 28, i);
+//			}
 			GameGui.addLetterToBoardBasic(y / 28, x / 28, i);
 			gameBoard.repaint();
 		}
