@@ -36,6 +36,7 @@ public class GameLogic {
 	private  String savedRecordListPath = "RecordList/fileRecordList";
 	private  String savedRecordListAdvancedPath  = "RecordList/fileRecordListAdvanced";
 	private  String fileSuffix      = ".scrabble";
+	public NewGUI.MainWindow1 mainWindow; 
 
     public int getLetterMode(){
     	return LetterMode;
