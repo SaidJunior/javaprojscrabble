@@ -75,12 +75,14 @@ public class GameGui {
 			//NewGUI.OverWriteScreen.startOverwriteScreen(currentName);
 			
 			//boolean ans = NewGUI.OverWriteScreen.getAns();
-			boolean ans = G.mainWindow.showMessageDialog(currentName);
+			boolean ans = G.mainWindow.showMessageDialog("would you like to overwrite "+currentName+"?",
+														 "overwrite file");
 			if (!ans)
 			{
 				
 				//otherwise, play the turn again
-				G.setTurnInd(G.getTurnInd() - 1);
+
+				//G.setTurnInd(G.getTurnInd() - 1);
 				return false;
 			}
 		}
@@ -103,7 +105,7 @@ public class GameGui {
 			System.out.println("IOE Exception while saving.");
 		}
 		//after saving the game, player get to play again
-		G.setTurnInd(G.getTurnInd() - 1);;
+		//G.setTurnInd(G.getTurnInd() - 1);;
 		G.setIsSaved(true);
 		return true;
 	}
