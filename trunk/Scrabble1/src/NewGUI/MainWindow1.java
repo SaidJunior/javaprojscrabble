@@ -55,6 +55,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		GameGui.UploadrecordList('b');
 		GameGui.UploadrecordList('a');
 		initComponents();
+		GameGui.getG().mainWindow = this;
 	}
 
 
@@ -1453,5 +1454,15 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 	public static void setSaved(boolean isSaved) {
 		MainWindow1.isSaved = isSaved;
+	}
+	
+	public boolean showMessageDialog(String fileName){
+		String message = "Overwrite file?";
+		String title = "Would you like to overwrite the file "+fileName;
+		int res = JOptionPane.showConfirmDialog(this, message,
+                title, JOptionPane.YES_NO_OPTION,
+                JOptionPane.YES_NO_CANCEL_OPTION);
+
+		return res == 0;
 	}
 }
