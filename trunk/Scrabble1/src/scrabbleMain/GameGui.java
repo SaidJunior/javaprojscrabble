@@ -70,19 +70,21 @@ public class GameGui {
 	public static boolean saveCurrentGame(String currentName) {
 
 		//check if such a game already exists.
-/*		if(checkIfExist(currentName))
+		if(checkIfExist(currentName))
 		{
-			NewGUI.OverWriteScreen.startOverwriteScreen(currentName);
+			//NewGUI.OverWriteScreen.startOverwriteScreen(currentName);
 			
-			boolean ans = NewGUI.OverWriteScreen.getAns();
+			//boolean ans = NewGUI.OverWriteScreen.getAns();
+			boolean ans = G.mainWindow.showMessageDialog(currentName);
 			if (!ans)
 			{
+				
 				//otherwise, play the turn again
 				G.setTurnInd(G.getTurnInd() - 1);
 				return false;
 			}
 		}
-	*/	
+	
 		if (!currentName.endsWith(".scrabble"))
 			currentName += ".scrabble";
 		GameEntity gameEntity = new GameEntity(G.getPlayerList(), G.getLettersSet(), G.getBoard(), G.getTurnInd(), G.getMode());
