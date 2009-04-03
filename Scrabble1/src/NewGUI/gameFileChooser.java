@@ -24,15 +24,15 @@ public class gameFileChooser extends javax.swing.JFrame {
     private static   FileNameExtensionFilter filter = new FileNameExtensionFilter("Scrabble files","scrabble");
    //load = 0, save = 1
     private static int saveOrLoad = 0;
-    
+   
     private static javax.swing.JFrame parent;
 
     public static int getReturnVal() {
         return returnVal;
     }
-    
+   
     public static String getFileName(){
-    	return  jFileChooser1.getSelectedFile().getName();
+        return  jFileChooser1.getSelectedFile().getName();
     }
 
     public static void setReturnVal(int returnVal) {
@@ -45,8 +45,8 @@ public class gameFileChooser extends javax.swing.JFrame {
 
     public static void startLoadChooser(javax.swing.JFrame parent)
     {
-    	gameFileChooser.parent = parent;
-    	saveOrLoad = 0;
+        gameFileChooser.parent = parent;
+        saveOrLoad = 0;
         startGameChooser("Load an old Scrabble game", "Load a game", javax.swing.JFileChooser.OPEN_DIALOG);
     }
 
@@ -56,7 +56,7 @@ public class gameFileChooser extends javax.swing.JFrame {
          startGameChooser("Save a Scrabble game", "Save game", javax.swing.JFileChooser.SAVE_DIALOG);
     }
 
-    
+   
     private static void startGameChooser(String title, String buttonText, int dialog)
     {
         gameFileChooser saveGameChooser = new gameFileChooser();
@@ -121,44 +121,44 @@ public class gameFileChooser extends javax.swing.JFrame {
      */
     private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
 
-    	File file = jFileChooser1.getSelectedFile();
-    	if (file != null)
-    	{
-    		String absolut = jFileChooser1.getSelectedFile().getAbsolutePath();
-    		
-    		if (saveOrLoad == 0)
-    		{
-    			boolean successLoad = scrabbleMain.GameGui.loadGame(absolut);
-    			if (successLoad)
-    			{
-    				MainWindow1 MainWindow = new MainWindow1();
-    				parent.dispose();
-    				MainWindow.setVisible(true);
-    				MainWindow.initGameWindow();
-    			}
-    			else
-    			{
-    				GeneralMessage.stratGeneralMessage(gameFileChooser.this,
-    						"Failed to load " + absolut + ".", "Error while loading");
-    			}
-    		}
-    		else if (saveOrLoad == 1)
-    		{
-    			boolean succ = scrabbleMain.GameGui.saveCurrentGame(absolut);
-    			
-    			if (succ)
-    			{
-    				MainWindow1.setSaved(true);
-    				GeneralMessage.stratGeneralMessage(gameFileChooser.this,
-    						"The Game had been saved successfuly under: " + absolut, "Saving completed");
-    			}
-    			else
-    			{
-    				GeneralMessage.stratGeneralMessage(gameFileChooser.this,
-    						"The Game had not been saved", "Saving filed");
-    			}
-    		}
-    	}
+        File file = jFileChooser1.getSelectedFile();
+        if (file != null)
+        {
+                String absolut = jFileChooser1.getSelectedFile().getAbsolutePath();
+               
+                if (saveOrLoad == 0)
+                {
+                        boolean successLoad = scrabbleMain.GameGui.loadGame(absolut);
+                        if (successLoad)
+                        {
+                                MainWindow1 MainWindow = new MainWindow1();
+                                parent.dispose();
+                                MainWindow.setVisible(true);
+                                MainWindow.initGameWindow();
+                        }
+                        else
+                        {
+                                GeneralMessage.stratGeneralMessage(gameFileChooser.this,
+                                                "Failed to load " + absolut + ".", "Error while loading");
+                        }
+                }
+                else if (saveOrLoad == 1)
+                {
+                        boolean succ = scrabbleMain.GameGui.saveCurrentGame(absolut);
+                       
+                        if (succ)
+                        {
+                                MainWindow1.setSaved(true);
+                                GeneralMessage.stratGeneralMessage(gameFileChooser.this,
+                                                "The Game had been saved successfuly under: " + absolut, "Saving completed");
+                        }
+                        else
+                        {
+                                GeneralMessage.stratGeneralMessage(gameFileChooser.this,
+                                                "The Game had not been saved", "Saving filed");
+                        }
+                }
+        }
 
     }//GEN-LAST:event_jFileChooser1ActionPerformed
 
@@ -178,3 +178,4 @@ public class gameFileChooser extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 }
+
