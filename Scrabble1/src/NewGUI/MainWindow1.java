@@ -1456,9 +1456,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		MainWindow1.isSaved = isSaved;
 	}
 	
-	public boolean showMessageDialog(String fileName){
-		String message = "Overwrite file?";
-		String title = "Would you like to overwrite the file "+fileName;
+	public boolean showMessageDialog(String message, String title){
 		int res = JOptionPane.showConfirmDialog(this, message,
                 title, JOptionPane.YES_NO_OPTION,
                 JOptionPane.YES_NO_CANCEL_OPTION);
