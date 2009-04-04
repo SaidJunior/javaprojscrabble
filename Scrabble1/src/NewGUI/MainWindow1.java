@@ -859,7 +859,17 @@ public class MainWindow1 extends javax.swing.JFrame {
 		gameBoard.repaint();
 
 		MainWindow1.setSaved(false);
-
+		
+		//check if game finished
+		if (GameGui.getG().getLettersSet().getLetterSetSize() == 0) {
+			changeLetter.setEnabled(false);
+			addWordToBoard.setEnabled(false);
+			doneButton.setEnabled(false);
+			setPlayStatusText("letters are finished, Game is finished");
+			updateScoreBoard();
+			return;
+		}
+		
 		advancedLetterPlaced = false;
 
 		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
@@ -1430,6 +1440,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private void updateScoreBoard()
 	{
 		String allPlayers = "";
+		//Added by eviatar to support the final screen
+		String finish = (GameGui.getG().getLettersSet().getLetterSetSize() > 0) ? "Current" : "";
 		int winner = 0;
 		int winningScore = 0;
 		for (int i = 0; i < GameGui.getG().getNumberOfPlayers(); i++) {
@@ -1442,7 +1454,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 			allPlayers += GameGui.getG().getPlayerList().get(i).getName() + "\n"; 
 			allPlayers += temp_score + " pts\n\n";
 		}	
-		String winMessage = "Current Winner is:\n " + GameGui.getG().getPlayerList().get(winner).getName() +
+		String winMessage = finish + "Winner is:\n " + GameGui.getG().getPlayerList().get(winner).getName() +
 		"\n\n With a score of:\n " + winningScore + " pts";
 		allPlayers = winMessage + "\n\n" + allPlayers;
 		scoreBoard.setText(allPlayers);
