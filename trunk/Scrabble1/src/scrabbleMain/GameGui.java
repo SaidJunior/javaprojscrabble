@@ -248,8 +248,13 @@ public class GameGui {
 		
 		if (userWord != null) {
 			for (int i = 0; i < usedLetters.size(); i++) {
-				player.insertLetter(G.getLettersSet().getLetter());
-			}
+				if (G.getLettersSet().getLetterSetSize() > 0) {
+					player.insertLetter(G.getLettersSet().getLetter());
+				}
+				else { //no more letters, game finished
+					break;
+				}
+			}	
 			player.setScore(userWord.length());
 //			System.out.println("Very Good - you made the word: " + userWord + ". You gained " + userWord.length() + " more pointes");
 		}
