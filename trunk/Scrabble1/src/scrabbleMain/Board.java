@@ -3,7 +3,7 @@ package scrabbleMain;
 import java.io.Serializable;
 import java.util.Random;
 
-public class Board implements Serializable{
+public class Board implements Serializable {
 	
 	private final int length, width;
 	private Cell[][] CellArray; 
@@ -144,6 +144,6 @@ public class Board implements Serializable{
 		int type = 1; //this field will store the cell's score(basic rules all cells are 1, advanced rules random scores)
 		
 		private Cell() {
-		}	
+		}
 	}
 }

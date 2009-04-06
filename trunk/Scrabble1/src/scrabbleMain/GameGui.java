@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.java.swing.plaf.windows.WindowsInternalFrameTitlePane.ScalableIconUIResource;
+
 import NewGUI.MainWindow1;
 
 public class GameGui {
@@ -40,6 +42,7 @@ public class GameGui {
 			G.setNumberOfPlayers(G.getPlayerList().size());
 			G.setTurnInd(gameEntity.turnInd());
 			G.setMode(gameEntity.getMode());
+			G.setAp(gameEntity.getAp()); //add for auto player
 			succ = true;
 			
 		} catch (FileNotFoundException e) {
@@ -89,7 +92,8 @@ public class GameGui {
 	
 		if (!currentName.endsWith(".scrabble"))
 			currentName += ".scrabble";
-		GameEntity gameEntity = new GameEntity(G.getPlayerList(), G.getLettersSet(), G.getBoard(), G.getTurnInd(), G.getMode());
+		//updated for auto player
+		GameEntity gameEntity = new GameEntity(G.getPlayerList(), G.getLettersSet(), G.getBoard(), G.getTurnInd(), G.getMode(), G.getAp());
 		try {
 			FileOutputStream file = new FileOutputStream(currentName);		  
 			ObjectOutputStream data = new ObjectOutputStream(file);
@@ -98,7 +102,7 @@ public class GameGui {
 			data.close();
 			file.close();
 			
-			System.out.println("The game: " + currentName + " has been successfully saved.\n");
+//			System.out.println("The game: " + currentName + " has been successfully saved.\n");
 		} catch (FileNotFoundException e) {
 			System.out.println("File Error while saving.");
 		} catch (IOException e) {
@@ -262,6 +266,13 @@ public class GameGui {
 			for (int i = 0; i < usedLetters.size(); i++) {
 				G.getBoard().removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
 				player.insertLetter(usedLetters.get(i).letter);
+				//add for auto player
+				if (scrabbleMain.AutoPlayer.isCndidate(usedLetters.get(i).row, usedLetters.get(i).col, true) == true) {
+					G.getAp().addLetterVertical(usedLetters.get(i).row, usedLetters.get(i).col);
+				}
+				if (scrabbleMain.AutoPlayer.isCndidate(usedLetters.get(i).row, usedLetters.get(i).col, false) == true) {
+					G.getAp().addLetterHorizonal(usedLetters.get(i).row, usedLetters.get(i).col);
+				}
 			}
 //			System.out.println("Your word does not exist in the dictionary - you lost your turn");
 		}
@@ -444,5 +455,23 @@ public class GameGui {
 		
 	}
 
+	public static void placeAutoWord() {
+		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
+		String retWord = G.getAp().placeAutoWordAndUpdate(player);
+		if (retWord != null) {
+			for (int i = 0; i < 3; i++) {
+				if (G.getLettersSet().getLetterSetSize() > 0) {
+					player.insertLetter(G.getLettersSet().getLetter());
+				}
+				else {
+					break;
+				}
+			}
+			MainWindow1.setPlayStatusText("Auto player " + player.getName() + " placed the word: " + retWord);
+		}
+		else {
+			MainWindow1.setPlayStatusText("Auto player " + player.getName() + " failed to place a word");
+		}
+	}
 	
 }
