@@ -7,11 +7,15 @@ public class Player implements Serializable{
 	private final String name;
 	private int score = 0;
 	private List<Character> playerLetters = new ArrayList<Character>(7);
+	private boolean isAuto = true;//this should be false, will be changed after updating the gui.
 	
 	public Player(String name) {
 		this.name = name;
 	}
-
+	public Player(String name, boolean isAuto) {
+		this.name = name;
+		this.isAuto = true;
+	}
 	public String getName() {
 		return name;
 	}
@@ -53,6 +57,9 @@ public class Player implements Serializable{
 	 */
 	public char getLetter(int i) {
 		return playerLetters.get(i);	
+	}
+	public boolean isAuto() {
+		return isAuto;
 	}
 
 }

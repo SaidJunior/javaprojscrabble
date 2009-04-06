@@ -853,9 +853,24 @@ public class MainWindow1 extends javax.swing.JFrame {
 			GameGui.moveToNextPlayer();
 		}
 		else if (addWordFlag == true) {
-			GameGui.placeWordBasic();
-			GameGui.moveToNextPlayer();
+			//if the current player is automatic
+			if ((GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto()) == true) {
+				GameGui.placeAutoWord();
+				GameGui.moveToNextPlayer();
+			}
+			else { //if it is a human player
+				GameGui.placeWordBasic();
+				GameGui.moveToNextPlayer();
+				setPlayStatusText("");
+			}
+//			GameGui.placeWordBasic();
+//			GameGui.moveToNextPlayer();
+//			setPlayStatusText("");
 		}
+//		if ((GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto()) == true) {
+//			GameGui.placeAutoWord();
+//			GameGui.moveToNextPlayer();
+//		}
 		gameBoard.repaint();
 
 		MainWindow1.setSaved(false);
@@ -878,7 +893,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 		changeLetter.setEnabled(true);
 		addWordToBoard.setEnabled(true);
 		updateLetterSackBox();
-		setPlayStatusText("");
 		updateScoreBoard();
 		
 

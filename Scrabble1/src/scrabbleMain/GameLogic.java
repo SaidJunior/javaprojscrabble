@@ -13,9 +13,9 @@ import java.util.TreeMap;
  *
  */
 public class GameLogic {
-	public final  int ROWS            = 15;
-	public final  int COLUMNS         = 15;
-	public final  int MAX_NAME_LENGTH = 20;
+	public static final  int ROWS            = 15;
+	public static final  int COLUMNS         = 15;
+	public static final  int MAX_NAME_LENGTH = 20;
 	
 	private  int            numberOfPlayers = 0;
 	private  boolean        finishGame      = false;
@@ -25,7 +25,8 @@ public class GameLogic {
 	private  BufferedReader consoleReader   = new BufferedReader(new InputStreamReader(System.in));
 	private  LettersSet     lettersSet      = new LettersSet();
 	private  Dictionary     dictionary      = new Dictionary(ROWS, COLUMNS);
-	private  Board          board           = new Board(ROWS, COLUMNS, dictionary.getRandomWord());
+	private  String         randWord        = dictionary.getRandomWord();
+	private  Board          board           = new Board(ROWS, COLUMNS, randWord);
 	private  int            turnInd         = 0;
 	private  char           mode            = 'b';  //indicates the chosen rules set
 	private  RecordList     recordListBasic      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
@@ -36,7 +37,8 @@ public class GameLogic {
 	private  String savedRecordListPath = "RecordList/fileRecordList";
 	private  String savedRecordListAdvancedPath  = "RecordList/fileRecordListAdvanced";
 	private  String fileSuffix      = ".scrabble";
-	public NewGUI.MainWindow1 mainWindow; 
+	public NewGUI.MainWindow1 mainWindow;
+	private AutoPlayer ap = new AutoPlayer(board, dictionary, randWord); 
 
     public int getLetterMode(){
     	return LetterMode;
@@ -188,6 +190,12 @@ public class GameLogic {
 	
 	public void printCurrentPlayerLetters() {
 		playerList.get(turnInd).printPlayerLetters();
+	}
+	public AutoPlayer getAp() {
+		return ap;
+	}
+	public void setAp(AutoPlayer ap) {
+		this.ap = ap;
 	}
 
 	

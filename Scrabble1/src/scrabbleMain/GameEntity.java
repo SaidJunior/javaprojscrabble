@@ -15,15 +15,27 @@ public class GameEntity implements Serializable{
     private Board board;
     private int turnInd;
     private char mode;
+    private AutoPlayer ap;
     
     public GameEntity(List<Player> playerList, LettersSet lettersSet, Board board,
-                                     int player_id, char mode)
+            int player_id, char mode)
+    {
+    	this.playerList = playerList;
+    	this.lettersSet = lettersSet;
+    	this.board = board;
+    	this.turnInd=player_id;
+    	this.mode = mode;
+	}
+    
+    public GameEntity(List<Player> playerList, LettersSet lettersSet, Board board,
+                                     int player_id, char mode, AutoPlayer ap)
     {
             this.playerList = playerList;
             this.lettersSet = lettersSet;
             this.board = board;
             this.turnInd=player_id;
             this.mode = mode;
+            this.ap = ap;
     }
 
     public List<Player> getPlayerList() {
@@ -66,5 +78,13 @@ public class GameEntity implements Serializable{
     public void setMode(char mode){
             this.mode = mode;
     }
+
+	public AutoPlayer getAp() {
+		return ap;
+	}
+
+	public void setAp(AutoPlayer ap) {
+		this.ap = ap;
+	}
 	
 }
