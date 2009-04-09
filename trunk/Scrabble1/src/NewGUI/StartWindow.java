@@ -35,6 +35,7 @@ public class StartWindow extends javax.swing.JFrame {
         loadGameButton = new javax.swing.JButton();
         newGameButton = new javax.swing.JButton();
         welcomeLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -45,7 +46,6 @@ public class StartWindow extends javax.swing.JFrame {
 
         exitButton.setFont(new java.awt.Font("Tahoma", 1, 18));
         exitButton.setText("Exit");
-        exitButton.setToolTipText("Quit Scrabble");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -54,7 +54,6 @@ public class StartWindow extends javax.swing.JFrame {
 
         loadGameButton.setFont(new java.awt.Font("Tahoma", 1, 18));
         loadGameButton.setText("Load Game");
-        loadGameButton.setToolTipText("Load an old Scrabble Game");
         loadGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadGameButtonActionPerformed(evt);
@@ -63,16 +62,15 @@ public class StartWindow extends javax.swing.JFrame {
 
         newGameButton.setFont(new java.awt.Font("Tahoma", 1, 18));
         newGameButton.setText("New Game");
-        newGameButton.setToolTipText("Start new Scrabble game");
         newGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newGameButtonActionPerformed(evt);
             }
         });
 
-        welcomeLabel.setFont(new java.awt.Font("Informal Roman", 1, 36)); // NOI18N
+        welcomeLabel.setFont(new java.awt.Font("Informal Roman", 1, 36));
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        welcomeLabel.setText("Welcome to SCRABBLE!");
+        welcomeLabel.setText("Welcome to SCRAMBBLE!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,6 +88,11 @@ public class StartWindow extends javax.swing.JFrame {
                             .addComponent(loadGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(newGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(153, 153, 153))))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(37, 37, 37)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(64, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,6 +106,11 @@ public class StartWindow extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(61, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(38, 38, 38)))
         );
 
         pack();
@@ -139,6 +147,7 @@ public class StartWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton exitButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton loadGameButton;
     private javax.swing.JButton newGameButton;
     private javax.swing.JLabel welcomeLabel;
