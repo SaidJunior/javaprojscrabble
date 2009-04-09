@@ -36,7 +36,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-
+import javax.swing.DesktopManager;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -76,6 +77,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 	public Player player = new Player(""); // the current player
 
 	private static boolean isSaved = false;
+    private static int TableColor = 0;
+    private static int LetterColor = 0;
 	
 	/** Creates new form mainWindow */
 
@@ -119,6 +122,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 		gameMenuSeparator = new javax.swing.JSeparator();
 		exitMenuItem = new javax.swing.JMenuItem();
 		viewMenu = new javax.swing.JMenu();
+        viewComponent =new javax.swing.JDialog();
+        viewComponent2 =new javax.swing.JDialog();
 		bestResults = new javax.swing.JMenu();
 		bestBasic = new javax.swing.JMenuItem();
 		bestAdvanced = new javax.swing.JMenuItem();
@@ -126,9 +131,143 @@ public class MainWindow1 extends javax.swing.JFrame {
 		helpMenuItem1 = new javax.swing.JMenuItem();
 		helpMenuSeparator1 = new javax.swing.JSeparator();
 		aboutUsMenuItem1 = new javax.swing.JMenuItem();
+        viewLetterT = new javax.swing.JLabel();
+        viewWindowT = new javax.swing.JLabel();
+        BlueLetter = new javax.swing.JRadioButton();
+        redLetter= new javax.swing.JRadioButton();
+        letterOk = new javax.swing.JButton();
+        viewMenuItem= new javax.swing.JMenuItem();
+        viewMenuItem2= new javax.swing.JMenuItem();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jButton1 = new javax.swing.JButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+
+         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Select the table color");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Table View options");
+
+        jRadioButton1.setSelected(true);
+        jRadioButton1.setText("White");
+        jRadioButton1.setToolTipText("The table will be white");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                WhiteTableHandler(evt);
+            }
+        });
+
+        jRadioButton2.setText("Redish");
+        jRadioButton2.setToolTipText("The table will be redish");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RedTableHandler(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton1.setText("Ok");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OkTableViewActionPerformed(evt);
+            }
+        });
+
+        jRadioButton3.setText("Blue");
+        jRadioButton3.setToolTipText("The table will be with a tint of blue");
+          jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BlueTableHandler(evt);
+            }
+        });
+
+
+        javax.swing.GroupLayout TableViewlayout = new javax.swing.GroupLayout(viewComponent2.getContentPane());
+       viewComponent2. getContentPane().setLayout(TableViewlayout);
+        TableViewlayout.setHorizontalGroup(
+            TableViewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TableViewlayout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(TableViewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(TableViewlayout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(TableViewlayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addGroup(TableViewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButton1)
+                            .addComponent(jRadioButton3)
+                            .addComponent(jRadioButton2))
+                        .addGap(168, 168, 168))))
+            .addGroup(TableViewlayout.createSequentialGroup()
+                .addGap(148, 148, 148)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(205, Short.MAX_VALUE))
+        );
+        TableViewlayout.setVerticalGroup(
+            TableViewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TableViewlayout.createSequentialGroup()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addGroup(TableViewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jRadioButton2)
+                .addGap(3, 3, 3)
+                .addComponent(jRadioButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+      
+        viewLetterT.setFont(new java.awt.Font("Tahoma", 0, 14));
+      viewLetterT.setText("Select the letters color");
+
+        viewWindowT .setFont(new java.awt.Font("Tahoma", 1, 14));
+       viewWindowT .setText("Table View options");
+
+       BlueLetter.setSelected(true);
+        BlueLetter.setText("Blue ");
+         BlueLetter.setToolTipText("The letters become blue");
+         BlueLetter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBlueColorRadioButtonActionPerformed(evt);
+            }
+        });
+
+      redLetter.setText("Red");
+        redLetter.setToolTipText("The letters become red");
+      redLetter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRedColorRadioButtonActionPerformed(evt);
+            }
+        });
+
+        letterOk.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        letterOk.setText("Ok");
+        letterOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OkViewActionPerformed(evt);
+            }
+        });
+
+
 
 		helpPage.setMinimumSize(new java.awt.Dimension(645, 566));
 		helpPage.setResizable(false);
+
+        viewComponent.setMinimumSize(new java.awt.Dimension(325,255));
+        viewComponent.setResizable(false);
+
+         viewComponent2.setMinimumSize(new java.awt.Dimension(325,255));
+        viewComponent2.setResizable(false);
+
 
 		okHelpButton.setFont(new java.awt.Font("Tahoma", 0, 36));
 		okHelpButton.setText("Ok");
@@ -153,6 +292,42 @@ public class MainWindow1 extends javax.swing.JFrame {
 		helpjTextPane2.setText(GameGui.parseFileToString("resources/help_file2.txt"));
 		helpText2.setViewportView(helpjTextPane2);
 
+             javax.swing.GroupLayout viewlayout = new javax.swing.GroupLayout(
+                     viewComponent.getContentPane());
+       viewComponent. getContentPane().setLayout(viewlayout);
+      viewlayout.setHorizontalGroup(
+            viewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(viewlayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(viewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(viewlayout.createSequentialGroup()
+                        .addComponent(viewWindowT, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(viewlayout.createSequentialGroup()
+                        .addGroup(viewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(letterOk, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(viewlayout.createSequentialGroup()
+                                .addComponent(viewLetterT)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                                .addGroup(viewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(redLetter)
+                                    .addComponent( BlueLetter))))
+                        .addGap(168, 168, 168))))
+        );
+       viewlayout.setVerticalGroup(
+            viewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(viewlayout.createSequentialGroup()
+                .addComponent(viewWindowT, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addGroup(viewlayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent( BlueLetter)
+                    .addComponent(viewLetterT))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(redLetter)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addComponent(letterOk, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 		javax.swing.GroupLayout helpPageLayout = new javax.swing.GroupLayout(
 				helpPage.getContentPane());
 		helpPage.getContentPane().setLayout(helpPageLayout);
@@ -542,6 +717,37 @@ public class MainWindow1 extends javax.swing.JFrame {
 		viewMenu.setText("View");
 		viewMenu.setToolTipText("Graphics options");
 		jMenuBar1.add(viewMenu);
+        viewMenuItem.setText("Letters View");
+        viewMenuItem2.setText("Table View");
+
+
+	
+        viewMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				viewmenuActionPerformed(evt);
+			}
+        });
+
+        viewMenuItem.addKeyListener(new java.awt.event.KeyAdapter(){
+            	public void keyPressed(java.awt.event.KeyEvent evt) {
+				viewmenuKeyPressed(evt);
+			}
+        });
+          viewMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				viewmenu2ActionPerformed(evt);
+			}
+        });
+
+        viewMenuItem2.addKeyListener(new java.awt.event.KeyAdapter(){
+            	public void keyPressed(java.awt.event.KeyEvent evt) {
+				viewmenu2KeyPressed(evt);
+			}
+        });
+
+        viewMenu.add(viewMenuItem2);
+
+        viewMenu.add(viewMenuItem);
 
 		bestResults.setText("Hall Of Fame");
 		bestResults.setToolTipText("View Best results");
@@ -898,6 +1104,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 	}// GEN-LAST:event_doneButtonActionPerformed
 
+
+
 	private void newGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newGameMenuItemActionPerformed
 		if (!isSaved) //check if saved
 		{
@@ -982,7 +1190,20 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private void helpMenuItem1KeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_helpMenuItem1KeyPressed
 		helpPage.setVisible(true);
 	}// GEN-LAST:event_helpMenuItem1KeyPressed
+    private void viewmenuKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_helpMenuItem1KeyPressed
+		viewComponent.setVisible(true);
+	}// G
 
+    private void viewmenuActionPerformed(java.awt.event.ActionEvent evt){
+        viewComponent.setVisible(true);
+}
+        private void viewmenu2KeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_helpMenuItem1KeyPressed
+		viewComponent2.setVisible(true);
+	}// G
+
+    private void viewmenu2ActionPerformed(java.awt.event.ActionEvent evt){
+        viewComponent2.setVisible(true);
+}
 	private void changeLetterComponentAdded(java.awt.event.ContainerEvent evt) {// GEN-FIRST:event_changeLetterComponentAdded
 		// TODO add your handling code here:
 	}// GEN-LAST:event_changeLetterComponentAdded
@@ -1011,6 +1232,77 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private void bestAdvancedActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_bestAdvancedActionPerformed
 		bestResultsPageAdvanced.setVisible(true);
 	}// GEN-LAST:event_bestAdvancedActionPerformed
+
+      private void jBlueColorRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+           if(BlueLetter.isSelected()){
+            redLetter.setSelected(false);
+            BlueLetter.setSelected(true);
+        }
+        this.LetterColor = 0;
+        gameBoard.loadLetters();
+        gameBoard.repaint();
+}
+
+    private void jRedColorRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        if(redLetter.isSelected()){
+            redLetter.setSelected(true);
+            BlueLetter.setSelected(false);
+        }
+        this.LetterColor = 1;
+        gameBoard.loadLetters();
+        gameBoard.repaint();
+}
+
+    private void CustomTableAction(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+ 
+
+    private void OkViewActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        viewComponent.dispose();
+    }
+       private void RedTableHandler(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+           if(jRadioButton2.isSelected()){
+         jRadioButton1.setSelected(false);
+         jRadioButton2.setSelected(true);
+         jRadioButton3.setSelected(false);
+     }
+            this.TableColor=1;
+            gameBoard.repaint();
+            
+}
+       private void BlueTableHandler(java.awt.event.ActionEvent evt){
+            if(jRadioButton3.isSelected()){
+         jRadioButton1.setSelected(false);
+         jRadioButton2.setSelected(false);
+         jRadioButton3.setSelected(true);
+     }
+            this.TableColor=2;
+            gameBoard.repaint();
+       }
+
+    private void OkTableViewActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        viewComponent2.dispose();
+}
+
+    private void WhiteTableHandler(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+     if(jRadioButton1.isSelected()){
+         jRadioButton1.setSelected(true);
+         jRadioButton2.setSelected(false);
+         jRadioButton3.setSelected(false);
+     }
+            this.TableColor=0;
+            gameBoard.repaint();
+
+    }
+   
 
 	private void formWindowClosing(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_formWindowClosing
 		if (!isSaved) //check if saved
@@ -1065,7 +1357,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private javax.swing.JLabel currentPlayer;
 	private javax.swing.JButton doneButton;
 	private javax.swing.JMenuItem exitMenuItem;
-	private JPanel gameBoard;
+	private DrawPanel gameBoard;
 	private javax.swing.JMenu gameMenu;
 	private javax.swing.JSeparator gameMenuSeparator;
 	private javax.swing.JMenu helpMenu1;
@@ -1087,7 +1379,22 @@ public class MainWindow1 extends javax.swing.JFrame {
 	private javax.swing.JMenuItem saveMenuItem;
 	private javax.swing.JTextPane scoreBoard;
 	private javax.swing.JMenu viewMenu;
-	
+    private javax.swing.JDialog  viewComponent;
+     private javax.swing.JDialog  viewComponent2;
+    private javax.swing.JMenuItem viewMenuItem ;
+    private javax.swing.JMenuItem viewMenuItem2 ;
+    private javax.swing.JButton letterOk;
+    private javax.swing.JLabel viewLetterT;
+    private javax.swing.JLabel viewWindowT;
+    private javax.swing.JRadioButton BlueLetter;
+    private javax.swing.JRadioButton redLetter;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    // End of variables declaration
 
 
 	// End of variables declaration//GEN-END:variables
@@ -1151,10 +1458,17 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		// draws the board from the logic
 		public void drawBoard(Graphics g, Board b) {
+			String path = "resources/squarePicture.jpg";
+			if(TableColor==1){
+				path="resources/squareRed.jpg";
+			}
+			if(TableColor==2){
+				path="resources/squarePicture4.jpg";
+			}
 			for (int i = 0; i < 15; i++)
 				for (int j = 0; j < 15; j++) {
 					g.drawRect(j * 28, i * 28, 28, 28);
-					drawImage2(g,"resources/squarePicture.jpg",28,28,j*28,i*28);
+					drawImage2(g,path,28,28,j*28,i*28);
 					int id = letterToNumber(b.getLetter(i, j));
 					if (id != -1)
 						drawImage(letters[id], g, j * 28, i * 28);
@@ -1319,7 +1633,8 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		public void loadLetters() {
 			letters = new BufferedImage[27];
-			int style = GameGui.getG().getLetterMode();
+//			int style = GameGui.getG().getLetterMode();
+			int style = LetterColor;
 			for (int i = 1; i <= 27; i++) {
 				String path;
 				if (style == 0) {
