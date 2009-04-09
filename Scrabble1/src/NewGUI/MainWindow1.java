@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Transparency;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
@@ -144,6 +146,49 @@ public class MainWindow1 extends javax.swing.JFrame {
         jRadioButton2 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
         jRadioButton3 = new javax.swing.JRadioButton();
+        AboutUsOkButton = new javax.swing.JButton();
+        AboutUsjScrollPane1 = new javax.swing.JScrollPane();
+        AboutUsTextPane1 = new javax.swing.JTextPane();
+        AboutUsDialog = new javax.swing.JDialog();
+       
+        
+        AboutUsOkButton.setText("Ok");
+        AboutUsOkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AboutUsOkButtonEvent(evt);
+            }
+        });
+
+        AboutUsTextPane1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        AboutUsTextPane1.setText("The creators of this game are:\n                                                 Eviatar\n                                                 Roy\n                                                  Polina\n                                                  Alex\n                                                  Erez\n                                                  Andreea\nAll rights are reserved \n\nFor suggestions or complains please contact us at:\n     ");
+        AboutUsjScrollPane1.setViewportView(AboutUsTextPane1);
+        
+     
+
+        javax.swing.GroupLayout AboutUslayout = new javax.swing.GroupLayout(AboutUsDialog.getContentPane());
+        AboutUsDialog.getContentPane().setLayout(AboutUslayout);
+        AboutUslayout.setHorizontalGroup(
+            AboutUslayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AboutUslayout.createSequentialGroup()
+                .addGroup(AboutUslayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AboutUslayout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(AboutUsjScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(AboutUslayout.createSequentialGroup()
+                        .addGap(171, 171, 171)
+                        .addComponent(AboutUsOkButton, javax.swing.GroupLayout.PREFERRED_SIZE,80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(82, Short.MAX_VALUE))
+        );
+        AboutUslayout.setVerticalGroup(
+            AboutUslayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AboutUslayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(AboutUsjScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(AboutUsOkButton, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                .addGap(19, 19, 19))
+        );
+
 
          jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Select the table color");
@@ -227,13 +272,13 @@ public class MainWindow1 extends javax.swing.JFrame {
 
       
         viewLetterT.setFont(new java.awt.Font("Tahoma", 0, 14));
-      viewLetterT.setText("Select the letters color");
+        viewLetterT.setText("Select the letters color");
 
         viewWindowT .setFont(new java.awt.Font("Tahoma", 1, 14));
-       viewWindowT .setText("Table View options");
+        viewWindowT .setText("Table View options");
 
-       BlueLetter.setSelected(true);
-        BlueLetter.setText("Blue ");
+         BlueLetter.setSelected(true);
+         BlueLetter.setText("Blue ");
          BlueLetter.setToolTipText("The letters become blue");
          BlueLetter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,7 +287,7 @@ public class MainWindow1 extends javax.swing.JFrame {
         });
 
       redLetter.setText("Red");
-        redLetter.setToolTipText("The letters become red");
+      redLetter.setToolTipText("The letters become red");
       redLetter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRedColorRadioButtonActionPerformed(evt);
@@ -265,10 +310,15 @@ public class MainWindow1 extends javax.swing.JFrame {
         viewComponent.setMinimumSize(new java.awt.Dimension(325,255));
         viewComponent.setResizable(false);
 
-         viewComponent2.setMinimumSize(new java.awt.Dimension(325,255));
+        viewComponent2.setMinimumSize(new java.awt.Dimension(325,255));
         viewComponent2.setResizable(false);
-
-
+        
+        AboutUsDialog.setMinimumSize(new java.awt.Dimension(425,425));
+        AboutUsDialog.setResizable(false);
+        AboutUsTextPane1.setEditable(false);
+        
+        AboutUsDialog.add(AboutUsjScrollPane1);
+  
 		okHelpButton.setFont(new java.awt.Font("Tahoma", 0, 36));
 		okHelpButton.setText("Ok");
 		okHelpButton.addActionListener(new java.awt.event.ActionListener() {
@@ -743,6 +793,18 @@ public class MainWindow1 extends javax.swing.JFrame {
             	public void keyPressed(java.awt.event.KeyEvent evt) {
 				viewmenu2KeyPressed(evt);
 			}
+        });
+        aboutUsMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				AboutUsActionPerformed(evt);
+			}
+        });
+
+        aboutUsMenuItem1.addKeyListener(new java.awt.event.KeyAdapter(){
+            	public void keyPressed(java.awt.event.KeyEvent evt) {
+				AboutUsKeyPressed(evt);
+			}
+
         });
 
         viewMenu.add(viewMenuItem2);
@@ -1247,8 +1309,8 @@ public class MainWindow1 extends javax.swing.JFrame {
     private void jRedColorRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         if(redLetter.isSelected()){
-            redLetter.setSelected(true);
             BlueLetter.setSelected(false);
+            redLetter.setSelected(true);
         }
         this.LetterColor = 1;
         gameBoard.loadLetters();
@@ -1269,8 +1331,8 @@ public class MainWindow1 extends javax.swing.JFrame {
         // TODO add your handling code here:
            if(jRadioButton2.isSelected()){
          jRadioButton1.setSelected(false);
-         jRadioButton2.setSelected(true);
          jRadioButton3.setSelected(false);
+         jRadioButton2.setSelected(true);
      }
             this.TableColor=1;
             gameBoard.repaint();
@@ -1294,15 +1356,29 @@ public class MainWindow1 extends javax.swing.JFrame {
     private void WhiteTableHandler(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
      if(jRadioButton1.isSelected()){
-         jRadioButton1.setSelected(true);
-         jRadioButton2.setSelected(false);
+    	 jRadioButton2.setSelected(false);
          jRadioButton3.setSelected(false);
+         jRadioButton1.setSelected(true);
      }
             this.TableColor=0;
             gameBoard.repaint();
 
     }
-   
+    private void AboutUsOkButtonEvent(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    	AboutUsDialog.dispose();
+    }
+	private void AboutUsActionPerformed(ActionEvent evt) {
+		// TODO Auto-generated method stub
+		AboutUsDialog.setVisible(true);
+		
+	}
+	private void AboutUsKeyPressed(KeyEvent evt) {
+		// TODO Auto-generated method stub
+		AboutUsDialog.setVisible(true);
+		
+	}
+	
 
 	private void formWindowClosing(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_formWindowClosing
 		if (!isSaved) //check if saved
@@ -1394,6 +1470,10 @@ public class MainWindow1 extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JButton AboutUsOkButton;
+    private javax.swing.JTextPane AboutUsTextPane1;
+    private javax.swing.JScrollPane AboutUsjScrollPane1;
+    private javax.swing.JDialog AboutUsDialog;
     // End of variables declaration
 
 
