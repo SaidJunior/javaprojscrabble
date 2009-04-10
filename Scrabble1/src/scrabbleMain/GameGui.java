@@ -15,6 +15,7 @@ import java.util.List;
 import com.sun.java.swing.plaf.windows.WindowsInternalFrameTitlePane.ScalableIconUIResource;
 
 import NewGUI.MainWindow1;
+import NewGUI.PlayersNamesDialog.PlayerInfo;
 
 public class GameGui {
 	public static GameLogic G = new GameLogic();
@@ -156,7 +157,18 @@ public class GameGui {
 			// System.out.println(G.getPlayerList().get(i).getName());
 		}
 	}
-
+	
+	public static void createPlayerList(PlayerInfo[] playerInfo) {
+		for (int i = 0; i < G.getNumberOfPlayers(); i++) {
+			Player newPlayer = new Player(playerInfo[i].getPlayerName(), playerInfo[i].isAuto());
+			for (int j = 0; j < 7; j++) {
+				newPlayer.insertLetter(G.getLettersSet().getLetter());
+			}
+			G.getPlayerList().add(newPlayer);
+			// System.out.println(G.getPlayerList().get(i).getName());
+		}
+	}
+	
 	public static void setGameMode(int gameMode) {
 		G.setMode(((gameMode == 0) ? 'b' : 'a'));
 		
@@ -239,7 +251,7 @@ public class GameGui {
 		if (((validByCols == false) && (validByRows == false)) || 
 			((validByRows == true) && (validContinueRow == false)) ||
 			((validByCols == true) && (validContinueCol == false))) {
-//			MainWindow1.setPlayStatusText("Your letters do not placed by one colunm or one row or you have holes in your word- you lost your turn");
+			MainWindow1.setPlayStatusText(player.getName() + ", your letters do not placed by one colunm or one row or you have holes in your word- you lost your turn");
 			for (int i = 0; i < usedLetters.size(); i++) {
 				G.getBoard().removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
 				player.insertLetter(usedLetters.get(i).letter);
@@ -261,6 +273,7 @@ public class GameGui {
 			}	
 			player.setScore(userWord.length());
 //			System.out.println("Very Good - you made the word: " + userWord + ". You gained " + userWord.length() + " more pointes");
+			MainWindow1.setPlayStatusText("Very Good - " + player.getName() + " made the word: " + userWord + ". You gained " + userWord.length() + " more pointes");
 		}
 		else {
 			for (int i = 0; i < usedLetters.size(); i++) {
@@ -275,6 +288,7 @@ public class GameGui {
 				}
 			}
 //			System.out.println("Your word does not exist in the dictionary - you lost your turn");
+			MainWindow1.setPlayStatusText(player.getName() + ", your word does not exist in the dictionary - you lost your turn");
 		}
 	}
 	
@@ -467,7 +481,8 @@ public class GameGui {
 					break;
 				}
 			}
-			MainWindow1.setPlayStatusText("Auto player " + player.getName() + " placed the word: " + retWord);
+			player.setScore(retWord.length());
+			MainWindow1.setPlayStatusText("Auto player " + player.getName() + " placed the word: " + retWord + " and won " + retWord.length() + "points");
 		}
 		else {
 			MainWindow1.setPlayStatusText("Auto player " + player.getName() + " failed to place a word");
