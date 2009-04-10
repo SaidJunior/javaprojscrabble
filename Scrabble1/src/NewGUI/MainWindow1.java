@@ -1146,11 +1146,12 @@ public class MainWindow1 extends javax.swing.JFrame {
 			setPlayStatusText("The current turn is an auto player turn, press Done for him to make his move");
 		}
 		else {
-			changeLetterFlag = false;
-			addWordFlag = false;
 			changeLetter.setEnabled(true);
 			addWordToBoard.setEnabled(true);
 		}
+		
+		changeLetterFlag = false;
+		addWordFlag      = false;
 		
 		//check if game finished
 		if (GameGui.getG().getLettersSet().getLetterSetSize() == 0) {

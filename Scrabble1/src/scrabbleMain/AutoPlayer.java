@@ -17,7 +17,8 @@ public class AutoPlayer implements Serializable {
 	
 	private static Board      board  = null;
 	private static Dictionary dic    = null;
-	private static int[]      lettersIndeces = new int[3];;
+	private static int[]      lettersIndeces = new int[3];
+	private static boolean    checkVertfirst = true; //this for          
 	
 	public AutoPlayer(Board b, Dictionary d, String randWord) {
 		board  = b;
@@ -38,6 +39,7 @@ public class AutoPlayer implements Serializable {
 	
 	public String placeAutoWordAndUpdate(Player player) {
 		String ret = placeAutoWordBasic(player);
+		checkVertfirst = (checkVertfirst == true) ? false : true;
 		if (ret != null) {
 			Arrays.sort(lettersIndeces);
 			for (int j = 2; j >= 0; j--) {
@@ -72,283 +74,307 @@ public class AutoPlayer implements Serializable {
 			lettersIndeces[2] = third;
 //			System.out.println("FLAG AutoPlayer " + i + " " + threeLetterWord);
 			
-			//Check the vertical list
-			for (int j = 0; j < vertical.size(); ++j) {
-				isValid = 0;
-				// case #
-                //	    *
-                //      *
-                //	    *
-				if ((vertical.get(j).row <= 11)  && 
-					(isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE1, ZEROS) == true)) {
-						StringBuffer testWord = new StringBuffer(threeLetterWord);
-						testWord.insert(0, board.getLetter(vertical.get(j).row, vertical.get(j).col));
-						if (dic.contains(testWord.toString())) {
-							for (int k = 0; k < 3; k++) {
-								board.insertLetter(vertical.get(j).row + CASE1[k],
-										           vertical.get(j).col, 
-										           threeLetterWord.toString().charAt(k));
-								//if the new placed letter is candidate add it to the horizonal list
-								if (isCndidate(vertical.get(j).row + CASE1[k], vertical.get(j).col, false) == true) {
-									horizonal.add(new LetterCellCords(vertical.get(j).row + CASE1[k], vertical.get(j).col));
-								}
-							}
-							//last placed letter could also be a candidate for case1
-							if (isCandidateByCase(vertical.get(j).row + 3, vertical.get(j).col, CASE1, ZEROS) == true) {
-								vertical.add(new LetterCellCords(vertical.get(j).row + 3, vertical.get(j).col));
-							}
-							//check if first letter is no more a candidate, it is possible only if it is candidate to case4
-							if (isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE4, ZEROS) != true) {
-								vertical.remove(j); //remove this letter from the optional letters
-							}
-//							System.out.println(testWord);
-							return testWord.toString();
-						}
+			String vertRet = null;
+			String horzRet = null;
+			if (checkVertfirst == true) {
+				if ((vertRet = checkVerticalCases(threeLetterWord)) != null) {
+					return vertRet;
 				}
-				else { //this letter is no longer a candidate for case1
-					++isValid;
-				}
-				// case *
-                //	    #
-                //      *
-                //	    *
-				if ((vertical.get(j).row <= 12) && (vertical.get(j).row >= 1) &&
-					(isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE2, ZEROS) == true)) {
-						StringBuffer testWord = new StringBuffer(threeLetterWord);
-						testWord.insert(1, board.getLetter(vertical.get(j).row, vertical.get(j).col));
-						if (dic.contains(testWord.toString())) {
-							for (int k = 0; k < 3; k++) {
-								board.insertLetter(vertical.get(j).row + CASE2[k], 
-										           vertical.get(j).col, 
-										           threeLetterWord.toString().charAt(k));
-								//if the new placed letter is candidate add it to the horizonal list
-								if (isCndidate(vertical.get(j).row + CASE2[k], vertical.get(j).col, false) == true) {
-									horizonal.add(new LetterCellCords(vertical.get(j).row + CASE2[k], vertical.get(j).col));
-								}
-							}
-							//check if the first letter is vertically candidates for case 4
-							if (isCandidateByCase(vertical.get(j).row - 1, vertical.get(j).col, CASE4, ZEROS) == true) {
-								vertical.add(new LetterCellCords(vertical.get(j).row - 1, vertical.get(j).col));
-							}
-							//check if the last letter is vertically candidates for case 1
-							if (isCandidateByCase(vertical.get(j).row + 2, j, CASE1, ZEROS) == true) {
-								vertical.add(new LetterCellCords(vertical.get(j).row + 2, vertical.get(j).col));
-							}
-							//this letter is no more a candidate for non of the cases
-							vertical.remove(j);
-//							System.out.println(testWord);
-							return testWord.toString();
-						}
-				}
-				else { //this letter is not a candidate for case2
-					++isValid;
-				}
-				// case *
-                //	    *
-                //      #
-                //	    *
-				if ((vertical.get(j).row <= 13) && (vertical.get(j).row >= 2) &&
-					(isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE3, ZEROS) == true)) {
-						StringBuffer testWord = new StringBuffer(threeLetterWord);
-						testWord.insert(2, board.getLetter(vertical.get(j).row, vertical.get(j).col));
-						if (dic.contains(testWord.toString())) {
-							for (int k = 0; k < 3; k++) {
-								board.insertLetter(vertical.get(j).row + CASE3[k], 
-										           vertical.get(j).col, 
-										           threeLetterWord.toString().charAt(k));
-								if (isCndidate(vertical.get(j).row + CASE3[k], vertical.get(j).col, false) == true) {
-									horizonal.add(new LetterCellCords(vertical.get(j).row + CASE3[k], vertical.get(j).col));
-								}
-							}
-							//check if the first letter is vertically candidates for case 4
-							if (isCandidateByCase(vertical.get(j).row - 2, vertical.get(j).col, CASE4, ZEROS) == true) {
-								vertical.add(new LetterCellCords(vertical.get(j).row - 2, vertical.get(j).col));
-							}
-							//check if the last letter is vertically candidates for case 1
-							if (isCandidateByCase(vertical.get(j).row + 1, j, CASE1, ZEROS) == true) {
-								vertical.add(new LetterCellCords(vertical.get(j).row + 1, vertical.get(j).col));
-							}
-							//this letter is no more a candidate for non of the cases
-							vertical.remove(j);
-//							System.out.println(testWord);
-							return testWord.toString();
-						}
-				}
-				else { //this letter is no more a candidate for case3 
-					++isValid;
-				}
-				// case *
-                //	    *
-                //      *
-                //	    #
-				if ((vertical.get(j).row >= 3) &&
-					(isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE4, ZEROS) == true)) {	
-						StringBuffer testWord = new StringBuffer(threeLetterWord);
-						testWord.insert(3, board.getLetter(vertical.get(j).row, vertical.get(j).col));
-						if (dic.contains(testWord.toString())) {
-							for (int k = 0; k < 3; k++) {
-								board.insertLetter(vertical.get(j).row + CASE4[k], 
-										           vertical.get(j).col, 
-										           threeLetterWord.toString().charAt(k));
-								if (isCndidate(vertical.get(j).row + CASE4[k], vertical.get(j).col, false) == true) {
-									horizonal.add(new LetterCellCords(vertical.get(j).row + CASE4[k], vertical.get(j).col));
-								}
-							}
-							//check if the first letter is vertically candidates for case 4
-							if (isCandidateByCase(vertical.get(j).row - 3, vertical.get(j).col, CASE4, ZEROS) == true) {
-								vertical.add(new LetterCellCords(vertical.get(j).row - 3, vertical.get(j).col));
-							}
-							//check if the last letter is vertically candidates for case 1
-							if (isCandidateByCase(vertical.get(j).row, j, CASE1, ZEROS) != true) {
-								vertical.remove(j);
-							}
-//							System.out.println(testWord);
-							return testWord.toString();
-						}
-				}
-				else { //this letter id no more a candidate for case 4
-					++isValid;
-				}
-				//check if current letter is no more a candidate
-				if (isValid == 4) {
-					vertical.remove(j);
+				if ((horzRet = checkHorizonalCases(threeLetterWord)) != null) {
+					return horzRet;
 				}
 			}
+			else {
+				if ((horzRet = checkHorizonalCases(threeLetterWord)) != null) {
+					return horzRet;
+				}
+				if ((vertRet = checkVerticalCases(threeLetterWord)) != null) {
+					return vertRet;
+				}
+			}
+		}
+		return null;
+	}
+
+	private String checkHorizonalCases(StringBuffer threeLetterWord) {
+		int isValid;
+		for (int j = 0; j < horizonal.size(); ++j) {
+			isValid = 0;
 			
+			// case #***
+			if ((horizonal.get(j).col <= 11) &&
+				(isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE1) == true)) {
+					StringBuffer testWord = new StringBuffer(threeLetterWord);
+					testWord.insert(0, board.getLetter(horizonal.get(j).row, horizonal.get(j).col));
+					if (dic.contains(testWord.toString())) {
+						for (int k = 0; k < 3; k++) {
+							board.insertLetter(horizonal.get(j).row, 
+											   horizonal.get(j).col + CASE1[k], 
+									           threeLetterWord.toString().charAt(k));
+							//if the new placed letter is candidate add it to the vertical list
+							if (isCndidate(horizonal.get(j).row, horizonal.get(j).col + CASE1[k], true) == true) {
+								vertical.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + CASE1[k]));
+							}
+						}
+						//last placed letter could also be a candidate for case1
+						if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col + 3, ZEROS, CASE1) == true) {
+							horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + 3));
+						}
+						//check if first letter is no more a candidate, it is possible only if it is candidate to case4
+						if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE4) != true) {
+							horizonal.remove(j); //remove this letter from the optional letters
+						}
+//							System.out.println(testWord);
+						return testWord.toString();
+					}
+			}
+			else {
+				++isValid;
+			}
+			//case *#**
+			if ((horizonal.get(j).col <= 12) && (horizonal.get(j).col >= 1) &&
+				(isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE2) == true)) {
+					StringBuffer testWord = new StringBuffer(threeLetterWord);
+					testWord.insert(1, board.getLetter(horizonal.get(j).row, horizonal.get(j).col));
+					if (dic.contains(testWord.toString())) {
+						for (int k = 0; k < 3; k++) {
+							board.insertLetter(horizonal.get(j).row, 
+										       horizonal.get(j).col + CASE2[k], 
+											   threeLetterWord.toString().charAt(k));
+							//if the new placed letter is candidate add it to the vertical list
+							if (isCndidate(horizonal.get(j).row, horizonal.get(j).col + CASE2[k], true) == true) {
+								vertical.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + CASE2[k]));
+							}
+						}
+						//check if the first letter is vertically candidates for case 4
+						if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col - 1, ZEROS, CASE4) == true) {
+							horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col - 1));
+						}
+						//check if the last letter is vertically candidates for case 1
+						if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col + 2, ZEROS, CASE1) == true) {
+							horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + 2));
+						}
+						//this letter is no more a candidate for non of the cases
+						horizonal.remove(j);
+//							System.out.println(testWord);
+						return testWord.toString();
+					}
+			}
+			else {
+				++isValid;
+			}
+			//case **#*
+			if ((horizonal.get(j).col <= 13) && (horizonal.get(j).col >= 2) &&
+				(isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE3) == true)) {	
+					StringBuffer testWord = new StringBuffer(threeLetterWord);
+					testWord.insert(2, board.getLetter(horizonal.get(j).row, horizonal.get(j).col));
+					if (dic.contains(testWord.toString())) {
+						for (int k = 0; k < 3; k++) {
+							board.insertLetter(horizonal.get(j).row, 
+											   horizonal.get(j).col + CASE3[k], 
+									           threeLetterWord.toString().charAt(k));
+							//if the new placed letter is candidate add it to the vertical list
+							if (isCndidate(horizonal.get(j).row, horizonal.get(j).col + CASE3[k], true) == true) {
+								vertical.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + CASE3[k]));
+							}
+						}
+						//check if the first letter is vertically candidates for case 4
+						if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col - 2, ZEROS, CASE4) == true) {
+							horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col - 2));
+						}
+						//check if the last letter is vertically candidates for case 1
+						if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col + 1, ZEROS, CASE1) == true) {
+							horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + 1));
+						}
+						//this letter is no more a candidate for non of the cases
+						horizonal.remove(j);
+//							System.out.println(testWord);
+						return testWord.toString();
+					}
+			}
+			else {
+				++isValid;
+			}
+			//case ***#
+			if ((horizonal.get(j).col >= 3) && 
+				(isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE4) == true)) {
+					StringBuffer testWord = new StringBuffer(threeLetterWord);
+					testWord.insert(3, board.getLetter(horizonal.get(j).row, horizonal.get(j).col));
+					if (dic.contains(testWord.toString())) {
+						for (int k = 0; k < 3; k++) {
+							board.insertLetter(horizonal.get(j).row, 
+											   horizonal.get(j).col + CASE4[k], 
+									           threeLetterWord.toString().charAt(k));
+							//if the new placed letter is candidate add it to the vertical list
+							if (isCndidate(horizonal.get(j).row, horizonal.get(j).col + CASE4[k], true) == true) {
+								vertical.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + CASE4[k]));
+							}		
+						}
+						//check if last letter is no more a candidate, it is possible only if it is candidate to case1
+						if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE1) != true) {
+							horizonal.remove(j); //remove this letter from the optional letters		
+						}
+						//first placed letter could also be a candidate for case4
+						if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col - 3, ZEROS, CASE4) == true) {
+							horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col - 3));
+						}
+//							System.out.println(testWord);
+						return testWord.toString();
+					}
+			}
+			else {
+				++isValid;
+			}
 			
-			//Check the horizonal list
-			for (int j = 0; j < horizonal.size(); ++j) {
-				isValid = 0;
-				
-				// case #***
-				if ((horizonal.get(j).col <= 11) &&
-					(isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE1) == true)) {
-						StringBuffer testWord = new StringBuffer(threeLetterWord);
-						testWord.insert(0, board.getLetter(horizonal.get(j).row, horizonal.get(j).col));
-						if (dic.contains(testWord.toString())) {
-							for (int k = 0; k < 3; k++) {
-								board.insertLetter(horizonal.get(j).row, 
-												   horizonal.get(j).col + CASE1[k], 
-										           threeLetterWord.toString().charAt(k));
-								//if the new placed letter is candidate add it to the vertical list
-								if (isCndidate(horizonal.get(j).row, horizonal.get(j).col + CASE1[k], true) == true) {
-									vertical.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + CASE1[k]));
-								}
+			//check if the current letter is still a candidate
+			if (isValid == 4) {
+				horizonal.remove(j);
+			}
+		}
+		return null;
+	}
+
+	private String checkVerticalCases(StringBuffer threeLetterWord) {
+		int isValid;
+		for (int j = 0; j < vertical.size(); ++j) {
+			isValid = 0;
+			// case #
+		    //	    *
+		    //      *
+		    //	    *
+			if ((vertical.get(j).row <= 11)  && 
+				(isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE1, ZEROS) == true)) {
+					StringBuffer testWord = new StringBuffer(threeLetterWord);
+					testWord.insert(0, board.getLetter(vertical.get(j).row, vertical.get(j).col));
+					if (dic.contains(testWord.toString())) {
+						for (int k = 0; k < 3; k++) {
+							board.insertLetter(vertical.get(j).row + CASE1[k],
+									           vertical.get(j).col, 
+									           threeLetterWord.toString().charAt(k));
+							//if the new placed letter is candidate add it to the horizonal list
+							if (isCndidate(vertical.get(j).row + CASE1[k], vertical.get(j).col, false) == true) {
+								horizonal.add(new LetterCellCords(vertical.get(j).row + CASE1[k], vertical.get(j).col));
 							}
-							//last placed letter could also be a candidate for case1
-							if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col + 3, ZEROS, CASE1) == true) {
-								horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + 3));
-							}
-							//check if first letter is no more a candidate, it is possible only if it is candidate to case4
-							if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE4) != true) {
-								horizonal.remove(j); //remove this letter from the optional letters
-							}
-//							System.out.println(testWord);
-							return testWord.toString();
 						}
-				}
-				else {
-					++isValid;
-				}
-				//case *#**
-				if ((horizonal.get(j).col <= 12) && (horizonal.get(j).col >= 1) &&
-					(isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE2) == true)) {
-						StringBuffer testWord = new StringBuffer(threeLetterWord);
-						testWord.insert(1, board.getLetter(horizonal.get(j).row, horizonal.get(j).col));
-						if (dic.contains(testWord.toString())) {
-							for (int k = 0; k < 3; k++) {
-								board.insertLetter(horizonal.get(j).row, 
-											       horizonal.get(j).col + CASE2[k], 
-												   threeLetterWord.toString().charAt(k));
-								//if the new placed letter is candidate add it to the vertical list
-								if (isCndidate(horizonal.get(j).row, horizonal.get(j).col + CASE2[k], true) == true) {
-									vertical.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + CASE2[k]));
-								}
-							}
-							//check if the first letter is vertically candidates for case 4
-							if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col - 1, ZEROS, CASE4) == true) {
-								horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col - 1));
-							}
-							//check if the last letter is vertically candidates for case 1
-							if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col + 2, ZEROS, CASE1) == true) {
-								horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + 2));
-							}
-							//this letter is no more a candidate for non of the cases
-							horizonal.remove(j);
-//							System.out.println(testWord);
-							return testWord.toString();
+						//last placed letter could also be a candidate for case1
+						if (isCandidateByCase(vertical.get(j).row + 3, vertical.get(j).col, CASE1, ZEROS) == true) {
+							vertical.add(new LetterCellCords(vertical.get(j).row + 3, vertical.get(j).col));
 						}
-				}
-				else {
-					++isValid;
-				}
-				//case **#*
-				if ((horizonal.get(j).col <= 13) && (horizonal.get(j).col >= 2) &&
-					(isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE3) == true)) {	
-						StringBuffer testWord = new StringBuffer(threeLetterWord);
-						testWord.insert(2, board.getLetter(horizonal.get(j).row, horizonal.get(j).col));
-						if (dic.contains(testWord.toString())) {
-							for (int k = 0; k < 3; k++) {
-								board.insertLetter(horizonal.get(j).row, 
-												   horizonal.get(j).col + CASE3[k], 
-										           threeLetterWord.toString().charAt(k));
-								//if the new placed letter is candidate add it to the vertical list
-								if (isCndidate(horizonal.get(j).row, horizonal.get(j).col + CASE3[k], true) == true) {
-									vertical.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + CASE3[k]));
-								}
-							}
-							//check if the first letter is vertically candidates for case 4
-							if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col - 2, ZEROS, CASE4) == true) {
-								horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col - 2));
-							}
-							//check if the last letter is vertically candidates for case 1
-							if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col + 1, ZEROS, CASE1) == true) {
-								horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + 1));
-							}
-							//this letter is no more a candidate for non of the cases
-							horizonal.remove(j);
-//							System.out.println(testWord);
-							return testWord.toString();
+						//check if first letter is no more a candidate, it is possible only if it is candidate to case4
+						if (isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE4, ZEROS) != true) {
+							vertical.remove(j); //remove this letter from the optional letters
 						}
-				}
-				else {
-					++isValid;
-				}
-				//case ***#
-				if ((horizonal.get(j).col >= 3) && 
-					(isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE4) == true)) {
-						StringBuffer testWord = new StringBuffer(threeLetterWord);
-						testWord.insert(3, board.getLetter(horizonal.get(j).row, horizonal.get(j).col));
-						if (dic.contains(testWord.toString())) {
-							for (int k = 0; k < 3; k++) {
-								board.insertLetter(horizonal.get(j).row, 
-												   horizonal.get(j).col + CASE4[k], 
-										           threeLetterWord.toString().charAt(k));
-								//if the new placed letter is candidate add it to the vertical list
-								if (isCndidate(horizonal.get(j).row, horizonal.get(j).col + CASE4[k], true) == true) {
-									vertical.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col + CASE4[k]));
-								}		
-							}
-							//check if last letter is no more a candidate, it is possible only if it is candidate to case1
-							if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col, ZEROS, CASE1) != true) {
-								horizonal.remove(j); //remove this letter from the optional letters		
-							}
-							//first placed letter could also be a candidate for case4
-							if (isCandidateByCase(horizonal.get(j).row, horizonal.get(j).col - 3, ZEROS, CASE4) == true) {
-								horizonal.add(new LetterCellCords(horizonal.get(j).row, horizonal.get(j).col - 3));
-							}
 //							System.out.println(testWord);
-							return testWord.toString();
+						return testWord.toString();
+					}
+			}
+			else { //this letter is no longer a candidate for case1
+				++isValid;
+			}
+			// case *
+		    //	    #
+		    //      *
+		    //	    *
+			if ((vertical.get(j).row <= 12) && (vertical.get(j).row >= 1) &&
+				(isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE2, ZEROS) == true)) {
+					StringBuffer testWord = new StringBuffer(threeLetterWord);
+					testWord.insert(1, board.getLetter(vertical.get(j).row, vertical.get(j).col));
+					if (dic.contains(testWord.toString())) {
+						for (int k = 0; k < 3; k++) {
+							board.insertLetter(vertical.get(j).row + CASE2[k], 
+									           vertical.get(j).col, 
+									           threeLetterWord.toString().charAt(k));
+							//if the new placed letter is candidate add it to the horizonal list
+							if (isCndidate(vertical.get(j).row + CASE2[k], vertical.get(j).col, false) == true) {
+								horizonal.add(new LetterCellCords(vertical.get(j).row + CASE2[k], vertical.get(j).col));
+							}
 						}
-				}
-				else {
-					++isValid;
-				}
-				
-				//check if the current letter is still a candidate
-				if (isValid == 4) {
-					horizonal.remove(j);
-				}
+						//check if the first letter is vertically candidates for case 4
+						if (isCandidateByCase(vertical.get(j).row - 1, vertical.get(j).col, CASE4, ZEROS) == true) {
+							vertical.add(new LetterCellCords(vertical.get(j).row - 1, vertical.get(j).col));
+						}
+						//check if the last letter is vertically candidates for case 1
+						if (isCandidateByCase(vertical.get(j).row + 2, j, CASE1, ZEROS) == true) {
+							vertical.add(new LetterCellCords(vertical.get(j).row + 2, vertical.get(j).col));
+						}
+						//this letter is no more a candidate for non of the cases
+						vertical.remove(j);
+//							System.out.println(testWord);
+						return testWord.toString();
+					}
+			}
+			else { //this letter is not a candidate for case2
+				++isValid;
+			}
+			// case *
+		    //	    *
+		    //      #
+		    //	    *
+			if ((vertical.get(j).row <= 13) && (vertical.get(j).row >= 2) &&
+				(isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE3, ZEROS) == true)) {
+					StringBuffer testWord = new StringBuffer(threeLetterWord);
+					testWord.insert(2, board.getLetter(vertical.get(j).row, vertical.get(j).col));
+					if (dic.contains(testWord.toString())) {
+						for (int k = 0; k < 3; k++) {
+							board.insertLetter(vertical.get(j).row + CASE3[k], 
+									           vertical.get(j).col, 
+									           threeLetterWord.toString().charAt(k));
+							if (isCndidate(vertical.get(j).row + CASE3[k], vertical.get(j).col, false) == true) {
+								horizonal.add(new LetterCellCords(vertical.get(j).row + CASE3[k], vertical.get(j).col));
+							}
+						}
+						//check if the first letter is vertically candidates for case 4
+						if (isCandidateByCase(vertical.get(j).row - 2, vertical.get(j).col, CASE4, ZEROS) == true) {
+							vertical.add(new LetterCellCords(vertical.get(j).row - 2, vertical.get(j).col));
+						}
+						//check if the last letter is vertically candidates for case 1
+						if (isCandidateByCase(vertical.get(j).row + 1, j, CASE1, ZEROS) == true) {
+							vertical.add(new LetterCellCords(vertical.get(j).row + 1, vertical.get(j).col));
+						}
+						//this letter is no more a candidate for non of the cases
+						vertical.remove(j);
+//							System.out.println(testWord);
+						return testWord.toString();
+					}
+			}
+			else { //this letter is no more a candidate for case3 
+				++isValid;
+			}
+			// case *
+		    //	    *
+		    //      *
+		    //	    #
+			if ((vertical.get(j).row >= 3) &&
+				(isCandidateByCase(vertical.get(j).row, vertical.get(j).col, CASE4, ZEROS) == true)) {	
+					StringBuffer testWord = new StringBuffer(threeLetterWord);
+					testWord.insert(3, board.getLetter(vertical.get(j).row, vertical.get(j).col));
+					if (dic.contains(testWord.toString())) {
+						for (int k = 0; k < 3; k++) {
+							board.insertLetter(vertical.get(j).row + CASE4[k], 
+									           vertical.get(j).col, 
+									           threeLetterWord.toString().charAt(k));
+							if (isCndidate(vertical.get(j).row + CASE4[k], vertical.get(j).col, false) == true) {
+								horizonal.add(new LetterCellCords(vertical.get(j).row + CASE4[k], vertical.get(j).col));
+							}
+						}
+						//check if the first letter is vertically candidates for case 4
+						if (isCandidateByCase(vertical.get(j).row - 3, vertical.get(j).col, CASE4, ZEROS) == true) {
+							vertical.add(new LetterCellCords(vertical.get(j).row - 3, vertical.get(j).col));
+						}
+						//check if the last letter is vertically candidates for case 1
+						if (isCandidateByCase(vertical.get(j).row, j, CASE1, ZEROS) != true) {
+							vertical.remove(j);
+						}
+//							System.out.println(testWord);
+						return testWord.toString();
+					}
+			}
+			else { //this letter id no more a candidate for case 4
+				++isValid;
+			}
+			//check if current letter is no more a candidate
+			if (isValid == 4) {
+				vertical.remove(j);
 			}
 		}
 		return null;
