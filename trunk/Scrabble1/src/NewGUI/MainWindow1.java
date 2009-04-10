@@ -1113,35 +1113,44 @@ public class MainWindow1 extends javax.swing.JFrame {
 	 * This is the event from done button. 
 	 */
 	private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doneButtonActionPerformed
-		if ((changeLetterFlag == false) && (addWordFlag == false)) {
-			setPlayStatusText("Choose add word or change letter");
-			return;
-		}
-		if (changeLetterFlag == true) {
-			GameGui.moveToNextPlayer();
-		}
-		else if (addWordFlag == true) {
-			//if the current player is automatic
-			if ((GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto()) == true) {
-				GameGui.placeAutoWord();
+		//current player is human
+		if (GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto() == false) {
+			//player pressed done before he pressed "change letters" or "add word"
+			if ((changeLetterFlag == false) && (addWordFlag == false)){
+				setPlayStatusText("Choose add word or change letter");
+				return;
+			}
+			if (changeLetterFlag == true) {
 				GameGui.moveToNextPlayer();
 			}
-			else { //if it is a human player
+			else if (addWordFlag == true) {
 				GameGui.placeWordBasic();
 				GameGui.moveToNextPlayer();
-				setPlayStatusText("");
+//				setPlayStatusText("");
 			}
-//			GameGui.placeWordBasic();
-//			GameGui.moveToNextPlayer();
-//			setPlayStatusText("");
 		}
-//		if ((GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto()) == true) {
-//			GameGui.placeAutoWord();
-//			GameGui.moveToNextPlayer();
-//		}
+		//if the current player is automatic
+		else {
+			GameGui.placeAutoWord();
+			GameGui.moveToNextPlayer();
+		}
+		
 		gameBoard.repaint();
 
 		MainWindow1.setSaved(false);
+		
+		//set the board accordingly if the current player is auto or human
+		if (GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto() == true) {
+			changeLetter.setEnabled(false);
+			addWordToBoard.setEnabled(false);
+			setPlayStatusText("The current turn is an auto player turn, press Done for him to make his move");
+		}
+		else {
+			changeLetterFlag = false;
+			addWordFlag = false;
+			changeLetter.setEnabled(true);
+			addWordToBoard.setEnabled(true);
+		}
 		
 		//check if game finished
 		if (GameGui.getG().getLettersSet().getLetterSetSize() == 0) {
@@ -1156,10 +1165,6 @@ public class MainWindow1 extends javax.swing.JFrame {
 		advancedLetterPlaced = false;
 
 		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
-		changeLetterFlag = false;
-		addWordFlag = false;
-		changeLetter.setEnabled(true);
-		addWordToBoard.setEnabled(true);
 		updateLetterSackBox();
 		updateScoreBoard();
 		

@@ -17,6 +17,7 @@ Now you have to choose the number of players (1-4) and the rules set:
    by herself what is the longest word that was created.
 2) Advanced: Each cell has a random weight (1-4) and the user can place only one letter.
 
-Now enter the names of the players (length less then 50) and choose if anyone of them should be automatic.
-
+Now enter the names of the players (length less then 50) and choose if anyone of them should be automatic. FIRST ENTER THE NAME, AND THEN PRESS THE CHECK BOX.
+Notice that the first player must be human.
+Notice that an auto player is only possible at the basic rule set.
 =======================

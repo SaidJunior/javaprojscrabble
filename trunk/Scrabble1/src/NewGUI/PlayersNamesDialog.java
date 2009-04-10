@@ -26,7 +26,10 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 	private static String name2 = "";
 	private static String name3 = "";
 	private static String name4 = "";
-	
+//	private static boolean isAuto1 = false;
+	private static boolean isAuto2 = false;
+	private static boolean isAuto3 = false;
+	private static boolean isAuto4 = false;
 	
     public void initNames()
     {
@@ -203,7 +206,12 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         });
 
         computerPlayer4CheckBox.setEnabled(false);
-
+        computerPlayer4CheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computerPlayer4CheckBoxActionPerformed(evt);
+            }
+        });
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -311,14 +319,29 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     		GeneralMessage.stratGeneralMessage(this, message, "Names feed problem");
     		return;
     	}
-    	//LOGIC
-    	String[] playerNames = new String[4];
-    	playerNames[0] = name1;
-    	playerNames[1] = name2;
-    	playerNames[2] = name3;
-    	playerNames[3] = name4;
     	
-    	GameGui.createPlayerList(playerNames); 
+    	//check that not all players are automatic
+//    	if ((message = checkThatNotAllAuto()) != null) {
+//    		GeneralMessage.stratGeneralMessage(this, message, "Players feed problem");
+//    		return;
+//    	}
+    	//LOGIC
+    	
+    	
+//    	String[] playerNames = new String[4];
+//    	playerNames[0] = name1;
+//    	playerNames[1] = name2;
+//    	playerNames[2] = name3;
+//    	playerNames[3] = name4;
+    	
+    	PlayerInfo[] playerInfo = new PlayerInfo[4];
+    	playerInfo[0] = new PlayerInfo(name1, false);
+    	playerInfo[1] = new PlayerInfo(name2, isAuto2);
+    	playerInfo[2] = new PlayerInfo(name3, isAuto3);
+    	playerInfo[3] = new PlayerInfo(name4, isAuto4);
+    	
+//    	GameGui.createPlayerList(playerNames);
+    	GameGui.createPlayerList(playerInfo);
     	//END_LOGIC
     	
         //check if all names are valid
@@ -330,12 +353,28 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         //close the parent screen
         NewGameDialog.initParentScreen();
 
-//        MainWindow = new MainWindow1();
-//        MainWindow.setVisible(true);
+        MainWindow = new MainWindow1();
+        MainWindow.setVisible(true);
  
     }//GEN-LAST:event_StartGameButtonActionPerformed
 
-    private static String checkIfValidNames()
+//    private static String checkThatNotAllAuto() {
+//		if ((GameGui.getG().getNumberOfPlayers() == 1) && isAuto1) {
+//			return "A game with one player must be with a human player";
+//		}
+//		if ((GameGui.getG().getNumberOfPlayers() == 2) && isAuto1 && isAuto2) {
+//			return "One of the players must be human";
+//		}
+//		if ((GameGui.getG().getNumberOfPlayers() == 3) && isAuto1 && isAuto2 && isAuto3) {
+//			return "One of the players must be human";
+//		}
+//		if ((GameGui.getG().getNumberOfPlayers() == 4) && isAuto1 && isAuto2 && isAuto3 && isAuto4) {
+//			return "One of the players must be human";
+//		}
+//		return null;
+//	}
+
+	private static String checkIfValidNames()
     {
     	String message = "";
     	String temp = checkIfValidName(name1);
@@ -392,27 +431,41 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 }//GEN-LAST:event_CancelActionPerformed
 
     private void computerPlayer1CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerPlayer1CheckBoxActionPerformed
-        if(computerPlayer1CheckBox.isSelected())
+        if(computerPlayer1CheckBox.isSelected()) {
             Player1TextField.setEnabled(false);
+//            isAuto1 = true;
+        }
         else
             Player1TextField.setEnabled(true);
     }//GEN-LAST:event_computerPlayer1CheckBoxActionPerformed
 
     private void computerPlayer2CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerPlayer2CheckBoxActionPerformed
-        if(computerPlayer2CheckBox.isSelected())
+        if(computerPlayer2CheckBox.isSelected()) {
             Player2TextField.setEnabled(false);
+            isAuto2 = true;
+        }
         else
             Player2TextField.setEnabled(true);
     }//GEN-LAST:event_computerPlayer2CheckBoxActionPerformed
 
     private void computerPlayer3CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerPlayer3CheckBoxActionPerformed
-        if(computerPlayer3CheckBox.isSelected())
+        if(computerPlayer3CheckBox.isSelected()) {
             Player3TextField.setEnabled(false);
+            isAuto3 = true;
+        }
         else
             Player3TextField.setEnabled(true);
     }//GEN-LAST:event_computerPlayer3CheckBoxActionPerformed
 
-
+    private void computerPlayer4CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerPlayer3CheckBoxActionPerformed
+        if(computerPlayer4CheckBox.isSelected()) {
+            Player4TextField.setEnabled(false);
+            isAuto4 = true;
+        }
+        else
+            Player4TextField.setEnabled(true);
+    }//GEN-LAST:event_computerPlayer3CheckBoxActionPerformed
+    
     /**
     * @param args the command line arguments
     */
@@ -449,6 +502,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     private javax.swing.JCheckBox computerPlayer3CheckBox;
     private javax.swing.JCheckBox computerPlayer4CheckBox;
     private javax.swing.JLabel jLabel1;
+    public  MainWindow1 MainWindow;
     // End of variables declaration//GEN-END:variables
 
 
@@ -509,5 +563,32 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 		if (name.length() > 19)		
 			return "Name length must be smaller than 20 letters.";
 		return null;
+	}
+	
+	//add by eviatar for automatic players creation
+	public class PlayerInfo {
+		private String playerName;
+		private boolean isAuto;
+		
+		private PlayerInfo(String playerName, boolean isAuto) {
+			this.playerName = playerName;
+			this.isAuto     = isAuto;
+		}
+		
+		public boolean isAuto() {
+			return isAuto;
+		}
+
+		public void setAuto(boolean isAuto) {
+			this.isAuto = isAuto;
+		}
+
+		public String getPlayerName() {
+			return playerName;
+		}
+		
+		public void setPlayerName(String playerName) {
+			this.playerName = playerName;
+		}
 	}
 }
