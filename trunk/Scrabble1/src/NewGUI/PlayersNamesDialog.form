@@ -68,9 +68,8 @@
                           <Component id="computerPlayer4CheckBox" max="32767" attributes="1"/>
                           <Component id="computerPlayer3CheckBox" max="32767" attributes="1"/>
                           <Component id="computerPlayer2CheckBox" max="32767" attributes="1"/>
-                          <Component id="computerPlayer1CheckBox" alignment="0" pref="42" max="32767" attributes="1"/>
                       </Group>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -108,8 +107,7 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="computerPlayer1CheckBox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                       <Component id="computerPlayer2CheckBox" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="computerPlayer3CheckBox" min="-2" max="-2" attributes="0"/>
@@ -220,14 +218,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Computer"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="computerPlayer1CheckBox">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="computerPlayer1CheckBoxActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="computerPlayer2CheckBox">
       <Properties>

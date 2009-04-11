@@ -13,8 +13,6 @@ package NewGUI;
 
 import scrabbleMain.Game;
 import scrabbleMain.GameGui;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -40,9 +38,6 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     }
 
     public void setGameParameters(int numPlayers){
-        if(NewGameDialog.getGameType() == 0)
-            this.computerPlayer1CheckBox.setEnabled(true);
-
         if (numPlayers == 2)
         {
             this.Player2Label.setEnabled(true);
@@ -124,15 +119,15 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         BackButton = new javax.swing.JButton();
         Cancel = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        computerPlayer1CheckBox = new javax.swing.JCheckBox();
         computerPlayer2CheckBox = new javax.swing.JCheckBox();
         computerPlayer3CheckBox = new javax.swing.JCheckBox();
         computerPlayer4CheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        WelcomeLabel.setFont(new java.awt.Font("Tahoma", 1, 14));
-        WelcomeLabel.setText("Select Player Names:");
+        WelcomeLabel.setFont(new java.awt.Font("Tahoma", 1, 14));// NOI18N      
+        WelcomeLabel.setText("Type Players's Names:"); 
+        WelcomeLabel.setToolTipText("All names must have 1-20 letters"); 
 
         Player1Label.setText("Player 1:");
 
@@ -157,24 +152,27 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
         Player4TextField.setEnabled(false);
 
-        StartGameButton.setFont(new java.awt.Font("Tahoma", 1, 14));
+        StartGameButton.setFont(new java.awt.Font("Tahoma", 1, 14));// NOI18N
         StartGameButton.setText("Start Game!");
+        StartGameButton.setToolTipText("Let's Scrabble!!!");
         StartGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StartGameButtonActionPerformed(evt);
             }
         });
 
-        BackButton.setFont(new java.awt.Font("Tahoma", 1, 12));
+        BackButton.setFont(new java.awt.Font("Tahoma", 1, 12));// NOI18N
         BackButton.setText("< Back");
+        BackButton.setToolTipText("Back to previous screen");
         BackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackButtonActionPerformed(evt);
             }
         });
 
-        Cancel.setFont(new java.awt.Font("Tahoma", 1, 14));
+        Cancel.setFont(new java.awt.Font("Tahoma", 1, 14));// NOI18N
         Cancel.setText("Cancel");
+        Cancel.setToolTipText("leave new game screen");
         Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelActionPerformed(evt);
@@ -183,13 +181,6 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel1.setText("Computer");
-
-        computerPlayer1CheckBox.setEnabled(false);
-        computerPlayer1CheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                computerPlayer1CheckBoxActionPerformed(evt);
-            }
-        });
 
         computerPlayer2CheckBox.setEnabled(false);
         computerPlayer2CheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -206,12 +197,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         });
 
         computerPlayer4CheckBox.setEnabled(false);
-        computerPlayer4CheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                computerPlayer4CheckBoxActionPerformed(evt);
-            }
-        });
-        
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -254,9 +240,8 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(computerPlayer4CheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(computerPlayer3CheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(computerPlayer2CheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(computerPlayer1CheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
-                        .addGap(15, 15, 15))))
+                            .addComponent(computerPlayer2CheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(36, 36, 36))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,8 +269,7 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
                             .addComponent(Player4Label)
                             .addComponent(Player4TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(computerPlayer1CheckBox)
-                        .addGap(18, 18, 18)
+                        .addGap(39, 39, 39)
                         .addComponent(computerPlayer2CheckBox)
                         .addGap(18, 18, 18)
                         .addComponent(computerPlayer3CheckBox)
@@ -430,15 +414,6 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
         this.dispose();
 }//GEN-LAST:event_CancelActionPerformed
 
-    private void computerPlayer1CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerPlayer1CheckBoxActionPerformed
-        if(computerPlayer1CheckBox.isSelected()) {
-            Player1TextField.setEnabled(false);
-//            isAuto1 = true;
-        }
-        else
-            Player1TextField.setEnabled(true);
-    }//GEN-LAST:event_computerPlayer1CheckBoxActionPerformed
-
     private void computerPlayer2CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerPlayer2CheckBoxActionPerformed
         if(computerPlayer2CheckBox.isSelected()) {
             Player2TextField.setEnabled(false);
@@ -448,14 +423,14 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
             Player2TextField.setEnabled(true);
     }//GEN-LAST:event_computerPlayer2CheckBoxActionPerformed
 
-    private void computerPlayer3CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerPlayer3CheckBoxActionPerformed
+    private void computerPlayer3CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                        
         if(computerPlayer3CheckBox.isSelected()) {
             Player3TextField.setEnabled(false);
             isAuto3 = true;
         }
         else
             Player3TextField.setEnabled(true);
-    }//GEN-LAST:event_computerPlayer3CheckBoxActionPerformed
+    }                                                       
 
     private void computerPlayer4CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerPlayer3CheckBoxActionPerformed
         if(computerPlayer4CheckBox.isSelected()) {
@@ -497,12 +472,11 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     private javax.swing.JTextField Player4TextField;
     private javax.swing.JButton StartGameButton;
     private javax.swing.JLabel WelcomeLabel;
-    private javax.swing.JCheckBox computerPlayer1CheckBox;
+    public 	MainWindow1 MainWindow;
     private javax.swing.JCheckBox computerPlayer2CheckBox;
     private javax.swing.JCheckBox computerPlayer3CheckBox;
     private javax.swing.JCheckBox computerPlayer4CheckBox;
     private javax.swing.JLabel jLabel1;
-    public  MainWindow1 MainWindow;
     // End of variables declaration//GEN-END:variables
 
 
