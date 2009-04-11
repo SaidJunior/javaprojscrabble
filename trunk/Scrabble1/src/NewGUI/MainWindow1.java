@@ -176,7 +176,7 @@ public class MainWindow1 extends javax.swing.JFrame {
                         .addComponent(AboutUsjScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(AboutUslayout.createSequentialGroup()
                         .addGap(171, 171, 171)
-                        .addComponent(AboutUsOkButton, javax.swing.GroupLayout.PREFERRED_SIZE,80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(AboutUsOkButton, javax.swing.GroupLayout.PREFERRED_SIZE,90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(82, Short.MAX_VALUE))
         );
         AboutUslayout.setVerticalGroup(
@@ -185,7 +185,7 @@ public class MainWindow1 extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(AboutUsjScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(AboutUsOkButton, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                .addComponent(AboutUsOkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
 
@@ -313,7 +313,7 @@ public class MainWindow1 extends javax.swing.JFrame {
         viewComponent2.setMinimumSize(new java.awt.Dimension(325,255));
         viewComponent2.setResizable(false);
         
-        AboutUsDialog.setMinimumSize(new java.awt.Dimension(425,425));
+        AboutUsDialog.setMinimumSize(new java.awt.Dimension(425,370));
         AboutUsDialog.setResizable(false);
         AboutUsTextPane1.setEditable(false);
         
