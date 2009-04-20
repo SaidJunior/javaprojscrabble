@@ -12,6 +12,8 @@
 package NewGUI;
 
 import java.awt.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import scrabbleMain.Board;
 import scrabbleMain.GameGui;
@@ -36,6 +38,7 @@ import java.awt.image.PixelGrabber;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 import javax.swing.DesktopManager;
@@ -46,7 +49,9 @@ import javax.swing.JPanel;
 
 import Gui.MainWindow1.resultAddLetter;
 import Gui.MainWindow1.resultSwapLetter;
-
+import resources.resConfig;
+import resources.Letter2.letter2Config;
+import resources.Letters.lettersConfig;
 /**
  * 
  * @author Roy
@@ -331,7 +336,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 				.getColor("Button.background"));
 		helpjTextPane1.setContentType("rich text");
 		helpjTextPane1.setEditable(false);
-		helpjTextPane1.setText(GameGui.parseFileToString("resources/help_file1.txt"));
+		helpjTextPane1.setText(GameGui.parseFileToString("help_file1.txt"));
 		helpjTextPane1.setMinimumSize(new java.awt.Dimension(408, 342));
 		helpText1.setViewportView(helpjTextPane1);
 
@@ -339,7 +344,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 				.getColor("Button.background"));
 		helpjTextPane2.setContentType("rich text");
 		helpjTextPane2.setEditable(false);
-		helpjTextPane2.setText(GameGui.parseFileToString("resources/help_file2.txt"));
+		helpjTextPane2.setText(GameGui.parseFileToString("help_file2.txt"));
 		helpText2.setViewportView(helpjTextPane2);
 
              javax.swing.GroupLayout viewlayout = new javax.swing.GroupLayout(
@@ -1544,12 +1549,12 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		// draws the board from the logic
 		public void drawBoard(Graphics g, Board b) {
-			String path = "resources/squarePicture.jpg";
+			String path = "squarePicture.jpg";
 			if(TableColor==1){
-				path="resources/squareRed.jpg";
+				path="squareRed.jpg";
 			}
 			if(TableColor==2){
-				path="resources/squarePicture4.jpg";
+				path="squarePicture4.jpg";
 			}
 			for (int i = 0; i < 15; i++)
 				for (int j = 0; j < 15; j++) {
@@ -1583,7 +1588,12 @@ public class MainWindow1 extends javax.swing.JFrame {
 		public void drawImage2(Graphics g,String filePath,int width,int height,int x, int y) {
 //			String path = "resources/Letters/smily.jpg";80 80 380 425
 			String path = filePath;
-			Image img = Toolkit.getDefaultToolkit().getImage(path);
+			Image img = null;
+			InputStream input = resConfig.getImageStream(filePath);
+			try{
+				img = ImageIO.read(input);
+			}
+			catch(IOException e){}
 			BufferedImage animated = resize(toBufferedImage(img), width, height);
 			drawImage(animated, g,x, y);
 
@@ -1697,7 +1707,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 				p = player; // will be removed once the logic is complete
 			}
 			drawPlayerLetters(g1, p);
-			drawImage2(g1,"resources/Letters/smily.jpg",80,80,380,425);
+			drawImage2(g1,"smily.jpg",80,80,380,425);
 		}
 
 		// draws a given image
@@ -1719,16 +1729,21 @@ public class MainWindow1 extends javax.swing.JFrame {
 
 		public void loadLetters() {
 			letters = new BufferedImage[27];
+			InputStream input;
 //			int style = GameGui.getG().getLetterMode();
 			int style = LetterColor;
 			for (int i = 1; i <= 27; i++) {
 				String path;
-				if (style == 0) {
-					path = "resources/Letters/" + i + ".jpg";
-				} else {
-					path = "resources/Letter2/" + i + ".jpg";
+				if (style == 0)
+					input = lettersConfig.getImageStream(i + ".jpg");	
+				else
+					input = letter2Config.getImageStream(i + ".jpg");
+
+				Image img = null;
+				try{
+					img = ImageIO.read(input);
 				}
-				Image img = Toolkit.getDefaultToolkit().getImage(path);
+				catch(IOException e){}
 				letters[i - 1] = resize(toBufferedImage(img), 28, 28);
 			}
 		}
