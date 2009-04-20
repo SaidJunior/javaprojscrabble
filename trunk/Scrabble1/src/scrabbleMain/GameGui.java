@@ -7,10 +7,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import resources.resConfig;
+import resources.Letter2.letter2Config;
+import resources.Letters.lettersConfig;
 
 import com.sun.java.swing.plaf.windows.WindowsInternalFrameTitlePane.ScalableIconUIResource;
 
@@ -122,9 +127,9 @@ public class GameGui {
 	public static String parseFileToString(String FileName) {
 		StringBuffer str = new StringBuffer();
 		String line = null;
-
+		InputStream input = resConfig.getImageStream(FileName);
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(FileName));
+			BufferedReader in = new BufferedReader(new InputStreamReader(input));
 
 			while ((line = in.readLine()) != null) {
 				str.append(line + "\n");
@@ -137,7 +142,7 @@ public class GameGui {
 		return str.toString();
 
 	}
-
+	
 	public static void initGameLogic() {
 		G = new GameLogic();
 	}

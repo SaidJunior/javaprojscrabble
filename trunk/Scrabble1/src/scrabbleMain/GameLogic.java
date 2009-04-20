@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 
+import java.io.*;
 /**
  * This class contains all the logic variables of a Scrabble game
  * @author eviatar
@@ -40,6 +41,36 @@ public class GameLogic {
 	public NewGUI.MainWindow1 mainWindow;
 	private AutoPlayer ap = new AutoPlayer(board, dictionary, randWord); 
 
+	public GameLogic(){
+		createRecordListDir();
+		createSavedGamesDir();
+	}
+	
+    private void createSavedGamesDir() {
+    	File file = new File("/Saved_Games");
+
+    	if (file.exists())
+    		return;
+    	file.mkdir();
+	}
+
+	private void createRecordListDir() {
+    	File file;
+    	try{
+    	file = new File("/RecordList");
+
+    	if (file.exists())
+    		return;
+    	file.mkdir();
+    	file = new File("/RecordList/fileRecordList");
+    	file.createNewFile();
+    	file = new File("/RecordList/fileRecordListAdvanced");
+    	file.createNewFile();
+    	
+    	}
+    	catch(Exception e){}
+
+    }
     public int getLetterMode(){
     	return LetterMode;
     }

@@ -2,6 +2,7 @@ package scrabbleMain;
 
 import java.util.*;
 import java.io.*;
+import resources.resConfig;
 
 /*
  * The dictionary class
@@ -20,9 +21,10 @@ public class Dictionary {
 		
 		int size = Math.min(m, n) / 2;
 
+		InputStream input = resConfig.getImageStream("Words.txt");
 		try{
 			BufferedReader in = 
-				new BufferedReader(new FileReader("resources/Words.txt"));
+				new BufferedReader(new InputStreamReader(input));
 			String str;
 			while ((str = in.readLine()) != null){
 				words.add(str);
