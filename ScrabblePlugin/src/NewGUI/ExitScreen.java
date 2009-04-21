@@ -103,7 +103,7 @@ public class ExitScreen extends javax.swing.JFrame {
        
         //close exitScreen
         this.dispose();
-        System.exit(0);
+        //System.exit(0);
 }//GEN-LAST:event_exitOKButtonActionPerformed
 
         public static void startExitScreen(javax.swing.JFrame parent)
