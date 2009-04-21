@@ -228,13 +228,14 @@ public class NewGameDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PlayersNamesDialog pNDialog = new PlayersNamesDialog(new javax.swing.JFrame(), true);
+                final PlayersNamesDialog pNDialog = new PlayersNamesDialog(new javax.swing.JFrame(), true);
                 //pNDialog.setGameParameters(MainWindow1.getNumOfPlayers());
                 pNDialog.setGameParameters(getNumOfPlayers());
                 pNDialog.initNames();
                 pNDialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        //System.exit(0);
+                    	pNDialog.dispose();
                     }
                 });
                 //LOGIC
@@ -266,10 +267,11 @@ public class NewGameDialog extends javax.swing.JDialog {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NewGameDialog dialog = new NewGameDialog(new javax.swing.JFrame(), true);
+                final NewGameDialog dialog = new NewGameDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        //System.exit(0);
+                    	dialog.dispose();
                     }
                 });                   
                 dialog.setVisible(true);

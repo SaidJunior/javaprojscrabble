@@ -392,11 +392,12 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NewGameDialog nGDialog = new NewGameDialog(new javax.swing.JFrame(), true);
+                final NewGameDialog nGDialog = new NewGameDialog(new javax.swing.JFrame(), true);
                 nGDialog.setGameParameters();
                 nGDialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        //System.exit(0);
+                    	nGDialog.dispose();
                     }
                 });
                  //dispose new game window at the end
@@ -448,10 +449,11 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
 
     java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PlayersNamesDialog dialog = new PlayersNamesDialog(new javax.swing.JFrame(), true);
+                final PlayersNamesDialog dialog = new PlayersNamesDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        //System.exit(0);
+                    	dialog.dispose();
                     }
                 });
                 dialog.setVisible(true);
