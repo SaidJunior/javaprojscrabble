@@ -51,7 +51,6 @@ public class AutoPlayer implements Serializable {
 		return null;
 	}
 	private String placeAutoWordBasic(Player player) {
-		int isValid = 0; //if isValid == 4 then the current candidate is no longer candidate
 		
 		for (int i = 0; i < 35; ++i) {
 			//create a random string from three of the player letters
@@ -97,7 +96,7 @@ public class AutoPlayer implements Serializable {
 	}
 
 	private String checkHorizonalCases(StringBuffer threeLetterWord) {
-		int isValid;
+		int isValid; //if isValid == 4 then the current candidate is no longer candidate
 		for (int j = 0; j < horizonal.size(); ++j) {
 			isValid = 0;
 			
@@ -235,7 +234,7 @@ public class AutoPlayer implements Serializable {
 	}
 
 	private String checkVerticalCases(StringBuffer threeLetterWord) {
-		int isValid;
+		int isValid; //if isValid == 4 then the current candidate is no longer candidate
 		for (int j = 0; j < vertical.size(); ++j) {
 			isValid = 0;
 			// case #

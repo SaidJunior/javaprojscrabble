@@ -1127,6 +1127,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 			}
 			if (changeLetterFlag == true) {
 				GameGui.moveToNextPlayer();
+				setPlayStatusText("");
 			}
 			else if (addWordFlag == true) {
 				GameGui.placeWordBasic();
@@ -1148,7 +1149,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 		if (GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto() == true) {
 			changeLetter.setEnabled(false);
 			addWordToBoard.setEnabled(false);
-			setPlayStatusText("The current turn is an auto player turn, press Done for him to make his move");
+//			setPlayStatusText("The current turn is an auto player turn, press Done for him to make his move");
 		}
 		else {
 			changeLetter.setEnabled(true);
