@@ -51,8 +51,8 @@
                id="ScrabblePlugin.toolbars.sampleToolbar">
             <command
                   commandId="ScrabblePlugin.commands.sampleCommand"
-                  icon="icons/sample.gif"
-                  tooltip="Say hello world"
+                  icon="icons/scrabble.png"
+                  tooltip="Scrabble"
                   id="ScrabblePlugin.toolbars.sampleCommand">
             </command>
          </toolbar>
