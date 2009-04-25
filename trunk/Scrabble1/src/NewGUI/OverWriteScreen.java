@@ -12,6 +12,7 @@
 package NewGUI;
 
 import java.awt.Component;
+import java.io.IOException;
 
 /**
  *
@@ -37,6 +38,9 @@ public class OverWriteScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        try {
+			setIconImage(generalImages.getLogo());
+		} catch (IOException e) {}
         unSavedText = new javax.swing.JLabel();
         unSavedNo = new javax.swing.JButton();
         unSavedYes = new javax.swing.JButton();

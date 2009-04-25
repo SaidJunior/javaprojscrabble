@@ -99,6 +99,11 @@ public class MainWindow1 extends javax.swing.JFrame {
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
+		setTitle("Play Scrabble");
+		try{
+			setIconImage(generalImages.getLogo());
+		}catch(IOException e){};
+		
 		helpPage = new javax.swing.JDialog();
 		okHelpButton = new javax.swing.JButton();
 		helpText1 = new javax.swing.JScrollPane();

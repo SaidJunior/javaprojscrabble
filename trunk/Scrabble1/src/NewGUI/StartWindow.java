@@ -11,6 +11,8 @@
 
 package NewGUI;
 
+import java.io.IOException;
+
 /**
  *
  * @author Roy
@@ -31,6 +33,11 @@ public class StartWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+    	setTitle("Start a new Scrabble game");
+        try {
+			setIconImage(generalImages.getLogo());
+		} catch (IOException e) {}
+		
         exitButton = new javax.swing.JButton();
         loadGameButton = new javax.swing.JButton();
         newGameButton = new javax.swing.JButton();

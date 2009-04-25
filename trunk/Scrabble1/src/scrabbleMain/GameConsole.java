@@ -72,9 +72,9 @@ public class GameConsole {
 		
 			try {
 				if(G.getMode() == 'a'){
-                    file = new FileOutputStream(G.getsavedRecordListAdvancedPath());   
+                    file = new FileOutputStream(gameDirectories.getAdvancedRecordsFullFileName());   
 				}else {
-                    file = new FileOutputStream(G.getsavedRecordListPath());
+                    file = new FileOutputStream(gameDirectories.getBasicRecordsFullFileName());
 				}
 				ObjectOutputStream data = new ObjectOutputStream(file);
 //				recordList.updatePlayer("First Player", 10);
@@ -99,9 +99,9 @@ public class GameConsole {
 		FileInputStream file;
 		try {
 			if(G.getMode() == 'a'){
-                file = new FileInputStream(G.getsavedRecordListAdvancedPath());   
+                file = new FileInputStream(gameDirectories.getAdvancedRecordsFullFileName());   
 			}else {
-                file = new FileInputStream(G.getsavedRecordListPath());
+                file = new FileInputStream(gameDirectories.getBasicRecordsFullFileName());
 			}
 			ObjectInputStream data = new ObjectInputStream(file);
 		    G.setRecordList((RecordList) data.readObject());
@@ -169,7 +169,7 @@ public class GameConsole {
 		currentName += G.getFileSuffix();
 		
 		try {
-			FileInputStream file = new FileInputStream(G.getSavedGamesPath() + currentName);
+			FileInputStream file = new FileInputStream(gameDirectories.getSavedGamesDirectorty() + "/" + currentName);
 			ObjectInputStream data = new ObjectInputStream(file);
 			GameEntity gameEntity = (GameEntity)data.readObject();
 			data.close();
@@ -307,7 +307,7 @@ public class GameConsole {
 		
 		GameEntity gameEntity = new GameEntity(G.getPlayerList(), G.getLettersSet(), G.getBoard(), G.getTurnInd(), G.getMode());
 		try {
-			FileOutputStream file = new FileOutputStream(G.getSavedGamesPath() + currentName);		  
+			FileOutputStream file = new FileOutputStream(gameDirectories.getSavedGamesDirectorty() + "/" + currentName);		  
 			ObjectOutputStream data = new ObjectOutputStream(file);
 			
 			data.writeObject(gameEntity);
@@ -328,7 +328,7 @@ public class GameConsole {
 
 	private static boolean checkIfExist(String fileName){
 		
-		File file = new File(G.getSavedGamesPath() + fileName);
+		File file = new File(gameDirectories.getSavedGamesDirectorty() + "/" + fileName);
 		return file.exists();		
 	}
 

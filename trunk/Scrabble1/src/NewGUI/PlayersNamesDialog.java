@@ -11,6 +11,8 @@
 
 package NewGUI;
 
+import java.io.IOException;
+
 import scrabbleMain.Game;
 import scrabbleMain.GameGui;
 
@@ -106,6 +108,10 @@ public class PlayersNamesDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+    	setTitle("Type names for new players");
+        try {
+			setIconImage(generalImages.getLogo());
+		} catch (IOException e) {}
         WelcomeLabel = new javax.swing.JLabel();
         Player1Label = new javax.swing.JLabel();
         Player2Label = new javax.swing.JLabel();

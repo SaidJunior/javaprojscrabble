@@ -12,7 +12,11 @@
 package NewGUI;
 
 import java.io.File;
+import java.io.IOException;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import scrabbleMain.gameDirectories;
 
 /**
  *
@@ -79,11 +83,14 @@ public class gameFileChooser extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooser1 = new javax.swing.JFileChooser();
-
+        
+        try {
+			setIconImage(generalImages.getLogo());
+		} catch (IOException e) {}
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(javax.swing.UIManager.getDefaults().getColor("close_button_highlight"));
 
-        jFileChooser1.setCurrentDirectory(new java.io.File("C:\\"));
+        jFileChooser1.setCurrentDirectory(new java.io.File(gameDirectories.getSavedGamesDirectorty()));
             jFileChooser1.setDialogTitle("");
             jFileChooser1.setDialogType(javax.swing.JFileChooser.CUSTOM_DIALOG);
             jFileChooser1.addActionListener(new java.awt.event.ActionListener() {

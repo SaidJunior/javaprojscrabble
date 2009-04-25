@@ -12,6 +12,7 @@
 package NewGUI;
 
 import java.awt.Component;
+import java.io.IOException;
 
 /**
  *
@@ -35,6 +36,9 @@ public class SaveBeforeExitScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        try {
+			setIconImage(generalImages.getLogo());
+		} catch (IOException e) {}
         overwriteText = new javax.swing.JLabel();
         overwriteNoButton = new javax.swing.JButton();
         overwriteYesButton = new javax.swing.JButton();

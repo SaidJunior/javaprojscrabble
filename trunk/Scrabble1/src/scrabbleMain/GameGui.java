@@ -386,9 +386,9 @@ public class GameGui {
 		FileInputStream file;
 		try {
 			if(a == 'a'){
-                file = new FileInputStream(G.getsavedRecordListAdvancedPath());   
+                file = new FileInputStream(gameDirectories.getAdvancedRecordsFullFileName());   
 			}else {
-                file = new FileInputStream(G.getsavedRecordListPath());
+                file = new FileInputStream(gameDirectories.getBasicRecordsFullFileName());
 			}
 			ObjectInputStream data = new ObjectInputStream(file);
 			if(a=='b'){
@@ -414,9 +414,9 @@ public class GameGui {
 		FileOutputStream fileo;
 		try {
 			if(a == 'a'){
-                fileo = new FileOutputStream(G.getsavedRecordListAdvancedPath());   
+                fileo = new FileOutputStream(gameDirectories.getAdvancedRecordsFullFileName());   
 			}else {
-                fileo = new FileOutputStream(G.getsavedRecordListPath());
+                fileo = new FileOutputStream(gameDirectories.getBasicRecordsFullFileName());
 			}
 			ObjectOutputStream data = new ObjectOutputStream(fileo);
 //			recordList.updatePlayer("First Player", 10);
