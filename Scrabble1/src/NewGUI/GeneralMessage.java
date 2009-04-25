@@ -12,6 +12,8 @@
 package NewGUI;
 
 import java.awt.Component;
+import java.io.IOException;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -42,6 +44,9 @@ public class GeneralMessage extends javax.swing.JDialog {
 
         generalMessage1 = new javax.swing.JOptionPane();
 
+        try {
+			setIconImage(generalImages.getLogo());
+		} catch (IOException e) {}
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         generalMessage1.setMessageType(2);

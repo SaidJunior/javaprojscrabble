@@ -7,7 +7,11 @@ import java.io.InputStreamReader;
 import NewGUI.StartWindow;
 
 public class Game{
+
 	public static void main(String[] args) { 
+			
+		gameDirectories.initDirectories();
+		/*
 		char input = 0;
 		boolean validInput = false;
 		BufferedReader reader   = new BufferedReader(new InputStreamReader(System.in));
@@ -28,5 +32,8 @@ public class Game{
 				
 			}
 		} while (validInput == false);
+		*/
+		StartWindow.guiMain();
 	}
+		
 }

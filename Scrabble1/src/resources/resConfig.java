@@ -2,6 +2,9 @@ package resources;
 
 import java.io.InputStream;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 	public class resConfig {
 		
 
@@ -9,5 +12,5 @@ import java.io.InputStream;
    
 			public static InputStream getImageStream(String fileName){
 		    	return resourcesClass.getResourceAsStream(fileName);
-			}
+			}	
 	}

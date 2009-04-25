@@ -12,6 +12,7 @@
 package NewGUI;
 
 import java.awt.Component;
+import java.io.IOException;
 
 import scrabbleMain.GameGui;
 
@@ -36,6 +37,9 @@ public class ExitScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+    	try {
+			setIconImage(generalImages.getLogo());
+		} catch (IOException e) {}
         exitText = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         exitOKButton = new javax.swing.JButton();

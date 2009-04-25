@@ -11,6 +11,8 @@
 
 package NewGUI;
 
+import java.io.IOException;
+
 import scrabbleMain.GameGui;
 
 /**
@@ -62,6 +64,10 @@ public class NewGameDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+    	setTitle("Choose new game options");
+        try {
+			setIconImage(generalImages.getLogo());
+		} catch (IOException e) {}
         Next = new javax.swing.JButton();
         WelcomeLabel = new javax.swing.JLabel();
         SelectNumOfPlayersLabel = new javax.swing.JLabel();
