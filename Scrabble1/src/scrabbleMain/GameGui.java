@@ -371,36 +371,77 @@ public class GameGui {
 	}
 	
 	public static void updateRecordList() {
-		    if(G.getMode()=='b'){
-			if(!(G.getPlayerList().size()==0)){
-			for(Player player : G.getPlayerList()){
-				G.getRecordList().updatePlayer(player.getName(),player.getScore());}
-			}
-		    }else{if(!(G.getPlayerList().size()==0)){
+		if(G.getMode()=='b')
+		{
+			if(!(G.getPlayerList().size()==0))
+			{
 				for(Player player : G.getPlayerList()){
-					G.getRecordListAdvanced().updatePlayer(player.getName(),player.getScore());}
-		    }}
+					G.getRecordList().updatePlayer(player.getName(),player.getScore());}
+			}
+		}
+		else{
+			if(!(G.getPlayerList().size()==0))
+			{
+				for(Player player : G.getPlayerList())
+				{
+					G.getRecordListAdvanced().updatePlayer(player.getName(),player.getScore());
+				}
+			}
+		}
 	}
 	
+	/*
 	public static void UploadrecordList(char a){
 		FileInputStream file;
 		try {
-			if(a == 'a'){
-                file = new FileInputStream(gameDirectories.getAdvancedRecordsFullFileName());   
-			}else {
-                file = new FileInputStream(gameDirectories.getBasicRecordsFullFileName());
+			if(a == 'a')
+			{
+				file = new FileInputStream(gameDirectories.getAdvancedRecordsFullFileName());   
+			}
+			else 
+			{
+				file = new FileInputStream(gameDirectories.getBasicRecordsFullFileName());
 			}
 			ObjectInputStream data = new ObjectInputStream(file);
-			if(a=='b'){
-		    G.setRecordList((RecordList) data.readObject());
+			if(a=='b')
+			{
+				G.setRecordList((RecordList) data.readObject());
 			}
-			if(a=='a'){
-			 G.setRecordListAdvanced((RecordList) data.readObject());
+			if(a=='a')
+			{
+				G.setRecordListAdvanced((RecordList) data.readObject());
 			}
 			data.close();
 			file.close();
-			
-		} catch (FileNotFoundException e) {
+
+		} 
+		catch (FileNotFoundException e) {
+			System.out.println("File Error while loading.");
+		} catch (IOException e) {
+			System.out.println("IO Exception while loading updateRecordList.");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Cast problem while loading.");
+		}
+		
+	}
+	*/
+	
+	public static void UploadrecordList(){
+		FileInputStream file;
+		try {
+			file = new FileInputStream(gameDirectories.getAdvancedRecordsFullFileName());   
+			ObjectInputStream data = new ObjectInputStream(file);
+			G.setRecordListAdvanced((RecordList) data.readObject());
+			data.close();
+			file.close();
+
+			file = new FileInputStream(gameDirectories.getBasicRecordsFullFileName());
+			data = new ObjectInputStream(file);
+			G.setRecordList((RecordList) data.readObject());
+			data.close();
+			file.close();
+		} 
+		catch (FileNotFoundException e) {
 			System.out.println("File Error while loading.");
 		} catch (IOException e) {
 			System.out.println("IO Exception while loading updateRecordList.");
@@ -420,9 +461,9 @@ public class GameGui {
 			}
 			ObjectOutputStream data = new ObjectOutputStream(fileo);
 //			recordList.updatePlayer("First Player", 10);
-			if(a=='a')
-				data.writeObject(G.getRecordList());
 			if(a=='b')
+				data.writeObject(G.getRecordList());
+			if(a=='a')
 				data.writeObject(G.getRecordListAdvanced());
 			data.close();
 			fileo.close();
@@ -443,16 +484,16 @@ public class GameGui {
 		if(a=='b'){
 		for (int key : G.getRecordList().getRecordList().descendingKeySet()) {
 			for(String name:G.getRecordList().getRecordList().get(key)){
-				recordListString.append(name + "  ");
-				recordListString.append(key+ "\n");
+				recordListString.append(name + "\t\t");
+				recordListString.append(key + " points" + "\n");
 			}
 		} 
 		}
 		if(a=='a'){
 			for (int key : G.getRecordListAdvanced().getRecordList().descendingKeySet()) {
 				for(String name:G.getRecordListAdvanced().getRecordList().get(key)){
-					recordListString.append(name + "  ");
-					recordListString.append(key+ "\n");
+					recordListString.append(name + "\t\t");
+					recordListString.append(key + " points" + "\n");
 				}
 			} 
 		}

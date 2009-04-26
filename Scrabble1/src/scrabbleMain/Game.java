@@ -28,7 +28,7 @@ public class Game{
 			case 'q':   System.out.println("Thank  you!!!");
 						validInput = true;
 						break;
-			default:    System.out.println("Not a valit input, try again.");
+			default:    System.out.println("Not a valid input, try again.");
 				
 			}
 		} while (validInput == false);

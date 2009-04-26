@@ -98,9 +98,12 @@ public class GameConsole {
 	private static void updateRecordList() {
 		FileInputStream file;
 		try {
-			if(G.getMode() == 'a'){
+			if(G.getMode() == 'a')
+			{
                 file = new FileInputStream(gameDirectories.getAdvancedRecordsFullFileName());   
-			}else {
+			}
+			else 
+			{
                 file = new FileInputStream(gameDirectories.getBasicRecordsFullFileName());
 			}
 			ObjectInputStream data = new ObjectInputStream(file);
@@ -651,14 +654,6 @@ public class GameConsole {
 			this.letter = letter;
 		}
 	}
-	
-	/*public static String getPath(){
-		File f = new File("src/");
-		if (f.exists())
-			return "src/";
-		return "";
-		
-	}*/
 	
 	/* Prints current scores for all players.
 	 * Returns index of current winner of the game.
