@@ -60,8 +60,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	
 	/** Creates new form mainWindow */
 	public MainWindow1() {
-		GameGui.UploadrecordList('b');
-		GameGui.UploadrecordList('a');
+		GameGui.UploadrecordList();
 		initComponents();
 		GameGui.getG().mainWindow = this;
 	}
