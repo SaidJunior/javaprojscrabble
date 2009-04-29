@@ -12,7 +12,7 @@
 package NewGUI;
 
 import java.io.IOException;
-
+import java.awt.Color;
 /**
  *
  * @author Roy
@@ -32,7 +32,10 @@ public class StartWindow extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        jLabel1 = new javax.swing.JLabel();
 
+    	setBackground(Color.BLACK);
+    	setLocation(100, 100);
     	setTitle("Start a new Scrabble game");
         try {
 			setIconImage(generalImages.getLogo());
@@ -42,16 +45,17 @@ public class StartWindow extends javax.swing.JFrame {
         loadGameButton = new javax.swing.JButton();
         newGameButton = new javax.swing.JButton();
         welcomeLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
 
-        exitButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        exitButton.setBackground(new java.awt.Color(255, 51, 51));
+        exitButton.setFont(new java.awt.Font("Bauhaus 93", 1, 12)); // NOI18N
         exitButton.setText("Exit");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,7 +63,8 @@ public class StartWindow extends javax.swing.JFrame {
             }
         });
 
-        loadGameButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        loadGameButton.setBackground(new java.awt.Color(255, 255, 153));
+        loadGameButton.setFont(new java.awt.Font("Bauhaus 93", 1, 18)); // NOI18N
         loadGameButton.setText("Load Game");
         loadGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,7 +72,8 @@ public class StartWindow extends javax.swing.JFrame {
             }
         });
 
-        newGameButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        newGameButton.setBackground(new java.awt.Color(153, 255, 153));
+        newGameButton.setFont(new java.awt.Font("Bauhaus 93", 1, 24)); // NOI18N
         newGameButton.setText("New Game");
         newGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,9 +103,8 @@ public class StartWindow extends javax.swing.JFrame {
                         .addGap(153, 153, 153))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(37, 37, 37)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(64, Short.MAX_VALUE)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(29, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,10 +119,7 @@ public class StartWindow extends javax.swing.JFrame {
                 .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(61, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(38, 38, 38)))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE))
         );
 
         pack();

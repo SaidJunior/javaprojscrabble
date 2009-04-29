@@ -47,8 +47,11 @@ public class SaveBeforeExitScreen extends javax.swing.JFrame {
         setAlwaysOnTop(true);
         setResizable(false);
 
+        overwriteText.setFont(new java.awt.Font("Roman", 0, 12));
         overwriteText.setText("Current game isn't saved. Would you like to save it?");
 
+        overwriteNoButton.setBackground(new java.awt.Color(255, 51, 51));
+        overwriteNoButton.setFont(new java.awt.Font("Bauhaus 93", 0, 14));
         overwriteNoButton.setText("No");
         overwriteNoButton.setToolTipText("No, ");
         overwriteNoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -57,6 +60,8 @@ public class SaveBeforeExitScreen extends javax.swing.JFrame {
             }
         });
 
+        overwriteYesButton.setBackground(new java.awt.Color(153, 255, 153));
+        overwriteYesButton.setFont(new java.awt.Font("Bauhaus 93", 0, 24));
         overwriteYesButton.setText("Yes");
         overwriteYesButton.setToolTipText("Save current game");
         overwriteYesButton.addActionListener(new java.awt.event.ActionListener() {
