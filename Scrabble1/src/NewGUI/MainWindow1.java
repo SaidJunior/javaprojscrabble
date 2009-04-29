@@ -98,6 +98,7 @@ public class MainWindow1 extends javax.swing.JFrame {
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
+		setLocation(100, 100);
 		setTitle("Play Scrabble");
 		try{
 			setIconImage(generalImages.getLogo());

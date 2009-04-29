@@ -48,6 +48,7 @@ public class ExitScreen extends javax.swing.JFrame {
         setAlwaysOnTop(true);
         setResizable(false);
 
+        exitText.setFont(new java.awt.Font("Roman", 1, 14));
         exitText.setText("Are you sure you want to exit Scrabble?");
 
         jButton2.setText("No (how can someone quit such a game???)");

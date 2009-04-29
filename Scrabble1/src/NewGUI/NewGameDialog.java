@@ -64,6 +64,7 @@ public class NewGameDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+    	setLocation(100, 100);
     	setTitle("Choose new game options");
         try {
 			setIconImage(generalImages.getLogo());
@@ -80,7 +81,8 @@ public class NewGameDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        Next.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Next.setBackground(new java.awt.Color(255, 255, 153));
+        Next.setFont(new java.awt.Font("Bauhaus 93", 1, 20)); // NOI18N
         Next.setText("Next >");
         Next.setToolTipText("Type names for players");
         Next.addActionListener(new java.awt.event.ActionListener() {
@@ -89,7 +91,7 @@ public class NewGameDialog extends javax.swing.JDialog {
             }
         });
 
-        WelcomeLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        WelcomeLabel.setFont(new java.awt.Font("Ravie", 1, 22)); // NOI18N
         WelcomeLabel.setText("Welcome to Scrabble!");
 
         SelectNumOfPlayersLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -126,7 +128,8 @@ public class NewGameDialog extends javax.swing.JDialog {
             }
         });
 
-        Cancel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Cancel.setBackground(new java.awt.Color(255, 51, 51));
+        Cancel.setFont(new java.awt.Font("Bauhaus 93", 1, 20)); // NOI18N
         Cancel.setText("Cancel");
         Cancel.setToolTipText("leave new game screen");
         Cancel.addActionListener(new java.awt.event.ActionListener() {
