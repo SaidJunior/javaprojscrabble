@@ -1,6 +1,7 @@
 package resources;
 
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -13,4 +14,9 @@ import javax.swing.ImageIcon;
 			public static InputStream getImageStream(String fileName){
 		    	return resourcesClass.getResourceAsStream(fileName);
 			}	
+			
+			public static URL getURL(String fileName)
+			{
+				return resourcesClass.getResource(fileName);
+			}
 	}

@@ -628,16 +628,13 @@ public class MainWindow1 extends javax.swing.JFrame {
 		currentPlayer.setFont(new java.awt.Font("Tahoma", 1, 12));
 		currentPlayer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		currentPlayer.setText("Now Playing: " + GameGui.getG().getCurrentPlayerName());
-		
-		
+	
+	
+		letterSack.setIcon(generalImages.getlettersSackImage());
+		letterSack.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total lettes left in sack : 91", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 0, 102))); // NOI18N
+
 		updateLetterSackBox();
 		
-		letterSack.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				"Letter Sack",
-				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-				javax.swing.border.TitledBorder.DEFAULT_POSITION,
-				new java.awt.Font("Tahoma", 1, 12))); // NOI18N
-
 		scoreBoard.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
 				"Score Board",
 				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -921,16 +918,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 																				10,
 																				10,
 																				10))
-														.addGroup(
-																layout
-																		.createSequentialGroup()
-																		.addComponent(
-																				letterSack,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				188,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+														.addGroup(layout.createSequentialGroup()
+										                        .addContainerGap()
+										                        .addComponent(letterSack)
+										                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
 										.addGroup(
 												layout
 														.createParallelGroup(
@@ -1083,7 +1074,10 @@ public class MainWindow1 extends javax.swing.JFrame {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void updateLetterSackBox() {
-		letterSack.setText("Number of letters Left: " + GameGui.getG().getLettersSet().getLetterSetSize());
+		int lettersLeft = GameGui.getG().getLettersSet().getLetterSetSize();
+		String mes = "Total letters left in sack: " + lettersLeft;
+		letterSack.setBorder(javax.swing.BorderFactory.createTitledBorder(null, mes, javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 0, 102))); // NOI18N
+		letterSack.setToolTipText(lettersLeft + " letters left in sack");
 	}
 
 	private void saveMenuItemMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_saveMenuItemMouseClicked
