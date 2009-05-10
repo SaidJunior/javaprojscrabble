@@ -33,10 +33,6 @@ public class GameLogic {
 	private  RecordList     recordListBasic      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	private  RecordList     recordListAdvanced     = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	private  boolean isSaved = false;
-	//Path to hold all saved games at.
-	private  String savedGamesPath  = "Saved_Games/";
-	private  String savedRecordListPath = "RecordList/fileRecordList";
-	private  String savedRecordListAdvancedPath  = "RecordList/fileRecordListAdvanced";
 	private  String fileSuffix      = ".scrabble";
 	public Gui.MainWindow mainWindow;
 	private AutoPlayer ap = new AutoPlayer(board, dictionary, randWord); 
@@ -79,22 +75,6 @@ public class GameLogic {
     }
 	public  int getNumberOfPlayers() {
 		return numberOfPlayers;
-	}
-	
-	public  String getsavedRecordListPath() {
-		return this.savedRecordListPath;
-	}
-	
-	public  void setsavedRecordListPath(String new_path) {
-		this.savedRecordListPath = new_path;
-	}
-	
-	public  String getsavedRecordListAdvancedPath() {
-		return this.savedRecordListAdvancedPath;
-	}
-	
-	public  void setsavedRecordListAdvancedPath(String new_path) {
-		this.savedRecordListAdvancedPath = new_path;
 	}
 
 	public  void setNumberOfPlayers(int numberOfPlayers) {
@@ -156,15 +136,6 @@ public class GameLogic {
 	public  void setIsSaved(boolean isSaved) {
 		this.isSaved = isSaved;
 	}
-
-	public  String getSavedGamesPath() {
-		return savedGamesPath;
-	}
-
-	public  void setSavedGamesPath(String savedGamesPath) {
-		this.savedGamesPath = savedGamesPath;
-	}
-
 
 	public  String getFileSuffix() {
 		return fileSuffix;
