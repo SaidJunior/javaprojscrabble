@@ -42,6 +42,7 @@ import scrabbleMain.Board;
 import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
+import scrabbleMain.gameDirectories;
 import Gui.NewGameDialog.PlayerInfo;
 
 import com.cloudgarden.resource.SWTResourceManager;
@@ -635,7 +636,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 									String[] filterExtensions = {"*.scrabble"};
 									FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
 									fileDialog.setText("Scrabble Load Game");
-									fileDialog.setFilterPath("C:/");
+									fileDialog.setFilterPath(gameDirectories.getSavedGamesDirectorty());
 									fileDialog.setFilterExtensions(filterExtensions);
 									String selectedFile = fileDialog.open();
 									if (selectedFile != null) {
@@ -2427,7 +2428,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 	
 	private static void saveBeforExitMessage() {
 		MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO);
-		messageBox.setText("Save befor exit");
+		messageBox.setText("Save before exit");
 		messageBox.setMessage("The current game was not saved. Would you like to save it?");
 		int response = messageBox.open();
 		if (response == SWT.YES) {
@@ -2439,7 +2440,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		String[] filterExtensions = {"*.scrabble", "*.*"};
 		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
 		fileDialog.setText("Scrabble Save Game");
-		fileDialog.setFilterPath("C:/");
+		fileDialog.setFilterPath(gameDirectories.getSavedGamesDirectorty());
 		fileDialog.setFilterExtensions(filterExtensions);
 		String selectedFile = fileDialog.open();
 //		System.out.println(selectedFile);
