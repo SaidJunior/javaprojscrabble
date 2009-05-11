@@ -71,6 +71,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		SWTResourceManager.registerResourceUser(this);
 	}
 	
+	public static boolean showMenu = true;
 	private Menu menuMain;
 	private Button changeLetterBut;
 	private CLabel cLabelCell0104;
@@ -605,6 +606,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 			this.setLayout(new FormLayout());
 			this.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
 			{
+				if (showMenu){
 				menuMain = new Menu(getShell(), SWT.BAR);
 				getShell().setMenuBar(menuMain);
 				{
@@ -795,6 +797,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 						}
 					}
 				}
+			}
 			}
 			{
 				lettersLeftLabel = new CLabel(this, SWT.NONE);
@@ -2466,6 +2469,10 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 	
 	private void menuItemGameNewWidgetSelected(SelectionEvent evt) {
 //		System.out.println("menuItemGameNew.widgetSelected, event="+evt);
+		initNewGame();
+	}
+
+	public void initNewGame() {
 		if (!isSaved) {
 			saveBeforExitMessage();
 		}
