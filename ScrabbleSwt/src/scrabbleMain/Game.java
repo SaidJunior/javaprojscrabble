@@ -7,7 +7,6 @@ import Gui.MainWindow;
 
 public class Game{
 	public static void main(String[] args) { 
-		gameDirectories.initDirectories();
 		char input = 0;
 		boolean validInput = false;
 		BufferedReader reader   = new BufferedReader(new InputStreamReader(System.in));

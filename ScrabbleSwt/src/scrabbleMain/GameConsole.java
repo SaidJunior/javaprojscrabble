@@ -18,6 +18,7 @@ public class GameConsole {
 	private static GameLogic G = new GameLogic();
 
 	public static void consoleMain() {
+		gameDirectories.initDirectories();
 		int returnStartInputValue = 0;
 		
 		System.out.println("WELCOME TO SCABBLE CONSOLE");
