@@ -148,7 +148,7 @@ public class GameGui {
 		for (int i = 0; i < G.getNumberOfPlayers(); i++) {
 			Player newPlayer = new Player(playerNames[i]);
 			for (int j = 0; j < 7; j++) {
-				newPlayer.insertLetter(G.getLettersSet().getLetter());
+				newPlayer.insertLetter(G.getLettersSet().getLetter(), j);
 			}
 			G.getPlayerList().add(newPlayer);
 			// System.out.println(G.getPlayerList().get(i).getName());
@@ -159,7 +159,7 @@ public class GameGui {
 		for (int i = 0; i < G.getNumberOfPlayers(); i++) {
 			Player newPlayer = new Player(playerInfo[i].getPlayerName(), playerInfo[i].isAuto());
 			for (int j = 0; j < 7; j++) {
-				newPlayer.insertLetter(G.getLettersSet().getLetter());
+				newPlayer.insertLetter(G.getLettersSet().getLetter(), j);
 			}
 			G.getPlayerList().add(newPlayer);
 			// System.out.println(G.getPlayerList().get(i).getName());
@@ -187,7 +187,7 @@ public class GameGui {
 		}
 		if (G.getLettersSet().getLetterSetSize() > 0) {
 			currentPlayer.removeLetter(index);
-			currentPlayer.insertLetter(G.getLettersSet().getLetter());
+			currentPlayer.insertLetter(G.getLettersSet().getLetter(), index);
 			numberOfLetterChangesLeft++;
 			G.mainWindow.setPlayStatusText("You have " + (3 - numberOfLetterChangesLeft) + " more changes");
 		}
@@ -202,10 +202,13 @@ public class GameGui {
 		private int row;
 		private int col;
 		private char letter;
-		public LP(int row, int col, char letter) {
+		private int index;
+		
+		public LP(int row, int col, char letter, int index) {
 			this.row    = row;
 			this.col    = col;
 			this.letter = letter;
+			this.index  = index;
 		}
 	}
 	
@@ -224,7 +227,7 @@ public class GameGui {
 		
 		G.getBoard().insertLetter(x, y, player.getLetter(index));
 //		usedLetters.add(new LetterPosition(x, y, player.getLetter(index)));
-		LP lp = new LP(x, y, player.getLetter(index));
+		LP lp = new LP(x, y, player.getLetter(index), index);
 //		if (lp == null) {System.out.println("bla");}
 		usedLetters.add(lp);
 		player.removeLetter(index);
@@ -237,7 +240,7 @@ public class GameGui {
 		if ((usedLetters.size() == 1) && (!(G.getBoard().hasNeigbours(usedLetters.get(0).row, usedLetters.get(0).col)))) {
 			G.mainWindow.setPlayStatusText("Your placed letter has no neigbours - you lost you turn");
 			G.getBoard().removeLetter(usedLetters.get(0).row, usedLetters.get(0).col);
-			player.insertLetter(usedLetters.get(0).letter);
+			player.insertLetter(usedLetters.get(0).letter, usedLetters.get(0).index);
 			return false;
 		}
 		
@@ -267,7 +270,7 @@ public class GameGui {
 			G.mainWindow.setPlayStatusText(player.getName() + ", your letters do not placed by one colunm or one row or you have holes in your word- you lost your turn");
 			for (int i = 0; i < usedLetters.size(); i++) {
 				G.getBoard().removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
-				player.insertLetter(usedLetters.get(i).letter);
+				player.insertLetter(usedLetters.get(i).letter, usedLetters.get(i).index);
 			}
 			return false;
 		}
@@ -278,7 +281,7 @@ public class GameGui {
 		if (userWord != null) {
 			for (int i = 0; i < usedLetters.size(); i++) {
 				if (G.getLettersSet().getLetterSetSize() > 0) {
-					player.insertLetter(G.getLettersSet().getLetter());
+					player.insertLetter(G.getLettersSet().getLetter(), usedLetters.get(i).index);
 				}
 				else { //no more letters, game finished
 					break;
@@ -292,7 +295,7 @@ public class GameGui {
 		else {
 			for (int i = 0; i < usedLetters.size(); i++) {
 				G.getBoard().removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
-				player.insertLetter(usedLetters.get(i).letter);
+				player.insertLetter(usedLetters.get(i).letter, usedLetters.get(i).index);
 				//add for auto player
 				if (scrabbleMain.AutoPlayer.isCndidate(usedLetters.get(i).row, usedLetters.get(i).col, true) == true) {
 					G.getAp().addLetterVertical(usedLetters.get(i).row, usedLetters.get(i).col);
@@ -476,14 +479,16 @@ public class GameGui {
 		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
 		String retWord = G.getAp().placeAutoWordAndUpdate(player);
 		if (retWord != null) {
-			for (int i = 0; i < 3; i++) {
-				if (G.getLettersSet().getLetterSetSize() > 0) {
-					player.insertLetter(G.getLettersSet().getLetter());
-				}
-				else {
-					break;
-				}
-			}
+//			for (int i = 0; i < 3; i++) {
+//				if (G.getLettersSet().getLetterSetSize() > 0) {
+//					player.getPlayerLetters().compresSet();
+//					player.insertLetter(G.getLettersSet().getLetter());
+//				}
+//				else {
+//					break;
+//				}
+//			}
+			player.getPlayerLetters().completeLetters(G);
 			player.setScore(retWord.length());
 			G.mainWindow.setPlayStatusText("Auto player " + player.getName() + " placed the word: " + retWord + " and won " + retWord.length() + "points");
 		}

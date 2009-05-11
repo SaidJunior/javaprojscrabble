@@ -51,12 +51,20 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 	private CLabel numberOfPlayersLabel;
 	private Button advancedButton;
 	private Button basicButton;
+	private boolean isClosed;
 //	private int numberOfPlayers;
 //	private String[] names;
 //	private String name2;
 //	private String name3;
 //	private String name4;
 	
+	/**
+	 * @return the isClosed
+	 */
+	public boolean isClosed() {
+		return isClosed;
+	}
+
 	private PlayerInfo[] playersInfo;
 	private char gameMode;
 	
@@ -163,6 +171,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				cancelButton.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 //						System.out.println("cancelButton.widgetSelected, event="+evt);
+						isClosed = true;
 						dialogShell.dispose();
 					}
 				});
@@ -504,6 +513,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 	
 	private void startButtonWidgetSelected(SelectionEvent evt) {
 //		System.out.println("startButton.widgetSelected, event="+evt);
+		isClosed = false;
 		getNames();
 	}
 
