@@ -450,6 +450,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 
 	public MainWindow(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
+		gameDirectories.initDirectories();
 		GameGui.UploadrecordList('b');
 		GameGui.UploadrecordList('a');
 		GameGui.getG().mainWindow = this;
