@@ -51,20 +51,12 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 	private CLabel numberOfPlayersLabel;
 	private Button advancedButton;
 	private Button basicButton;
-	private boolean isClosed;
 //	private int numberOfPlayers;
 //	private String[] names;
 //	private String name2;
 //	private String name3;
 //	private String name4;
 	
-	/**
-	 * @return the isClosed
-	 */
-	public boolean isClosed() {
-		return isClosed;
-	}
-
 	private PlayerInfo[] playersInfo;
 	private char gameMode;
 	
@@ -143,6 +135,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				clearButtonLData.top =  new FormAttachment(0, 1000, 339);
 				clearButton.setLayoutData(clearButtonLData);
 				clearButton.setFont(SWTResourceManager.getFont("Tahoma", 12, 0, false, false));
+				clearButton.setToolTipText("Clear new game form");
 				clearButton.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						clearButtonWidgetSelected(evt);
@@ -168,10 +161,10 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				cancelButtonLData.top =  new FormAttachment(0, 1000, 339);
 				cancelButton.setLayoutData(cancelButtonLData);
 				cancelButton.setFont(SWTResourceManager.getFont("Tahoma", 12, 0, false, false));
+				cancelButton.setToolTipText("Cancel");
 				cancelButton.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 //						System.out.println("cancelButton.widgetSelected, event="+evt);
-						isClosed = true;
 						dialogShell.dispose();
 					}
 				});
@@ -186,6 +179,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				startButtonLData.top =  new FormAttachment(0, 1000, 339);
 				startButton.setLayoutData(startButtonLData);
 				startButton.setFont(SWTResourceManager.getFont("Tahoma", 12, 0, false, false));
+				startButton.setToolTipText("Start game");
 				startButton.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						startButtonWidgetSelected(evt);
@@ -200,6 +194,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				computerCheck4LData.left =  new FormAttachment(0, 1000, 400);
 				computerCheck4LData.top =  new FormAttachment(0, 1000, 270);
 				computerCheck4.setLayoutData(computerCheck4LData);
+				computerCheck4.setToolTipText("Make player 4 an auto player");
 				computerCheck4.setEnabled(false);
 			}
 			{
@@ -210,6 +205,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				button1LData.left =  new FormAttachment(0, 1000, 400);
 				button1LData.top =  new FormAttachment(0, 1000, 234);
 				computerCheck3.setLayoutData(button1LData);
+				computerCheck3.setToolTipText("Make player 3 an auto player");
 				computerCheck3.setEnabled(false);
 			}
 			{
@@ -220,6 +216,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				computerCheck2LData.left =  new FormAttachment(0, 1000, 400);
 				computerCheck2LData.top =  new FormAttachment(0, 1000, 190);
 				computerCheck2.setLayoutData(computerCheck2LData);
+				computerCheck2.setToolTipText("Make player 2 an auto player");
 				computerCheck2.setEnabled(false);
 			}
 			{
@@ -242,6 +239,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				player4TextLData.top =  new FormAttachment(0, 1000, 262);
 				player4Text.setLayoutData(player4TextLData);
 				player4Text.setFont(SWTResourceManager.getFont("Tahoma", 10, 0, false, false));
+				player4Text.setToolTipText("Enter Player 4's name");
 				player4Text.setEnabled(false);
 			}
 			{
@@ -253,6 +251,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				player3TextLData.top =  new FormAttachment(0, 1000, 226);
 				player3Text.setLayoutData(player3TextLData);
 				player3Text.setFont(SWTResourceManager.getFont("Tahoma", 10, 0, false, false));
+				player3Text.setToolTipText("Enter Player 3's name");
 				player3Text.setEnabled(false);
 			}
 			{
@@ -264,6 +263,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				player2TextLData.top =  new FormAttachment(0, 1000, 190);
 				player2Text.setLayoutData(player2TextLData);
 				player2Text.setFont(SWTResourceManager.getFont("Tahoma", 10, 0, false, false));
+				player2Text.setToolTipText("Enter Player 2's name");
 				player2Text.setEnabled(false);
 			}
 			{
@@ -275,6 +275,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				text1LData.top =  new FormAttachment(0, 1000, 154);
 				player1Text.setLayoutData(text1LData);
 				player1Text.setFont(SWTResourceManager.getFont("Tahoma", 10, 0, false, false));
+				player1Text.setToolTipText("Enter Player 1's name");
 			}
 			{
 				name4Label = new CLabel(dialogShell, SWT.NONE);
@@ -329,6 +330,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				cCombo1LData.top =  new FormAttachment(0, 1000, 74);
 				numberOfPlayersCombo.setLayoutData(cCombo1LData);
 				numberOfPlayersCombo.setFont(SWTResourceManager.getFont("Tahoma", 12, 0, false, false));
+				numberOfPlayersCombo.setToolTipText("Number of players");
 				numberOfPlayersCombo.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						numberOfPlayersComboWidgetSelected(evt);
@@ -361,6 +363,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				advancedButtonLData.top =  new FormAttachment(0, 1000, 44);
 				advancedButton.setLayoutData(advancedButtonLData);
 				advancedButton.setFont(SWTResourceManager.getFont("Tahoma", 12, 0, false, false));
+				advancedButton.setToolTipText("professional game");
 				advancedButton.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						advancedButtonWidgetSelected(evt);
@@ -377,6 +380,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 				basicButtonLData.top =  new FormAttachment(0, 1000, 12);
 				basicButton.setLayoutData(basicButtonLData);
 				basicButton.setFont(SWTResourceManager.getFont("Tahoma", 12, 0, false, false));
+				basicButton.setToolTipText("Beginers game");
 				basicButton.setSelection(true);
 				basicButton.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
@@ -513,7 +517,6 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 	
 	private void startButtonWidgetSelected(SelectionEvent evt) {
 //		System.out.println("startButton.widgetSelected, event="+evt);
-		isClosed = false;
 		getNames();
 	}
 
