@@ -390,7 +390,7 @@ public class GameConsole {
 		if(G.getDictionary().contains(userWord)) {
 			int addedPoints = calcScore(startRow, startCol, endRow, endCol);
 			player.removeLetter(letterIndex);
-			player.insertLetter(G.getLettersSet().getLetter());
+			player.insertLetter(G.getLettersSet().getLetter(), letterIndex);
 			player.setScore(addedPoints);
 			System.out.println("\n\nVery Good - you made the word: " + userWord + ". You gained " + addedPoints + " more pointes\n\n");
 		}
@@ -432,7 +432,7 @@ public class GameConsole {
 			
 			//add letter to board
 			G.getBoard().insertLetter(row, column, player.getLetter(letterIndex));
-			usedLetters.add(new LetterPosition(row, column, player.getLetter(letterIndex)));
+			usedLetters.add(new LetterPosition(row, column, player.getLetter(letterIndex), letterIndex));
 			player.removeLetter(letterIndex);
 			
 			G.getBoard().printBoard(G.getMode());
@@ -454,7 +454,7 @@ public class GameConsole {
 		if ((usedLetters.size() == 1) && (!(G.getBoard().hasNeigbours(usedLetters.get(0).row, usedLetters.get(0).col)))) {
 			System.out.println("One of your given letter has no neigbours - you lost you turn");
 			G.getBoard().removeLetter(usedLetters.get(0).row, usedLetters.get(0).col);
-			player.insertLetter(usedLetters.get(0).letter);
+			player.insertLetter(usedLetters.get(0).letter, letterIndex);
 			return;
 		}
 		
@@ -479,7 +479,7 @@ public class GameConsole {
 			System.out.println("Your letters do not placed by one colunm or one row or you have holes in your word- you lost your turn");
 			for (int i = 0; i < usedLetters.size(); i++) {
 				G.getBoard().removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
-				player.insertLetter(usedLetters.get(i).letter);
+				player.insertLetter(usedLetters.get(i).letter, usedLetters.get(i).index);
 			}
 			return;
 		}
@@ -489,7 +489,7 @@ public class GameConsole {
 		
 		if (userWord != null) {
 			for (int i = 0; i < usedLetters.size(); i++) {
-				player.insertLetter(G.getLettersSet().getLetter());
+				player.insertLetter(G.getLettersSet().getLetter(), usedLetters.get(i).index);
 			}
 			player.setScore(userWord.length());
 			System.out.println("Very Good - you made the word: " + userWord + ". You gained " + userWord.length() + " more pointes");
@@ -497,7 +497,7 @@ public class GameConsole {
 		else {
 			for (int i = 0; i < usedLetters.size(); i++) {
 				G.getBoard().removeLetter(usedLetters.get(i).row, usedLetters.get(i).col);
-				player.insertLetter(usedLetters.get(i).letter);
+				player.insertLetter(usedLetters.get(i).letter, usedLetters.get(i).index);
 			}
 			System.out.println("Your word does not exist in the dictionary - you lost your turn");
 		}
@@ -574,7 +574,7 @@ public class GameConsole {
 		for (int i = 0; (i < 3) && (changeMore != 'n'); i++) {
 			wantedLetter = GetUserInput.getUsetIntgerInput(0, player.getNumberOfLetters() - 1, "Enter the number of letter you want to change", G.getConsoleReader());
 			player.removeLetter(wantedLetter);
-			player.insertLetter(G.getLettersSet().getLetter());
+			player.insertLetter(G.getLettersSet().getLetter(), wantedLetter);
 			player.printPlayerLetters();
 			System.out.println();
 			if (i < 2) {	
@@ -612,7 +612,7 @@ public class GameConsole {
 				Player newPlayer = new Player(playerName);
 				
 				for (int j = 0; j < 7; j++) {
-					newPlayer.insertLetter(G.getLettersSet().getLetter());
+					newPlayer.insertLetter(G.getLettersSet().getLetter(), j);
 				}
 				G.getPlayerList().add(newPlayer);
 			} catch (IOException e) {
@@ -644,11 +644,13 @@ public class GameConsole {
 		int row;
 		int col;
 		char letter;
+		int index;
 		
-		private LetterPosition(int row, int col, char letter) {
+		private LetterPosition(int row, int col, char letter, int index) {
 			this.row    = row;
 			this.col    = col;
 			this.letter = letter;
+			this.index  = index;
 		}
 	}
 	

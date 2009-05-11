@@ -43,6 +43,7 @@ import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
 import scrabbleMain.gameDirectories;
+import sun.nio.cs.ext.ISCII91;
 import Gui.NewGameDialog.PlayerInfo;
 
 import com.cloudgarden.resource.SWTResourceManager;
@@ -2470,6 +2471,10 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		}
 		NewGameDialog newGameDialog = new NewGameDialog(getShell(), SWT.DIALOG_TRIM);
 		newGameDialog.open();
+		//user changed his mind and don't want to start a new game
+		if (newGameDialog.isClosed() == true) {
+			return;
+		}
 		GameGui.initGameLogic();
 		PlayerInfo[] playerInfo = newGameDialog.getPlayersInfo();
 		//if window was closed
@@ -2539,13 +2544,24 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 
 	private void updatePlayerLetters() {
 		Player currentPlayer = G.getCurrentPlayer();
-		int numberOfPlayerLetters = currentPlayer.getNumberOfLetters();
-		for (int i = 0; i < numberOfPlayerLetters; i++) {
-			allPlayerLetters[i].setBackgroundImage(getLetterImage(currentPlayer.getLetter(i)));
-			allPlayerLetters[i].setVisible(true);
-		}
-		for (int i = numberOfPlayerLetters; i < 7; i++) {
-			allPlayerLetters[i].setVisible(false);
+//		int numberOfPlayerLetters = currentPlayer.getNumberOfLetters();
+//		for (int i = 0; i < numberOfPlayerLetters; i++) {
+//			allPlayerLetters[i].setBackgroundImage(getLetterImage(currentPlayer.getLetter(i)));
+//			allPlayerLetters[i].setVisible(true);
+//		}
+//		for (int i = numberOfPlayerLetters; i < 7; i++) {
+//			allPlayerLetters[i].setVisible(false);
+//		}
+		for (int i = 0; i < 7; i++) {
+			char currentLetter = currentPlayer.getLetter(i);
+			if (currentLetter != '*') {
+				allPlayerLetters[i].setBackgroundImage(getLetterImage(currentLetter));
+				allPlayerLetters[i].setVisible(true);
+			}
+			else {
+				allPlayerLetters[i].setBackgroundImage(null);
+				allPlayerLetters[i].setVisible(false);
+			}
 		}
 	}
 

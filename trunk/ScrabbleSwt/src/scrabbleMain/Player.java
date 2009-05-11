@@ -1,12 +1,16 @@
 package scrabbleMain;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Player implements Serializable{
 	private final String name;
 	private int score = 0;
-	private List<Character> playerLetters = new ArrayList<Character>(7);
+//	private List<Character> playerLetters = new ArrayList<Character>(7);
+	private PlayerLetters playerLetters = new PlayerLetters();
+	
+	public PlayerLetters getPlayerLetters() {
+		return playerLetters;
+	}
+	
 	private boolean isAuto = false;
 	
 	public Player(String name) {
@@ -28,8 +32,8 @@ public class Player implements Serializable{
 		score += delta;
 	}
 	
-	public void insertLetter(char letter) {
-		playerLetters.add(letter);
+	public void insertLetter(char letter, int index) {
+		playerLetters.add(letter, index);
 	}
 	
 	public void removeLetter(int letterIndex) {
