@@ -2,6 +2,8 @@ package scrabbleMain;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.TreeMap;
 
 public class gameDirectories {
 
@@ -13,7 +15,11 @@ public class gameDirectories {
 	private static String basicRecordsFullFileName;
 	private static String advancedRecordsFullFileName;
 	
+	private  static RecordList     recordListBasic      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
+	private  static RecordList     recordListAdvanced     = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	
+	/* Init game directories and upload Records lists. 
+	 * */
 	public static void initDirectories()
 	{
 		gameDirectory = System.getProperty("user.home") + "/Scrabble";
@@ -23,6 +29,7 @@ public class gameDirectories {
 		setAdvancedRecordsFullFileName(recordListDirectorty + "/fileRecordListAdvanced");
 		initSavedGamesDir();
 		initRecordListDir();
+		GameGui.uploadRecordList();
 	}
 	
 	private static void initSavedGamesDir()
@@ -83,5 +90,20 @@ public class gameDirectories {
 	private static void setAdvancedRecordsFullFileName(
 			String advancedRecordsFullFileName) {
 		gameDirectories.advancedRecordsFullFileName = advancedRecordsFullFileName;
+	}
+	
+	public static RecordList getRecordList() {
+		return recordListBasic;
+	}
+
+	public static void setRecordList(RecordList recordList) {
+		recordListBasic = recordList;
+	}
+	
+	public static  RecordList getRecordListAdvanced() {
+		return recordListAdvanced;
+	}
+	public static void setRecordListAdvanced(RecordList recordList) {
+		recordListAdvanced = recordList;
 	}
 }

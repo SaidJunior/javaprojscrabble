@@ -68,7 +68,7 @@ public class GameConsole {
 
 	private static void printRecordList() {
 		System.out.println("Top Scores\n----------");
-		G.getRecordList().printRecordList();
+		gameDirectories.getRecordList().printRecordList();
 		FileOutputStream file;
 		
 			try {
@@ -79,7 +79,7 @@ public class GameConsole {
 				}
 				ObjectOutputStream data = new ObjectOutputStream(file);
 //				recordList.updatePlayer("First Player", 10);
-				data.writeObject(G.getRecordList());
+				data.writeObject(gameDirectories.getRecordList());
 				data.close();
 				file.close();
 				
@@ -105,12 +105,12 @@ public class GameConsole {
                 file = new FileInputStream(gameDirectories.getBasicRecordsFullFileName());
 			}
 			ObjectInputStream data = new ObjectInputStream(file);
-		    G.setRecordList((RecordList) data.readObject());
+			gameDirectories.setRecordList((RecordList) data.readObject());
 			data.close();
 			file.close();
 			if(!(G.getPlayerList().size()==0)){
 			for(Player player : G.getPlayerList()){
-				G.getRecordList().updatePlayer(player.getName(),player.getScore());
+				gameDirectories.getRecordList().updatePlayer(player.getName(),player.getScore());
 			}
 			}
 		} catch (FileNotFoundException e) {

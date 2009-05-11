@@ -450,9 +450,6 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 
 	public MainWindow(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
-		gameDirectories.initDirectories();
-		GameGui.UploadrecordList('b');
-		GameGui.UploadrecordList('a');
 		GameGui.getG().mainWindow = this;
 		initGUI();
 //		addMouseListenersToCells();
@@ -463,7 +460,6 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		initWindow();
 		GameGui.initUsedLetters();
 	}
-
 
 	private void initAllCellsColors() {
 //		Color def   = SWTResourceManager.getColor(239, 208, 143);
@@ -2418,6 +2414,9 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 			saveBeforExitMessage();
 		}
 		if (showMessageDialog("Are you sure you want to exit?", "Game Exit") == true) {
+			GameGui.updateRecordList();
+			GameGui.saveRecordList('b');
+	    	GameGui.saveRecordList('a');
 			display.dispose();
 		}
 	}
