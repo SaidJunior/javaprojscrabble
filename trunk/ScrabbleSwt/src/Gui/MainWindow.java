@@ -649,7 +649,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 										} else {
 											MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 											messageBox.setText("Game Load");
-											messageBox.setMessage("Loading Game failed. See if file realy exist");
+											messageBox.setMessage("Loading Game failed");
 											messageBox.open();
 										}
 									}
