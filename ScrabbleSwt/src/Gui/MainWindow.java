@@ -37,12 +37,10 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import resources.resConfig;
 import scrabbleMain.Board;
 import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
-import scrabbleMain.gameDirectories;
 import Gui.NewGameDialog.PlayerInfo;
 
 import com.cloudgarden.resource.SWTResourceManager;
@@ -71,7 +69,6 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		SWTResourceManager.registerResourceUser(this);
 	}
 	
-	public static boolean showMenu = true;
 	private Menu menuMain;
 	private Button changeLetterBut;
 	private CLabel cLabelCell0104;
@@ -415,7 +412,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 			shell.pack();
 			shell.setSize(1200, 750);
 			shell.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
-			shell.setImage(new Image(Display.getDefault(),resConfig.getImageStream("scrabble_icon.PNG")));
+			shell.setImage(SWTResourceManager.getImage("scrabble_icon.png"));
 			shell.setText("Scrabble");
 			shell.addShellListener(new ShellAdapter() {
 				public void shellClosed(ShellEvent evt) {
@@ -439,7 +436,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 //			Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
 //			shell.setSize(shellBounds.width, shellBounds.height);
 //		}
-		Image img = new Image(Display.getDefault(),resConfig.getImageStream("wooden_table.jpg"));
+		Image img = SWTResourceManager.getImage("wooden_table.jpg");
 		shell.open();
 		shell.setBackgroundImage(img);
 		while (!shell.isDisposed()) {
@@ -450,7 +447,6 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 
 	public MainWindow(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
-		gameDirectories.initDirectories();
 		GameGui.UploadrecordList('b');
 		GameGui.UploadrecordList('a');
 		GameGui.getG().mainWindow = this;
@@ -579,8 +575,8 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 				    	String data = (String)event.data;
 				    	String letter = data.substring(0, 1);
 				    	int place = Integer.parseInt(data.substring(1));
-						currentCell.setBackground(new Image(Display.getDefault(),resConfig.getImageStream(letter + "1.PNG")));
-						currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(letter + "1.PNG")));
+						currentCell.setBackground(SWTResourceManager.getImage(letter + "1.PNG"));
+						currentCell.setBackgroundImage(SWTResourceManager.getImage(letter + "1.PNG"));
 //						System.out.println(place);
 				    	GameGui.addLetterToBoardBasic(currentI, CurrentJ, place);
 				    	if (GameGui.getG().getMode() == 'a') {
@@ -607,7 +603,6 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 			this.setLayout(new FormLayout());
 			this.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
 			{
-				if (showMenu){
 				menuMain = new Menu(getShell(), SWT.BAR);
 				getShell().setMenuBar(menuMain);
 				{
@@ -639,7 +634,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 									String[] filterExtensions = {"*.scrabble"};
 									FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
 									fileDialog.setText("Scrabble Load Game");
-									fileDialog.setFilterPath(gameDirectories.getSavedGamesDirectorty());
+									fileDialog.setFilterPath("C:/");
 									fileDialog.setFilterExtensions(filterExtensions);
 									String selectedFile = fileDialog.open();
 									if (selectedFile != null) {
@@ -647,12 +642,11 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 										if (successLoad == true) {
 											advancedLetterPlaced = false;
 											isSaved = false;
-//											updateWindow(false);
-											updateWindow();
+											updateWindow(false);
 										} else {
 											MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 											messageBox.setText("Game Load");
-											messageBox.setMessage("Loading Game failed");
+											messageBox.setMessage("Loading Game failed. See if file realy exist");
 											messageBox.open();
 										}
 									}
@@ -698,7 +692,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 							menuItemViewHome.addSelectionListener(new SelectionAdapter() {
 								public void widgetSelected(SelectionEvent evt) {
 //									System.out.println("menuItemViewHome.widgetSelected, event="+evt);
-									Image image = new Image(Display.getDefault(),resConfig.getImageStream("wooden_table.jpg"));
+									Image image = SWTResourceManager.getImage("wooden_table.jpg");
 									shell.setBackgroundImage(image);
 									
 								}
@@ -710,7 +704,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 							menuItemViewBeach.addSelectionListener(new SelectionAdapter() {
 								public void widgetSelected(SelectionEvent evt) {
 //									System.out.println("menuItemViewBeach.widgetSelected, event="+evt);
-									Image image = new Image(Display.getDefault(),resConfig.getImageStream("beach.jpg"));
+									Image image = SWTResourceManager.getImage("beach.jpg");
 									shell.setBackgroundImage(image);
 								}
 							});
@@ -720,7 +714,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 							menuItemViewSpace.setText("On Space");
 							menuItemViewSpace.addSelectionListener(new SelectionAdapter() {
 								public void widgetSelected(SelectionEvent evt) {
-									Image image = new Image(Display.getDefault(),resConfig.getImageStream("space.jpg"));
+									Image image = SWTResourceManager.getImage("space.jpg");
 									shell.setBackgroundImage(image);
 								}
 							});
@@ -731,8 +725,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 							menuItemViewForest.addSelectionListener(new SelectionAdapter() {
 								public void widgetSelected(SelectionEvent evt) {
 //									System.out.println("menuItemViewForest.widgetSelected, event="+evt);
-									Image image = new Image(Display.getDefault(),resConfig.getImageStream("forest.jpg"));
-
+									Image image = SWTResourceManager.getImage("forest.jpg");
 									shell.setBackgroundImage(image);
 								}
 							});
@@ -799,7 +792,6 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 					}
 				}
 			}
-			}
 			{
 				lettersLeftLabel = new CLabel(this, SWT.NONE);
 				FormData lettersLeftLabelLData = new FormData();
@@ -820,10 +812,12 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 				letterStandLabelLData.left =  new FormAttachment(0, 1000, 294);
 				letterStandLabelLData.top =  new FormAttachment(0, 1000, 612);
 				letterStandLabel.setLayoutData(letterStandLabelLData);
+				letterStandLabel.setBackgroundImage(SWTResourceManager.getImage("lettersStand.PNG"));
+				letterStandLabel.setToolTipText("Your letter bank");
 				{
 					playerLetter0 = new CLabel(letterStandLabel, SWT.NONE);
 					playerLetter0.setBounds(12, -8, 73, 74);
-					playerLetter0.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream("A.PNG")));
+					playerLetter0.setBackgroundImage(SWTResourceManager.getImage("A.PNG"));
 					playerLetter0.setVisible(false);
 					playerLetter0.addMouseListener(new MouseAdapter() {
 						public void mouseDown(MouseEvent evt) {
@@ -926,6 +920,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 				groupNowPlayingLData.top =  new FormAttachment(0, 1000, 18);
 				groupNowPlaying.setLayoutData(groupNowPlayingLData);
 				groupNowPlaying.setFont(SWTResourceManager.getFont("Tahoma",12,0,false,false));
+				groupNowPlaying.setToolTipText("Current Player");
 				{
 					textNowPlaying = new Text(groupNowPlaying, SWT.MULTI | SWT.WRAP);
 					GridData textNowPlatingLData = new GridData();
@@ -935,6 +930,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 					textNowPlaying.setBackground(SWTResourceManager.getColor(236, 233, 216));
 					textNowPlaying.setFont(SWTResourceManager.getFont("Tahoma",14,0,false,false));
 					textNowPlaying.setEditable(false);
+					textNowPlaying.setToolTipText("Current Player");
 				}
 			}
 			{
@@ -957,6 +953,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 				letterSetImageLabelLData.left =  new FormAttachment(0, 1000, 1034);
 				letterSetImageLabelLData.top =  new FormAttachment(0, 1000, 201);
 				letterSetImageLabel.setLayoutData(letterSetImageLabelLData);
+				letterSetImageLabel.setBackgroundImage(SWTResourceManager.getImage("LetterSet.jpg"));
 			}
 			{
 				doneBut = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -967,6 +964,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 				doneButLData.left =  new FormAttachment(0, 1000, 1032);
 				doneButLData.top =  new FormAttachment(0, 1000, 526);
 				doneBut.setLayoutData(doneButLData);
+				doneBut.setToolTipText("End turn");
 				doneBut.setEnabled(false);
 				doneBut.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
@@ -983,6 +981,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 				changeLetterButLData.left =  new FormAttachment(0, 1000, 1034);
 				changeLetterButLData.top =  new FormAttachment(0, 1000, 59);
 				changeLetterBut.setLayoutData(changeLetterButLData);
+				changeLetterBut.setToolTipText("Press to switch a letter");
 				changeLetterBut.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						changeLetterButWidgetSelected(evt);
@@ -992,13 +991,15 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 			}
 			{
 				cLabelBoard = new CLabel(this, SWT.NONE);
-				cLabelBoard.setImage(new Image(Display.getDefault(),resConfig.getImageStream("board.PNG")));
+				cLabelBoard.setImage(SWTResourceManager.getImage("board.PNG"));
 				FormData cLabelBoardLData = new FormData();
 				cLabelBoardLData.width = 794;
 				cLabelBoardLData.height = 593;
 				cLabelBoardLData.left =  new FormAttachment(0, 1000, 205);
 				cLabelBoardLData.top =  new FormAttachment(0, 1000, 4);
 				cLabelBoard.setLayoutData(cLabelBoardLData);
+				cLabelBoard.setBackgroundImage(SWTResourceManager.getImage("board.PNG"));
+				cLabelBoard.setToolTipText("Game board");
 				{
 					cLabelCell0000 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0000.setBounds(164, 26, 32, 31);
@@ -2364,6 +2365,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 				groupScoreLData.top =  new FormAttachment(0, 1000, 416);
 				groupScore.setLayoutData(groupScoreLData);
 				groupScore.setFont(SWTResourceManager.getFont("Tahoma",10,0,false,false));
+				groupScore.setToolTipText("Score board");
 				{
 					textScores = new Text(groupScore, SWT.MULTI | SWT.WRAP);
 					textScores.setText("scores text");
@@ -2403,9 +2405,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        loadImages();
 	}
-	
 	private void exitProcedure() {
 		if (isSaved == false) {
 			saveBeforExitMessage();
@@ -2433,7 +2433,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 	
 	private static void saveBeforExitMessage() {
 		MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO);
-		messageBox.setText("Save before exit");
+		messageBox.setText("Save befor exit");
 		messageBox.setMessage("The current game was not saved. Would you like to save it?");
 		int response = messageBox.open();
 		if (response == SWT.YES) {
@@ -2445,7 +2445,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		String[] filterExtensions = {"*.scrabble", "*.*"};
 		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
 		fileDialog.setText("Scrabble Save Game");
-		fileDialog.setFilterPath(gameDirectories.getSavedGamesDirectorty());
+		fileDialog.setFilterPath("C:/");
 		fileDialog.setFilterExtensions(filterExtensions);
 		String selectedFile = fileDialog.open();
 //		System.out.println(selectedFile);
@@ -2470,19 +2470,11 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 	
 	private void menuItemGameNewWidgetSelected(SelectionEvent evt) {
 //		System.out.println("menuItemGameNew.widgetSelected, event="+evt);
-		initNewGame();
-	}
-
-	public void initNewGame() {
 		if (!isSaved) {
 			saveBeforExitMessage();
 		}
 		NewGameDialog newGameDialog = new NewGameDialog(getShell(), SWT.DIALOG_TRIM);
 		newGameDialog.open();
-		//user changed his mind and don't want to start a new game
-		if (newGameDialog.isClosed() == true) {
-			return;
-		}
 		GameGui.initGameLogic();
 		PlayerInfo[] playerInfo = newGameDialog.getPlayersInfo();
 		//if window was closed
@@ -2495,15 +2487,13 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 //		System.out.println(newGameDialog.getGameMode());
 		GameGui.createPlayerList(playerInfo);
 		G.mainWindow = this;
-//		this.updateWindow(true);
-		this.updateWindow();
+		this.updateWindow(true);
 		this.updateStatusText("Start placing your word or Press 'Change Letter' and make your move. When finished press 'Done'");
 		advancedLetterPlaced = false;
 		isSaved = false;
 	}
 
-//	private void updateWindow(boolean cleanBoard) {
-	private void updateWindow() {
+	private void updateWindow(boolean cleanBoard) {
 		this.updateNowPlayingText();
 		this.updateScoresText();
 		this.updateLetterSetText();
@@ -2511,9 +2501,9 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		changeLetterBut.setEnabled(true);
 		menuItemGameSave.setEnabled(true);
 		updateBoard();
-//		if (cleanBoard == true) {
-//			this.putRandomWord();
-//		} 
+		if (cleanBoard == true) {
+			this.putRandomWord();
+		} 
 	}
 	
 	private void updateBoard() {
@@ -2521,66 +2511,51 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		for (int i = 0; i < board.getWidth(); i++) {
 			for (int j = 0; j < board.getLength(); j++) {
 				CLabel currentCell = allCellsGrid[i][j];
-				char letter = board.getLetter(i, j);
-//				if (currentCell.getBackgroundImage() == null) {
+				if (currentCell.getBackgroundImage() == null) {
+					char letter = board.getLetter(i, j);
 					if (letter == '*') {
 						currentCell.setBackground(allCellsColors[i][j]);
 						currentCell.setBackgroundImage(null);
 					}
 					else {
 						String l = String.valueOf(letter);
-						currentCell.setBackground(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
-						currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
+						currentCell.setBackground(SWTResourceManager.getImage(l + "1.PNG"));
+						currentCell.setBackgroundImage(SWTResourceManager.getImage(l + "1.PNG"));
 					}
 				}
-//				else {
-//					currentCell.setBackground(allCellsColors[i][j]);
-//					currentCell.setBackgroundImage(null);
-//				}
-//			}
+			}
 		}
 	}
 	
-//	private void putRandomWord() {
-//		Board board = G.getBoard();
-//		int middle = board.getLength() / 2;
-////		System.out.println(middle);
-//		char currentLetter;
-//		for (int i = 0; i < board.getWidth(); i++) {
-//			if ((currentLetter = board.getLetter(middle, i)) != '*') {
-//				CLabel currentCell = allCellsGrid[middle][i];
-//				String l = String.valueOf(currentLetter);
-//				currentCell.setBackground(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
-//				currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
-//			}
-//		}
-//	}
+	private void putRandomWord() {
+		Board board = G.getBoard();
+		int middle = board.getLength() / 2;
+//		System.out.println(middle);
+		char currentLetter;
+		for (int i = 0; i < board.getWidth(); i++) {
+			if ((currentLetter = board.getLetter(middle, i)) != '*') {
+				CLabel currentCell = allCellsGrid[middle][i];
+				String l = String.valueOf(currentLetter);
+				currentCell.setBackground(SWTResourceManager.getImage(l + "1.PNG"));
+				currentCell.setBackgroundImage(SWTResourceManager.getImage(l + "1.PNG"));
+			}
+		}
+	}
 
 	private void updatePlayerLetters() {
 		Player currentPlayer = G.getCurrentPlayer();
-//		int numberOfPlayerLetters = currentPlayer.getNumberOfLetters();
-//		for (int i = 0; i < numberOfPlayerLetters; i++) {
-//			allPlayerLetters[i].setBackgroundImage(getLetterImage(currentPlayer.getLetter(i)));
-//			allPlayerLetters[i].setVisible(true);
-//		}
-//		for (int i = numberOfPlayerLetters; i < 7; i++) {
-//			allPlayerLetters[i].setVisible(false);
-//		}
-		for (int i = 0; i < 7; i++) {
-			char currentLetter = currentPlayer.getLetter(i);
-			if (currentLetter != '*') {
-				allPlayerLetters[i].setBackgroundImage(getLetterImage(currentLetter));
-				allPlayerLetters[i].setVisible(true);
-			}
-			else {
-				allPlayerLetters[i].setBackgroundImage(null);
-				allPlayerLetters[i].setVisible(false);
-			}
+		int numberOfPlayerLetters = currentPlayer.getNumberOfLetters();
+		for (int i = 0; i < numberOfPlayerLetters; i++) {
+			allPlayerLetters[i].setBackgroundImage(getLetterImage(currentPlayer.getLetter(i)));
+			allPlayerLetters[i].setVisible(true);
+		}
+		for (int i = numberOfPlayerLetters; i < 7; i++) {
+			allPlayerLetters[i].setVisible(false);
 		}
 	}
 
 	private Image getLetterImage(char letter) {
-		return new Image(Display.getDefault(),resConfig.getImageStream(String.valueOf(letter).toUpperCase() + ".PNG"));
+		return SWTResourceManager.getImage(String.valueOf(letter).toUpperCase() + ".PNG");
 	}
 
 	private void updateLetterSetText() {
@@ -2735,10 +2710,4 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		}
 		
 	}
-	
-	 public void loadImages(){
-         cLabelBoard.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream("board.PNG")));
-         letterStandLabel.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream("lettersStand.PNG")));
-         letterSetImageLabel.setBackground(new Image(Display.getDefault(),resConfig.getImageStream("LetterSet.jpg")));
- }
 }
