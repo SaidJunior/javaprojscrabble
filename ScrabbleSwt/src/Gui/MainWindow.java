@@ -43,7 +43,6 @@ import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
 import scrabbleMain.gameDirectories;
-import sun.nio.cs.ext.ISCII91;
 import Gui.NewGameDialog.PlayerInfo;
 
 import com.cloudgarden.resource.SWTResourceManager;
@@ -645,7 +644,8 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 										if (successLoad == true) {
 											advancedLetterPlaced = false;
 											isSaved = false;
-											updateWindow(false);
+//											updateWindow(false);
+											updateWindow();
 										} else {
 											MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 											messageBox.setText("Game Load");
@@ -2487,13 +2487,15 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 //		System.out.println(newGameDialog.getGameMode());
 		GameGui.createPlayerList(playerInfo);
 		G.mainWindow = this;
-		this.updateWindow(true);
+//		this.updateWindow(true);
+		this.updateWindow();
 		this.updateStatusText("Start placing your word or Press 'Change Letter' and make your move. When finished press 'Done'");
 		advancedLetterPlaced = false;
 		isSaved = false;
 	}
 
-	private void updateWindow(boolean cleanBoard) {
+//	private void updateWindow(boolean cleanBoard) {
+	private void updateWindow() {
 		this.updateNowPlayingText();
 		this.updateScoresText();
 		this.updateLetterSetText();
@@ -2501,9 +2503,9 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		changeLetterBut.setEnabled(true);
 		menuItemGameSave.setEnabled(true);
 		updateBoard();
-		if (cleanBoard == true) {
-			this.putRandomWord();
-		} 
+//		if (cleanBoard == true) {
+//			this.putRandomWord();
+//		} 
 	}
 	
 	private void updateBoard() {
@@ -2511,8 +2513,8 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		for (int i = 0; i < board.getWidth(); i++) {
 			for (int j = 0; j < board.getLength(); j++) {
 				CLabel currentCell = allCellsGrid[i][j];
-				if (currentCell.getBackgroundImage() == null) {
-					char letter = board.getLetter(i, j);
+				char letter = board.getLetter(i, j);
+//				if (currentCell.getBackgroundImage() == null) {
 					if (letter == '*') {
 						currentCell.setBackground(allCellsColors[i][j]);
 						currentCell.setBackgroundImage(null);
@@ -2523,24 +2525,28 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 						currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
 					}
 				}
-			}
+//				else {
+//					currentCell.setBackground(allCellsColors[i][j]);
+//					currentCell.setBackgroundImage(null);
+//				}
+//			}
 		}
 	}
 	
-	private void putRandomWord() {
-		Board board = G.getBoard();
-		int middle = board.getLength() / 2;
-//		System.out.println(middle);
-		char currentLetter;
-		for (int i = 0; i < board.getWidth(); i++) {
-			if ((currentLetter = board.getLetter(middle, i)) != '*') {
-				CLabel currentCell = allCellsGrid[middle][i];
-				String l = String.valueOf(currentLetter);
-				currentCell.setBackground(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
-				currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
-			}
-		}
-	}
+//	private void putRandomWord() {
+//		Board board = G.getBoard();
+//		int middle = board.getLength() / 2;
+////		System.out.println(middle);
+//		char currentLetter;
+//		for (int i = 0; i < board.getWidth(); i++) {
+//			if ((currentLetter = board.getLetter(middle, i)) != '*') {
+//				CLabel currentCell = allCellsGrid[middle][i];
+//				String l = String.valueOf(currentLetter);
+//				currentCell.setBackground(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
+//				currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
+//			}
+//		}
+//	}
 
 	private void updatePlayerLetters() {
 		Player currentPlayer = G.getCurrentPlayer();
