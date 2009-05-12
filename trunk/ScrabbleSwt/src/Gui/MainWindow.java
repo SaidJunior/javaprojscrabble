@@ -406,42 +406,43 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		shell = new Shell(display);
 		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		MainWindow inst = new MainWindow(shell, SWT.NULL);
-		inst.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
+//		inst.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
 //		Point size = inst.getSize();
 		shell.setLayout(new FillLayout());
-		shell.layout();
 //		if(size.x == 0 && size.y == 0) {
-			inst.pack();
-			shell.pack();
-			shell.setSize(1200, 750);
-			shell.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
-			shell.setImage(new Image(Display.getDefault(),resConfig.getImageStream("scrabble_icon.PNG")));
-			shell.setText("Scrabble");
-			shell.addShellListener(new ShellAdapter() {
-				public void shellClosed(ShellEvent evt) {
-//					System.out.println("shell.shellClosed, event="+evt);
-					if (isSaved == false) {
-						saveBeforExitMessage();
-					}
-					MessageBox m = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-					m.setMessage("Are you sure you want to exit?");
-					m.setText("Game Exit");
-					if (m.open() == SWT.YES) {
-						display.dispose();
-//						System.out.println("bla");
-					}
-					else {
-						evt.doit = false;
-					}
+		inst.pack();
+//		shell.pack();
+		shell.setSize(1200, 750);
+		shell.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
+		shell.setImage(new Image(Display.getDefault(),resConfig.getImageStream("scrabble_icon.PNG")));
+		shell.setText("Scrabble");
+		shell.addShellListener(new ShellAdapter() {
+			public void shellClosed(ShellEvent evt) {
+//				System.out.println("shell.shellClosed, event="+evt);
+				if (isSaved == false) {
+					saveBeforExitMessage();
 				}
-			});
+				MessageBox m = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				m.setMessage("Are you sure you want to exit?");
+				m.setText("Game Exit");
+				if (m.open() == SWT.YES) {
+					display.dispose();
+//					System.out.println("bla");
+				}
+				else {
+					evt.doit = false;
+				}
+			}
+		});
 //		} else {
 //			Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
 //			shell.setSize(shellBounds.width, shellBounds.height);
 //		}
 		Image img = new Image(Display.getDefault(),resConfig.getImageStream("wooden_table.jpg"));
-		shell.open();
+		shell.setMaximized(true);
 		shell.setBackgroundImage(img);
+		shell.open();
+		shell.layout();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
