@@ -1,6 +1,8 @@
 package scrabbleMain;
 
-public class PlayerLetters {
+import java.io.Serializable;
+
+public class PlayerLetters implements Serializable{
 	private char[] playerLetters;
 	
 	public PlayerLetters() {
