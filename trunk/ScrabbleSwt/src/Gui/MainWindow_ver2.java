@@ -650,6 +650,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 											advancedLetterPlaced = false;
 											isSaved = false;
 //											updateWindow(false);
+											G = GameGui.getG();
 											updateWindow();
 										} else {
 											MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
@@ -2406,7 +2407,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					textStatusLData.heightHint = 175;
 					textStatus.setLayoutData(textStatusLData);
 					textStatus.setBackground(SWTResourceManager.getColor(236,233,216));
-					textStatus.setFont(SWTResourceManager.getFont("Tahoma",11,0,false,false));
+					textStatus.setFont(SWTResourceManager.getFont("Tahoma",10,0,false,false));
 				}
 			}
 		} catch (Exception e) {
@@ -2631,6 +2632,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 
 	private void updateNowPlayingText() {
 		textNowPlaying.setVisible(true);
+//		if (G == null) System.out.println("bla");
 		textNowPlaying.setText(G.getCurrentPlayerName());
 	}
 	
