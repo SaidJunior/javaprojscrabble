@@ -427,8 +427,10 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 				m.setMessage("Are you sure you want to exit?");
 				m.setText("Game Exit");
 				if (m.open() == SWT.YES) {
+					GameGui.updateRecordList();
+					GameGui.saveRecordList('b');
+			    	GameGui.saveRecordList('a');
 					display.dispose();
-//					System.out.println("bla");
 				}
 				else {
 					evt.doit = false;
