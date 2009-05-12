@@ -21,7 +21,6 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -405,13 +404,16 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		display.setWarnings(false);
 		shell = new Shell(display);
 		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		shell.setLayout(gridLayout);
 		MainWindow inst = new MainWindow(shell, SWT.NULL);
 //		inst.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
 //		Point size = inst.getSize();
-		shell.setLayout(new FillLayout());
+//		shell.setLayout(new FillLayout());
 //		if(size.x == 0 && size.y == 0) {
 		inst.pack();
-		shell.setSize(1200, 750);
+//		shell.setSize(1200, 750);
 		shell.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
 		shell.setImage(new Image(Display.getDefault(),resConfig.getImageStream("scrabble_icon.PNG")));
 		shell.setText("Scrabble");
@@ -438,9 +440,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 //			shell.setSize(shellBounds.width, shellBounds.height);
 //		}
 		Image img = new Image(Display.getDefault(),resConfig.getImageStream("wooden_table.jpg"));
-		GridLayout gridLayout = new GridLayout();
-		shell.setLayout(gridLayout);
-		shell.setMaximized(true);
+//		shell.setMaximized(true);
 		shell.setBackgroundImage(img);
 		shell.pack();
 		shell.open();
