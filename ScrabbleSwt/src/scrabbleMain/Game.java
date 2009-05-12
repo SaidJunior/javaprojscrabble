@@ -3,7 +3,7 @@ package scrabbleMain;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import Gui.MainWindow;
+import Gui.MainWindow_ver2;
 
 public class Game{
 	public static void main(String[] args) { 
@@ -20,7 +20,7 @@ public class Game{
 			case 'c':	GameConsole.consoleMain();
 				        validInput = true;
 				        break;
-			case 'g':   MainWindow.startGuiGame();
+			case 'g':   MainWindow_ver2.startGuiGame();
 						validInput = true;
 						break;
 			case 'q':   System.out.println("Thank  you!!!");
