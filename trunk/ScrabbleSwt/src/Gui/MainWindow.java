@@ -455,7 +455,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 
 	public MainWindow(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
-		GameGui.getG().mainWindow = this;
+//		GameGui.getG().mainWindow = this;
 		initGUI();
 //		addMouseListenersToCells();
 		addDragListenersToLetters();
@@ -2504,7 +2504,7 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		GameGui.setNumberOfPlayers(playerInfo.length);
 //		System.out.println(newGameDialog.getGameMode());
 		GameGui.createPlayerList(playerInfo);
-		G.mainWindow = this;
+//		G.mainWindow = this;
 //		this.updateWindow(true);
 		this.updateWindow();
 		this.updateStatusText("Start placing your word or Press 'Change Letter' and make your move. When finished press 'Done'");

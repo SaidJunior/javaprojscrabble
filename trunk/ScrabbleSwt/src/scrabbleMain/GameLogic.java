@@ -3,11 +3,7 @@ package scrabbleMain;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
-
-import java.io.*;
 /**
  * This class contains all the logic variables of a Scrabble game
  * @author eviatar
@@ -33,7 +29,8 @@ public class GameLogic {
 	
 	private  boolean isSaved = false;
 	private  String fileSuffix      = ".scrabble";
-	public Gui.MainWindow mainWindow;
+//	public Gui.MainWindow mainWindow;
+	public Gui.MainWindow_ver2 mainWindow;
 	private AutoPlayer ap = new AutoPlayer(board, dictionary, randWord); 
 
 	public GameLogic(){
