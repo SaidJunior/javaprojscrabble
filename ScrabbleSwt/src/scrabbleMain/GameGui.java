@@ -43,6 +43,7 @@ public class GameGui {
 			G.setTurnInd(gameEntity.turnInd());
 			G.setMode(gameEntity.getMode());
 			G.setAp(gameEntity.getAp()); //add for auto player
+//			if (G == null) System.out.println();
 			succ = true;
 			
 		} catch (FileNotFoundException e) {
