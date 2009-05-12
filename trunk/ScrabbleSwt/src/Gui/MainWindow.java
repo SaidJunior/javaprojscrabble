@@ -411,7 +411,6 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 		shell.setLayout(new FillLayout());
 //		if(size.x == 0 && size.y == 0) {
 		inst.pack();
-//		shell.pack();
 		shell.setSize(1200, 750);
 		shell.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
 		shell.setImage(new Image(Display.getDefault(),resConfig.getImageStream("scrabble_icon.PNG")));
@@ -439,8 +438,11 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 //			shell.setSize(shellBounds.width, shellBounds.height);
 //		}
 		Image img = new Image(Display.getDefault(),resConfig.getImageStream("wooden_table.jpg"));
+		GridLayout gridLayout = new GridLayout();
+		shell.setLayout(gridLayout);
 		shell.setMaximized(true);
 		shell.setBackgroundImage(img);
+		shell.pack();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
