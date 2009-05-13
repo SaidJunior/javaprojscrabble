@@ -13,6 +13,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
+import resources.resConfig;
+
 
 
 /**
@@ -36,9 +38,8 @@ import org.eclipse.swt.SWT;
 public class ScrabbleSwt extends ViewPart {
 
 	private Action action1;
-	private Action action2;
 	private Action doubleClickAction;
-	Gui.MainWindow w;
+	Gui.MainWindow_ver2 w;
 
 	/*
 	 * The content provider class is responsible for
@@ -64,18 +65,19 @@ public class ScrabbleSwt extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 		
-		Gui.MainWindow.showMenu = false;
+		Gui.MainWindow_ver2.showMenu = false;
 		
 		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL |   
 				  SWT.V_SCROLL | SWT.BORDER);
-		w = new Gui.MainWindow(sc, SWT.NONE);
+		w = new Gui.MainWindow_ver2(sc, SWT.NONE);
 		//w.setLayout(new FillLayout());
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
+		
 		sc.setContent(w);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		sc.setMinSize(w.computeSize(1000, 1000));
+		w.setBackgroundImage(new Image(parent.getDisplay(), resConfig.getImageStream("wooden_table.jpg")));
 		makeActions();
 		
 		contributeToActionBars();
@@ -89,8 +91,7 @@ public class ScrabbleSwt extends ViewPart {
 
 	private void fillLocalPullDown(IMenuManager manager) {
 		manager.add(action1);
-		manager.add(new Separator());
-		manager.add(action2);
+
 	}
 
 	
@@ -108,15 +109,7 @@ public class ScrabbleSwt extends ViewPart {
 		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		
-		action2 = new Action() {
-			public void run() {
-				//showMessage("Action 2 executed");
-			}
-		};
-		action2.setText("Exit");
-		action2.setToolTipText("Exit");
-		action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+		
 		
 	}
 

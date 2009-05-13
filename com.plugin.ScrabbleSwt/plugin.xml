@@ -10,7 +10,7 @@
       </category>
       <view
             name="Scrabble SWT"
-            icon="icons/sample.gif"
+            icon="icons/scrabble.png"
             category="com.plugin.ScrabbleSwt"
             class="com.plugin.scrabbleswt.views.ScrabbleSwt"
             id="com.plugin.scrabbleswt.views.ScrabbleSwt">
