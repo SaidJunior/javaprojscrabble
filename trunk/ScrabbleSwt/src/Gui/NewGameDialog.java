@@ -459,64 +459,64 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 			player3Text.setText("");
 			player4Text.setEnabled(false);
 			player4Text.setText("");
-			if (basicButton.getSelection() == true) {
+			//if (basicButton.getSelection() == true) {
 				computerCheck2.setSelection(false);
 				computerCheck2.setEnabled(false);
 				computerCheck3.setSelection(false);
 				computerCheck3.setEnabled(false);
 				computerCheck4.setSelection(false);
 				computerCheck4.setEnabled(false);
-			}
+			//}
 		} else if (selection == 1) {
 			player2Text.setEnabled(true);
 			player3Text.setEnabled(false);
 			player3Text.setText("");
 			player4Text.setEnabled(false);
 			player4Text.setText("");
-			if (basicButton.getSelection() == true) {
+			//if (basicButton.getSelection() == true) {
 				computerCheck2.setSelection(false);
 				computerCheck2.setEnabled(true);
 				computerCheck3.setSelection(false);
 				computerCheck3.setEnabled(false);
 				computerCheck4.setSelection(false);
 				computerCheck4.setEnabled(false);
-			}
+			//}
 		} else if (selection == 2) {
 			player2Text.setEnabled(true);
 			player3Text.setEnabled(true);
 			player4Text.setEnabled(false);
 			player4Text.setText("");
-			if (basicButton.getSelection() == true) {
+			//if (basicButton.getSelection() == true) {
 				computerCheck2.setSelection(false);
 				computerCheck2.setEnabled(true);
 				computerCheck3.setSelection(false);
 				computerCheck3.setEnabled(true);
 				computerCheck4.setSelection(false);
 				computerCheck4.setEnabled(false);
-			}
+			//}
 		} else if (selection == 3) {
 			player2Text.setEnabled(true);
 			player3Text.setEnabled(true);
 			player4Text.setEnabled(true);
-			if (basicButton.getSelection() == true) {
+			//if (basicButton.getSelection() == true) {
 				computerCheck2.setSelection(false);
 				computerCheck2.setEnabled(true);
 				computerCheck3.setSelection(false);
 				computerCheck3.setEnabled(true);
 				computerCheck4.setSelection(false);
 				computerCheck4.setEnabled(true);
-			}
+			//}
 		}
 	}
 	
 	private void advancedButtonWidgetSelected(SelectionEvent evt) {
 //		System.out.println("advancedButton.widgetSelected, event="+evt);
-		computerCheck2.setSelection(false);
+	/*	computerCheck2.setSelection(false);
 		computerCheck2.setEnabled(false);
 		computerCheck3.setSelection(false);
 		computerCheck3.setEnabled(false);
 		computerCheck4.setSelection(false);
-		computerCheck4.setEnabled(false);
+		computerCheck4.setEnabled(false);*/
 	}
 	
 	private void basicButtonWidgetSelected(SelectionEvent evt) {
