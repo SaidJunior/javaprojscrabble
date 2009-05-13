@@ -16,12 +16,12 @@ SETTING THE PREFERENCES
 Now you have to choose the number of players (1-4) and the rules set:
 1) Basic: Each cell is worth exactly one point, and the program decides 
    by herself what is the longest word that was created.
-2) Advanced: Each cell has a random weight (1-4) and the user can place 
+2) Advanced: Each regular cell(not bonus cells) has a random weight (1-4) and the you can place 
 only one letter.
 
-Now enter the names of the players (length less then 20) and choose if 
+Now enter the names of the players (length less then 15) and choose if 
 anyone of them should be automatic. Notice that the first player must be human.
-Notice that an auto player is only possible at the basic rule set.
+
 =======================
 
 PLAYING THE GAME
