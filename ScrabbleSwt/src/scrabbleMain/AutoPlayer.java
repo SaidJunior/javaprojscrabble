@@ -45,7 +45,7 @@ public class AutoPlayer implements Serializable {
 		int randRow = gen.nextInt(board.getLength()-8)+4;
 		int randCol = gen.nextInt(board.getWidth ()-8)+4;
 		
-		System.out.println(randLetter +": "+ player.getLetter(randLetter) + " " + randRow + " " + randCol + "\n");
+		//System.out.println(randLetter +": "+ player.getLetter(randLetter) + " " + randRow + " " + randCol + "\n");
 		if(board.isCellFree(randRow, randCol) && board.hasNeigbours(randRow, randCol)){
 			board.insertLetter(randRow, randCol, player.getLetter(randLetter));		
 			
@@ -70,7 +70,7 @@ public class AutoPlayer implements Serializable {
 				}
 			}
 			str1=dic.getLongesrWord(board.getWord(randRow, startCol , randRow, endCol), randCol-startCol, randCol-startCol);
-			System.out.println(board.getWord(randRow, startCol , randRow, endCol)+ " " + (randCol-startCol) + "\n");
+			//System.out.println(board.getWord(randRow, startCol , randRow, endCol)+ " " + (randCol-startCol) + "\n");
 			for (int i = randRow; i < board.getLength(); i++) {
 				if(!board.isCellFree(i, randCol)){
 					endRow = i;
@@ -88,7 +88,7 @@ public class AutoPlayer implements Serializable {
 				}
 			}
 			str2=dic.getLongesrWord(board.getWord(startRow, randCol , endRow, randCol), randRow-startRow, randRow-startRow);
-			System.out.println(board.getWord(startRow, randCol , endRow, randCol)+ " " + (randRow-startRow) +"\n");
+			//System.out.println(board.getWord(startRow, randCol , endRow, randCol)+ " " + (randRow-startRow) +"\n");
 			if((str1==null)&&(str2==null)){
 				board.removeLetter(randRow, randCol);
 			}
