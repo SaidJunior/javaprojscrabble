@@ -9,6 +9,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -67,6 +68,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private PlayerInfo[] playersInfo;
 	private char gameMode;
+	private static Shell shell;
 	
     /**
 	 * @return the playersInfo
@@ -103,7 +105,7 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 	public static void main(String[] args) {
 		try {
 			Display display = Display.getDefault();
-			Shell shell = new Shell(display);
+			shell = new Shell(display);
 			shell.setText("New Game Dialog");
 			NewGameDialog inst = new NewGameDialog(shell, SWT.NULL);
 			inst.setText("New Game Dialog");
@@ -532,8 +534,14 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private void getNames() {
 		String sel = numberOfPlayersCombo.getText();
-		if (!sel.equals("1") || !sel.equals("2") || !sel.equals("3") || !sel.equals("4")) {
-			//TODO: make popup message for the error
+//		System.out.println(sel);
+		if (!sel.equals("1") && !sel.equals("2") && !sel.equals("3") && !sel.equals("4")) {
+//			if (shell == null) System.out.println("bla");
+			MessageBox m = new MessageBox(dialogShell, SWT.ICON_ERROR);
+			m.setText("Number of players error");
+			m.setMessage("Number of players is not valid");
+			m.open();
+			return;
 		}
 		int numberOfPlayers = Integer.parseInt(sel);
 		
@@ -546,7 +554,10 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 		for (int i = 0; i < numberOfPlayers; i++) {
 			String isValid = isValidName(names[i]);
 			if (isValid != null) {
-				//TODO: popup message with isValid
+				MessageBox m = new MessageBox(dialogShell, SWT.ICON_ERROR);
+				m.setText("Player name error");
+				m.setMessage("Player name must be at length 1 at minimum and 15 at most");
+				m.open();
 				return;
 			}
 			
