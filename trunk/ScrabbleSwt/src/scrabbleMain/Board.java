@@ -88,7 +88,7 @@ public class Board implements Serializable {
 		if ((j > 0) && (CellArray[i][j - 1].letter != '*')) {
 			return true;
 		}
-		if ((i < width - 1) && (CellArray[i][j + 1].letter != '*')) {
+		if ((j < width - 1) && (CellArray[i][j + 1].letter != '*')) {
 			return true;
 		}
 		
