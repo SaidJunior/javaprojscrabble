@@ -365,7 +365,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private class CellIndAndColor {
 		private int i;
 		private int j;
-		private int place;
+//		private int place;
 		
 		private CellIndAndColor(int i, int j,int place) {
 			this.i = i;
@@ -2373,14 +2373,14 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 			}
 			{
-				groupScore = new Group(this, SWT.BORDER);
+				groupScore = new Group(this, SWT.BORDER | SWT.H_SCROLL);
 				groupScore.setBackground(SWTResourceManager.getColor(236, 233, 216));
 				GridLayout groupScoreLayout = new GridLayout();
 				groupScoreLayout.makeColumnsEqualWidth = true;
 				groupScore.setLayout(groupScoreLayout);
 				groupScore.setText("Scores");
 				FormData groupScoreLData = new FormData();
-				groupScoreLData.width = 192;
+				groupScoreLData.width = 190;
 				groupScoreLData.height = 163;
 				groupScoreLData.left =  new FormAttachment(0, 1000, 0);
 				groupScoreLData.top =  new FormAttachment(0, 1000, 261);
@@ -2388,11 +2388,11 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				groupScore.setFont(SWTResourceManager.getFont("Tahoma",10,0,false,false));
 				groupScore.setToolTipText("Score board");
 				{
-					textScores = new Text(groupScore, SWT.MULTI | SWT.WRAP);
+					textScores = new Text(groupScore, SWT.MULTI | SWT.WRAP | SWT.H_SCROLL);
 					textScores.setText("scores text");
 					GridData textScoresLData = new GridData();
 					textScoresLData.widthHint = 180;
-					textScoresLData.heightHint = 123;
+					textScoresLData.heightHint = 160;
 					textScores.setLayoutData(textScoresLData);
 					textScores.setBackground(SWTResourceManager.getColor(236,233,216));
 					textScores.setFont(SWTResourceManager.getFont("Tahoma", 10, 0, false, false));
@@ -2407,16 +2407,16 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				groupStatus.setText("Status Messages");
 				FormData groupStatusLData = new FormData();
 				groupStatusLData.width = 190;
-				groupStatusLData.height = 155;
-				groupStatusLData.left =  new FormAttachment(0, 1000, 2);
+				groupStatusLData.height = 165;
+				groupStatusLData.left =  new FormAttachment(0, 1000, 0);
 				groupStatusLData.top =  new FormAttachment(0, 1000, 67);
 				groupStatus.setLayoutData(groupStatusLData);
 				groupStatus.setFont(SWTResourceManager.getFont("Tahoma",10,0,false,false));
 				{
 					textStatus = new Text(groupStatus, SWT.MULTI | SWT.WRAP);
 					GridData textStatusLData = new GridData();
-					textStatusLData.widthHint = 185;
-					textStatusLData.heightHint = 152;
+					textStatusLData.widthHint = 180;
+					textStatusLData.heightHint = 160;
 					textStatus.setLayoutData(textStatusLData);
 					textStatus.setBackground(SWTResourceManager.getColor(236,233,216));
 					textStatus.setFont(SWTResourceManager.getFont("Tahoma",10,0,false,false));
@@ -2427,9 +2427,9 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				UndoButton.setText("Undo");
 				FormData UndoButtonLData = new FormData();
 				UndoButtonLData.width = 101;
-				UndoButtonLData.height = 30;
+				UndoButtonLData.height = 40;
 				UndoButtonLData.left =  new FormAttachment(0, 1000, 43);
-				UndoButtonLData.top =  new FormAttachment(0, 1000, 453);
+				UndoButtonLData.top =  new FormAttachment(0, 1000, 450);
 				UndoButton.setEnabled(false);
 				UndoButton.setLayoutData(UndoButtonLData);
 				UndoButton.addSelectionListener(new SelectionAdapter() {
@@ -2648,8 +2648,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			allPlayers += currentPlayer.getName() + "\n"; 
 			allPlayers += temp_score + " pts\n";
 		}	
-		String winMessage = finish + "Winner is:\n " + playerList.get(winner).getName() +
-		"\n With a score of:\n " + winningScore + " pts";
+		String winMessage = finish + "Winner is: " + playerList.get(winner).getName() +
+		"\n With a score of: " + winningScore + " pts";
 		allPlayers = winMessage + "\n" + allPlayers;
 		textScores.setText(allPlayers);
 	}
