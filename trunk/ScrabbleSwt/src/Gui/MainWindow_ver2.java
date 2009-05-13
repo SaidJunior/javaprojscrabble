@@ -609,9 +609,9 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			this.setLayout(new FormLayout());
 			this.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
 			{
-				if (showMenu){
 				menuMain = new Menu(getShell(), SWT.BAR);
-				getShell().setMenuBar(menuMain);
+				if (showMenu)
+					getShell().setMenuBar(menuMain);
 				{
 					menuItemGame = new MenuItem(menuMain, SWT.CASCADE);
 					menuItemGame.setText("&Game");
@@ -801,7 +801,6 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 						}
 					}
 				}
-			}
 			}
 			{
 				lettersLeftLabel = new CLabel(this, SWT.NONE);
