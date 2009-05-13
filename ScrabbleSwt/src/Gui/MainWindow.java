@@ -2514,6 +2514,8 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 
 //	private void updateWindow(boolean cleanBoard) {
 	private void updateWindow() {
+		try{
+		System.out.println("*****");
 		this.updateNowPlayingText();
 		this.updateScoresText();
 		this.updateLetterSetText();
@@ -2524,6 +2526,8 @@ public class MainWindow extends org.eclipse.swt.widgets.Composite {
 //		if (cleanBoard == true) {
 //			this.putRandomWord();
 //		} 
+		}
+		catch(Exception e){}
 	}
 	
 	private void updateBoard() {
