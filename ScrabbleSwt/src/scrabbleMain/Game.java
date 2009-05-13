@@ -10,6 +10,8 @@ public class Game{
 		
 		gameDirectories.initDirectories();
 		
+		GameGui.createLetterScores();
+		
 		char input = 0;
 		boolean validInput = false;
 		BufferedReader reader   = new BufferedReader(new InputStreamReader(System.in));
