@@ -37,6 +37,79 @@ public class AutoPlayer implements Serializable {
 		vertical.add(new LetterCellCords(i, j));
 	}
 	
+	
+	public String placeAutoWordAndUpdateAdvanced(Player player) {
+		String str1=null, str2=null;
+		Random gen = new Random();
+		int randLetter = gen.nextInt(7);
+		int randRow = gen.nextInt(board.getLength()-8)+4;
+		int randCol = gen.nextInt(board.getWidth ()-8)+4;
+		
+		System.out.println(randLetter +": "+ player.getLetter(randLetter) + " " + randRow + " " + randCol + "\n");
+		if(board.isCellFree(randRow, randCol) && board.hasNeigbours(randRow, randCol)){
+			board.insertLetter(randRow, randCol, player.getLetter(randLetter));		
+			
+			int startRow=randRow; 
+			int startCol=randCol;
+			int endRow=randRow; 
+			int endCol=randCol; 
+			for (int i = randCol; i < board.getWidth(); i++) {
+				if(!board.isCellFree(randRow, i)){
+					endCol = i;
+				}
+				else{
+					break;
+				}
+			}
+			for (int i = randCol; i >=0; i--) {
+				if(!board.isCellFree(randRow, i)){
+					startCol = i;
+				}
+				else{
+					break;
+				}
+			}
+			str1=dic.getLongesrWord(board.getWord(randRow, startCol , randRow, endCol), randCol-startCol, randCol-startCol);
+			System.out.println(board.getWord(randRow, startCol , randRow, endCol)+ " " + (randCol-startCol) + "\n");
+			for (int i = randRow; i < board.getLength(); i++) {
+				if(!board.isCellFree(i, randCol)){
+					endRow = i;
+				}
+				else{
+					break;
+				}
+			}
+			for (int i = randRow; i >=0; i--) {
+				if(!board.isCellFree(i, randCol)){
+					startRow = i;
+				}
+				else{
+					break;
+				}
+			}
+			str2=dic.getLongesrWord(board.getWord(startRow, randCol , endRow, randCol), randRow-startRow, randRow-startRow);
+			System.out.println(board.getWord(startRow, randCol , endRow, randCol)+ " " + (randRow-startRow) +"\n");
+			if((str1==null)&&(str2==null)){
+				board.removeLetter(randRow, randCol);
+			}
+			else{
+				player.removeLetter(randLetter);
+				if(str1 != null){
+					if(str2 !=null){
+						return ((str1.length() > str2.length()) ? str1 : str2);
+					}
+					else{
+						return str1;	
+					}
+				}
+				else{
+					return str2;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public String placeAutoWordAndUpdate(Player player) {
 		String ret = placeAutoWordBasic(player);
 		checkVertfirst = (checkVertfirst == true) ? false : true;
@@ -419,4 +492,6 @@ public class AutoPlayer implements Serializable {
 			this.col = col;
 		}
 	}
+
+	
 }
