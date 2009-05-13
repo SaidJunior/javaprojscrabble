@@ -213,6 +213,26 @@ public class GameGui {
 			this.letter = letter;
 			this.index  = index;
 		}
+		public void setRow(int row){
+			this.row=row;
+		}
+		public void setCol(int col){
+			this.col=col;
+		}
+		public void setLetter(char letter){
+			this.letter = letter;
+		}
+		public void setIndex(int index){
+			this.index = index;
+		}
+		
+		public int getIndex(){
+			return this.index;
+		}
+		
+		public char getLetter(){
+			return this.letter;
+		}
 	}
 	
 	private static List<LP> usedLetters = null;
@@ -234,6 +254,16 @@ public class GameGui {
 //		if (lp == null) {System.out.println("bla");}
 		usedLetters.add(lp);
 		player.removeLetter(index);
+	}
+	public static void undoLetterToBoard(int x,int y,int index,char letter){
+		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
+		
+		G.getBoard().deleteLetter(x, y);
+		
+		int lastElement = usedLetters.size()-1;
+		usedLetters.remove(lastElement);
+//		System.out.println("GUI LETTER"+ letter+" i"+index);
+		player.insertLetter(letter,index);
 	}
 	
 	public static boolean placeWordBasic() {

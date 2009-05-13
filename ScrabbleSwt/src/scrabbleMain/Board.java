@@ -58,6 +58,10 @@ public class Board implements Serializable {
 	public void insertLetter(int x, int y, char letter){
 		CellArray[x][y].letter = letter;
 	}
+	
+	public void deleteLetter(int x,int y){
+		CellArray[x][y].letter = '*';
+	}
 
 	public int getLength() {
 		return length;

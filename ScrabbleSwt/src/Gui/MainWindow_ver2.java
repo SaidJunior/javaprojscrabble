@@ -77,6 +77,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private Text textStatus;
 	@SuppressWarnings("unused")
 	private MenuItem menuItemHelpSep1;
+	private Button UndoButton;
 	private MenuItem menuItemViewForest;
 	private MenuItem menuItemViewSpace;
 	private MenuItem menuItemViewBeach;
@@ -348,8 +349,12 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private CLabel[][] allCellsGrid = new CLabel[15][15];
 	private CLabel[]   allPlayerLetters = new CLabel[7];
 	private Color[][]  allCellsColors = new Color[15][15];
+	private List<Integer> PlayerLetters = new ArrayList<Integer>();
+	private char [] AddedLetters = new char[8] ;
+	private int AddedLettersSize = 0;
 	private Color currentColor;
 	private boolean addWordFlag = false;
+	private boolean donePressed = false;
 	private static final Color whiteColor = SWTResourceManager.getColor(255,255,255);
 	private List<CellIndAndColor> currentTurnInsertedLetters = new ArrayList<CellIndAndColor>();
 	private MenuItem menuItemRLBasic;
@@ -360,8 +365,9 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private class CellIndAndColor {
 		private int i;
 		private int j;
+		private int place;
 		
-		private CellIndAndColor(int i, int j) {
+		private CellIndAndColor(int i, int j,int place) {
 			this.i = i;
 			this.j = j;
 		}
@@ -523,16 +529,21 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			source.setTransfer(types);
 			source.addDragListener(new DragSourceListener() {
 				   public void dragStart(DragSourceEvent event) {
-				      // Only start the drag if addWordFlag == true or advanced letter has not been already placed
+				      // Only start the drag if s == true or advanced letter has not been already placed
 				      if ((addWordFlag == false) || (advancedLetterPlaced == true)){
 				          event.doit = false;
 				      }
 				   }
 				   public void dragSetData(DragSourceEvent event) {
 				     // get the letter's number
+					   
 				     if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
 				    	  StringBuffer data = new StringBuffer();
-				    	  data.append(String.valueOf(G.getCurrentPlayer().getLetter(currentI)));
+				    	  char let = G.getCurrentPlayer().getLetter(currentI);
+				    	  AddedLetters[AddedLettersSize]=let;
+				    	  AddedLettersSize++;
+				    	  String letter = String.valueOf(G.getCurrentPlayer().getLetter(currentI));
+				    	  data.append(letter);
 				    	  data.append(currentI);
 				          event.data = data.toString();
 //				          System.out.println(currentI);
@@ -542,6 +553,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				     // drag finished make the letter unvisable
 					  if (event.detail == DND.DROP_MOVE) {
 						  currentPlayerLetter.setVisible(false);
+						  PlayerLetters.add(currentI);
 					  }
 				   }
 				});
@@ -581,6 +593,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				    	String data = (String)event.data;
 				    	String letter = data.substring(0, 1);
 				    	int place = Integer.parseInt(data.substring(1));
+//				    	System.out.println("data "+data +"letter "+ letter+ "place "+ place);
 						currentCell.setBackground(new Image(Display.getDefault(),resConfig.getImageStream(letter + "1.PNG")));
 						currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(letter + "1.PNG")));
 //						System.out.println(place);
@@ -589,7 +602,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 							advancedLetterPlaced = true;
 //							System.out.println("bla");
 						}
-				    	currentTurnInsertedLetters.add(new CellIndAndColor(currentI, CurrentJ));
+				    	currentTurnInsertedLetters.add(new CellIndAndColor(currentI, CurrentJ, place));
 				    }
 			  });
 			}
@@ -960,8 +973,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				FormData letterSetImageLabelLData = new FormData();
 				letterSetImageLabelLData.width = 178;
 				letterSetImageLabelLData.height = 70;
-				letterSetImageLabelLData.left =  new FormAttachment(0, 1000, 10);
-				letterSetImageLabelLData.top =  new FormAttachment(0, 1000, 490);
+				letterSetImageLabelLData.left =  new FormAttachment(0, 1000, 8);
+				letterSetImageLabelLData.top =  new FormAttachment(0, 1000, 495);
 				letterSetImageLabel.setLayoutData(letterSetImageLabelLData);
 			}
 			{
@@ -2367,10 +2380,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				groupScore.setLayout(groupScoreLayout);
 				groupScore.setText("Scores");
 				FormData groupScoreLData = new FormData();
-				groupScoreLData.width = 190;
-				groupScoreLData.height = 193;
+				groupScoreLData.width = 192;
+				groupScoreLData.height = 163;
 				groupScoreLData.left =  new FormAttachment(0, 1000, 0);
-				groupScoreLData.top =  new FormAttachment(0, 1000, 267);
+				groupScoreLData.top =  new FormAttachment(0, 1000, 261);
 				groupScore.setLayoutData(groupScoreLData);
 				groupScore.setFont(SWTResourceManager.getFont("Tahoma",10,0,false,false));
 				groupScore.setToolTipText("Score board");
@@ -2379,7 +2392,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					textScores.setText("scores text");
 					GridData textScoresLData = new GridData();
 					textScoresLData.widthHint = 180;
-					textScoresLData.heightHint = 193;
+					textScoresLData.heightHint = 123;
 					textScores.setLayoutData(textScoresLData);
 					textScores.setBackground(SWTResourceManager.getColor(236,233,216));
 					textScores.setFont(SWTResourceManager.getFont("Tahoma", 10, 0, false, false));
@@ -2394,20 +2407,36 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				groupStatus.setText("Status Messages");
 				FormData groupStatusLData = new FormData();
 				groupStatusLData.width = 190;
-				groupStatusLData.height = 176;
-				groupStatusLData.left =  new FormAttachment(0, 1000, 0);
-				groupStatusLData.top =  new FormAttachment(0, 1000, 65);
+				groupStatusLData.height = 155;
+				groupStatusLData.left =  new FormAttachment(0, 1000, 2);
+				groupStatusLData.top =  new FormAttachment(0, 1000, 67);
 				groupStatus.setLayoutData(groupStatusLData);
 				groupStatus.setFont(SWTResourceManager.getFont("Tahoma",10,0,false,false));
 				{
 					textStatus = new Text(groupStatus, SWT.MULTI | SWT.WRAP);
 					GridData textStatusLData = new GridData();
-					textStatusLData.widthHint = 180;
-					textStatusLData.heightHint = 175;
+					textStatusLData.widthHint = 185;
+					textStatusLData.heightHint = 152;
 					textStatus.setLayoutData(textStatusLData);
 					textStatus.setBackground(SWTResourceManager.getColor(236,233,216));
 					textStatus.setFont(SWTResourceManager.getFont("Tahoma",10,0,false,false));
 				}
+			}
+			{
+				UndoButton = new Button(this, SWT.PUSH | SWT.CENTER);
+				UndoButton.setText("Undo");
+				FormData UndoButtonLData = new FormData();
+				UndoButtonLData.width = 101;
+				UndoButtonLData.height = 30;
+				UndoButtonLData.left =  new FormAttachment(0, 1000, 43);
+				UndoButtonLData.top =  new FormAttachment(0, 1000, 453);
+				UndoButton.setEnabled(false);
+				UndoButton.setLayoutData(UndoButtonLData);
+				UndoButton.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						UndoButtonWidgetSelected(evt);
+					}
+				});
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2647,8 +2676,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private void letterClickAction(int index) {
 		isSaved = false;
 		if (changeLetterFlag == true) {
+			UndoButton.setEnabled(false);
 			GameGui.changeOneLetter(index);
 			this.updatePlayerLetters();
+			
 		}
 		else { //word adding
 			if ((G.getMode() == 'a') && (advancedLetterPlaced == true)) {
@@ -2656,23 +2687,47 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				return;
 			}
 			addWordFlag = true;
+			UndoButton.setEnabled(true);
 			changeLetterBut.setEnabled(false);
 			doneBut.setEnabled(true);
 		}	
 	}
 	
-
+    private void UndoButtonWidgetSelected(SelectionEvent evt){
+      int i = (currentTurnInsertedLetters.size())-1;
+      int j = (PlayerLetters.size())-1;
+      //check that the round is not finished and that there is a letter added to the table
+    	if((donePressed == false) && (currentTurnInsertedLetters.size() > 0)){
+    		int x = currentTurnInsertedLetters.get(i).i;
+			int y = currentTurnInsertedLetters.get(i).j;
+			allCellsGrid[x][y].setBackground(allCellsColors[x][y]);
+			allCellsGrid[x][y].setBackgroundImage(null);
+			int letterId = PlayerLetters.get(j).intValue();
+			allPlayerLetters[letterId].setVisible(true);
+			GameGui.undoLetterToBoard(x, y,letterId , AddedLetters[AddedLettersSize-1]);
+ /*   		for(int k=0;k<AddedLettersSize+1;k++){
+				System.out.println("i "+AddedLetters[k]);
+			}*/
+			AddedLetters[AddedLettersSize-1]='*';
+			AddedLettersSize--;
+			PlayerLetters.remove(j);
+			currentTurnInsertedLetters.remove(i);
+    	}
+    }
 	private void doneButWidgetSelected(SelectionEvent evt) {
+		donePressed = true;
 		//current player is human
 		if (GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto() == false) {
 			//player pressed done before he pressed "change letters" or "add word"
 			if ((changeLetterFlag == false) && (addWordFlag == false)){
 				setPlayStatusText("Choose add word or change letter");
+				donePressed = false;
 				return;
 			}
 			if (changeLetterFlag == true) {
 				GameGui.moveToNextPlayer();
 				setPlayStatusText("");
+//				donePressed = false;
 			}
 			else if (addWordFlag == true) {
 				if (GameGui.placeWordBasic() == false) { //word is not valid
@@ -2680,6 +2735,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 				GameGui.moveToNextPlayer();
 				GameGui.initUsedLetters();
+//				donePressed = false;
 //				setPlayStatusText("");
 			}
 		}
@@ -2688,30 +2744,46 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			GameGui.placeAutoWord();
 			GameGui.moveToNextPlayer();
 			this.updateBoard();
+	//		donePressed = false;
 		}
 		
 		currentTurnInsertedLetters.clear();
+		PlayerLetters.clear();
+		//This for is not really necessary
+	    for(int i=0;i<7;i++){
+			AddedLetters[i]= '*';
+		}
+		AddedLettersSize = 0;
 		
 		//set the board accordingly if the current player is auto or human
 		if (GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto() == true) {
 			changeLetterBut.setEnabled(false);
+
+			UndoButton.setEnabled(false);
+//			setPlayStatusText("The current turn is an auto player turn, press Done for him to make his move");
+
 			textStatus.append("\nThe current turn is an auto player turn, press Done for him to make his move");
+
 			doneBut.setEnabled(true);
 			this.enablePlayerLetters(false);
 		}
 		else {
 			changeLetterBut.setEnabled(true);
+			UndoButton.setEnabled(true);
 			doneBut.setEnabled(false);
 			this.enablePlayerLetters(true);
 		}
+		
 		updatePlayerLetters();
 		
+		donePressed = false;
 		changeLetterFlag = false;
 		addWordFlag      = false;
 		
 		//check if game finished
 		if (GameGui.getG().getLettersSet().getLetterSetSize() == 0) {
 			changeLetterBut.setEnabled(false);
+			UndoButton.setEnabled(false);
 			doneBut.setEnabled(false);
 			this.makePlayerLettersUnVisible();
 			setPlayStatusText("letters are finished, Game is finished");
