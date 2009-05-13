@@ -483,7 +483,13 @@ public class GameGui {
 
 	public static void placeAutoWord() {
 		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
-		String retWord = G.getAp().placeAutoWordAndUpdate(player);
+		String retWord=null;
+		if(GameGui.getG().getMode() == 'b'){
+			retWord = G.getAp().placeAutoWordAndUpdate(player);
+		}
+		else{//advanced
+			retWord = G.getAp().placeAutoWordAndUpdateAdvanced(player);
+		}
 		if (retWord != null) {
 //			for (int i = 0; i < 3; i++) {
 //				if (G.getLettersSet().getLetterSetSize() > 0) {
