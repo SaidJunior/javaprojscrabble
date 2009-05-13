@@ -11,7 +11,9 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import resources.resConfig;
 import Gui.NewGameDialog.PlayerInfo;
@@ -266,6 +268,450 @@ public class GameGui {
 		player.insertLetter(letter,index);
 	}
 	
+	public static Map<String, Integer> letterScores = new HashMap<String, Integer>();
+	public static void createLetterScores()
+	{
+		letterScores.put("a", 1);
+		letterScores.put("b", 3);
+		letterScores.put("c", 3);
+		letterScores.put("d", 2);
+		letterScores.put("e", 1);
+		letterScores.put("f", 4);
+		letterScores.put("g", 2);
+		letterScores.put("h", 4);
+		letterScores.put("i", 1);
+		letterScores.put("j", 8);
+		letterScores.put("k", 5);
+		letterScores.put("l", 1);
+		letterScores.put("m", 3);
+		letterScores.put("n", 1);
+		letterScores.put("o", 1);
+		letterScores.put("p", 3);
+		letterScores.put("q", 10);
+		letterScores.put("r", 1);
+		letterScores.put("s", 1);
+		letterScores.put("t", 1);
+		letterScores.put("u", 1);
+		letterScores.put("v", 4);
+		letterScores.put("w", 4);
+		letterScores.put("x", 8);
+		letterScores.put("y", 4);
+		letterScores.put("z", 10);
+	}
+
+	public static int calcLetterBoardScore(LP let)
+	{
+		//0=double letter, 1=triple letter, 2=double word, 3=triple word, 4=regular
+		switch (let.col)
+		{
+			case 0:
+			{
+				switch (let.row)
+				{
+					case 0:
+					{
+						return 3;
+					}
+					case 3:
+					{
+						return 0;
+					}
+					case 7:
+					{
+						return 3;
+					}
+					case 11:
+					{
+						return 0;
+					}
+					case 14:
+					{
+						return 3;
+					}
+					default: return 4;
+				}
+			}
+			case 1:
+			{
+				switch (let.row)
+				{
+					case 1:
+					{
+						return 2;
+					}
+					case 5:
+					{
+						return 1;
+					}
+					case 9:
+					{
+						return 1;
+					}
+					case 13:
+					{
+						return 2;
+					}
+					default: return 4;
+				}
+			}
+			case 2:
+			{
+				switch (let.row)
+				{
+					case 2:
+					{
+						return 2;
+					}
+					case 6:
+					{
+						return 0;
+					}
+					case 8:
+					{
+						return 0;
+					}
+					case 12:
+					{
+						return 2;
+					}
+					default: return 4;
+				}				
+			}
+			case 3:
+			{
+				switch (let.row)
+				{
+					case 0:
+					{
+						return 0;
+					}
+					case 3:
+					{
+						return 2;
+					}
+					case 7:
+					{
+						return 0;
+					}
+					case 11:
+					{
+						return 2;
+					}
+					case 14:
+					{
+						return 0;
+					}
+					default: return 4;
+				}				
+			}
+			case 4:
+			{
+				switch (let.row)
+				{
+					case 4:
+					{
+						return 2;
+					}
+					case 10:
+					{
+						return 2;
+					}
+						default: return 4;
+				}
+				
+			}
+			case 5:
+			{
+				switch (let.row)
+				{
+					case 1:
+					{
+						return 1;
+					}
+					case 5:
+					{
+						return 1;
+					}
+					case 9:
+					{
+						return 1;
+					}
+					case 13:
+					{
+						return 1;
+					}
+					default: return 4;
+				}
+				
+			}
+			case 6:
+			{
+				switch (let.row)
+				{
+					case 2:
+					{
+						return 0;
+					}
+					case 6:
+					{
+						return 0;
+					}
+					case 8:
+					{
+						return 0;
+					}
+					case 12:
+					{
+						return 0;
+					}
+					default: return 4;
+				}				
+			}
+			case 7:
+			{
+				switch (let.row)
+				{
+					case 0:
+					{
+						return 3;
+					}
+					case 3:
+					{
+						return 0;
+					}
+					case 7:
+					{
+						return 2;
+					}
+					case 11:
+					{
+						return 0;
+					}
+					case 14:
+					{
+						return 3;
+					}
+					default: return 4;
+				}				
+			}						
+			case 8:
+			{
+				switch (let.row)
+				{
+					case 2:
+					{
+						return 0;
+					}
+					case 6:
+					{
+						return 0;
+					}
+					case 8:
+					{
+						return 0;
+					}
+					case 12:
+					{
+						return 0;
+					}
+					default: return 4;
+				}				
+			}
+			case 9:
+			{
+				switch (let.row)
+				{
+					case 1:
+					{
+						return 1;
+					}
+					case 5:
+					{
+						return 1;
+					}
+					case 9:
+					{
+						return 1;
+					}
+					case 13:
+					{
+						return 1;
+					}
+					default: return 4;
+				}
+				
+			}
+			case 10:
+			{
+				switch (let.row)
+				{
+					case 4:
+					{
+						return 2;
+					}
+					case 10:
+					{
+						return 2;
+					}
+						default: return 4;
+				}
+				
+			}
+			case 11:
+			{
+				switch (let.row)
+				{
+					case 0:
+					{
+						return 0;
+					}
+					case 3:
+					{
+						return 2;
+					}
+					case 7:
+					{
+						return 0;
+					}
+					case 11:
+					{
+						return 2;
+					}
+					case 14:
+					{
+						return 0;
+					}
+					default: return 4;
+				}				
+			}
+			case 12:
+			{
+				switch (let.row)
+				{
+					case 2:
+					{
+						return 2;
+					}
+					case 6:
+					{
+						return 0;
+					}
+					case 8:
+					{
+						return 0;
+					}
+					case 12:
+					{
+						return 2;
+					}
+					default: return 4;
+				}				
+			}
+			case 13:
+			{
+				switch (let.row)
+				{
+					case 1:
+					{
+						return 2;
+					}
+					case 5:
+					{
+						return 1;
+					}
+					case 9:
+					{
+						return 1;
+					}
+					case 13:
+					{
+						return 2;
+					}
+					default: return 4;
+				}
+			}
+			case 14:
+			{
+				switch (let.row)
+				{
+					case 0:
+					{
+						return 3;
+					}
+					case 3:
+					{
+						return 0;
+					}
+					case 7:
+					{
+						return 3;
+					}
+					case 11:
+					{
+						return 0;
+					}
+					case 14:
+					{
+						return 3;
+					}
+					default: return 4;
+				}
+			}
+		}
+		return 4;
+	}
+	
+	
+	public static int calcWordScore(char[] word)
+	{
+		int result = 0;
+		int wordBoardMultiplier = 1;
+		for(int i=0;i<word.length;i++)
+		{
+			int letterBoardScore = 4;
+			for(int j=0;j<usedLetters.size();j++)
+			{
+				if(usedLetters.get(j).letter == word[i])
+				{
+					letterBoardScore = calcLetterBoardScore(usedLetters.get(j));
+					break;
+				}
+			}
+			String letter = String.valueOf(word[i]);
+			switch (letterBoardScore)
+			{
+				case 0:
+				{
+					result += 2 * letterScores.get(letter);
+					break;
+				}
+				case 1:
+				{
+					result += 3 * letterScores.get(letter);
+					break;
+				}
+				case 2:
+				{
+					result += letterScores.get(letter);
+					wordBoardMultiplier *= 2;
+					break;
+				}
+				case 3:
+				{
+					result += letterScores.get(letter);
+					wordBoardMultiplier *= 3;
+					break;
+				}
+				default:
+				{
+					result += letterScores.get(letter);
+					break;
+				}
+			}
+		}
+		return (wordBoardMultiplier * result);
+	}
+	
 	public static boolean placeWordBasic() {
 		Player player = GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd());
 		String userWord;
@@ -319,11 +765,15 @@ public class GameGui {
 				else { //no more letters, game finished
 					break;
 				}
-			}	
-			player.setScore(userWord.length());
+			}
+			
+			int wordScore = calcWordScore(userWord.toCharArray());
+			player.setScore(wordScore);
+			
+//			player.setScore(userWord.length());
 			ret = true;
-//			System.out.println("Very Good - you made the word: " + userWord + ". You gained " + userWord.length() + " more pointes");
-			G.mainWindow.setPlayStatusText("Very Good - " + player.getName() + " made the word: " + userWord + ". You gained " + userWord.length() + " more pointes");
+//			System.out.println("Very Good - you made the word: " + userWord + ". You gained " + wordScore + " more pointes");
+			G.mainWindow.setPlayStatusText("Very Good - " + player.getName() + " made the word: " + userWord + ". You gained " + wordScore + " more pointes");
 		}
 		else {
 			for (int i = 0; i < usedLetters.size(); i++) {
