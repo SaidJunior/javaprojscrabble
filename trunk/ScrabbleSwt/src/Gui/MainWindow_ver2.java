@@ -2695,7 +2695,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		//set the board accordingly if the current player is auto or human
 		if (GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto() == true) {
 			changeLetterBut.setEnabled(false);
-//			setPlayStatusText("The current turn is an auto player turn, press Done for him to make his move");
+			setPlayStatusText(textStatus.getText() + ".\nThe current turn is an auto player turn, press Done for him to make his move");
 			doneBut.setEnabled(true);
 			this.enablePlayerLetters(false);
 		}
