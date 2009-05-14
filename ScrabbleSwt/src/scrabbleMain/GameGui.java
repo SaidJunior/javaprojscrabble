@@ -264,7 +264,7 @@ public class GameGui {
 		
 		int lastElement = usedLetters.size()-1;
 		usedLetters.remove(lastElement);
-//		System.out.println("GUI LETTER"+ letter+" i"+index);
+		System.out.println("GUI LETTER"+ letter+" i"+index);
 		player.insertLetter(letter,index);
 	}
 	

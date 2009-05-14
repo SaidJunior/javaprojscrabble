@@ -2705,9 +2705,9 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			int letterId = PlayerLetters.get(j).intValue();
 			allPlayerLetters[letterId].setVisible(true);
 			GameGui.undoLetterToBoard(x, y,letterId , AddedLetters[AddedLettersSize-1]);
- /*   		for(int k=0;k<AddedLettersSize+1;k++){
+     		for(int k=0;k<AddedLettersSize+1;k++){
 				System.out.println("i "+AddedLetters[k]);
-			}*/
+			}
 			AddedLetters[AddedLettersSize-1]='*';
 			AddedLettersSize--;
 			PlayerLetters.remove(j);
@@ -2730,6 +2730,11 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 //				donePressed = false;
 			}
 			else if (addWordFlag == true) {
+				if(PlayerLetters.size()==0){
+					setPlayStatusText("Please add letters to the board");
+					donePressed = false;
+					return;	
+				}
 				if (GameGui.placeWordBasic() == false) { //word is not valid
 					this.updateAfterUnSucInsert();
 				}
