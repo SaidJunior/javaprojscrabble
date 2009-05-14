@@ -2696,6 +2696,9 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
     private void UndoButtonWidgetSelected(SelectionEvent evt){
       int i = (currentTurnInsertedLetters.size())-1;
       int j = (PlayerLetters.size())-1;
+      if(PlayerLetters.size()==1){
+    	  doneBut.setEnabled(false);
+      }
       //check that the round is not finished and that there is a letter added to the table
     	if((donePressed == false) && (currentTurnInsertedLetters.size() > 0)){
     		int x = currentTurnInsertedLetters.get(i).i;
