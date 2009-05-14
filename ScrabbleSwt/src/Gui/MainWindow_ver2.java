@@ -42,6 +42,7 @@ import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
 import scrabbleMain.gameDirectories;
+import scrabbleMain.GameGui.LP;
 import Gui.NewGameDialog.PlayerInfo;
 
 import com.cloudgarden.resource.SWTResourceManager;
@@ -2692,6 +2693,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					if (letter == '*') {
 						currentCell.setBackground(allCellsColors[i][j]);
 						currentCell.setBackgroundImage(null);
+						currentCell.setText(getCellText(i, j));
 					}
 					else {
 						String l = String.valueOf(letter);
@@ -2722,6 +2724,19 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 //			}
 //		}
 //	}
+
+	private static String getCellText(int i, int j) {
+		int help = GameGui.calcLetterBoardScore(new LP(i, j, 'a', 0));
+		switch (help) {
+		case 0: return "DOUBLE\nLETTER";
+		case 1: return "TRIPLE\nLETTER";
+		case 2: return "DOUBLE\n WORD";
+		case 3: return "TRIPLE\n WORD";
+		}
+		
+		return "";
+		
+	}
 
 	private void updatePlayerLetters() {
 		Player currentPlayer = G.getCurrentPlayer();
