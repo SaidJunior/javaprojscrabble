@@ -18,6 +18,18 @@ public class gameDirectories {
 	private  static RecordList     recordListBasic      = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	private  static RecordList     recordListAdvanced     = new RecordList(new TreeMap<Integer,LinkedList<String>>());
 	
+	
+	/* This methods initialized all general needs of game: Directories, Records lists, 
+	 * Letter Score 
+	 * */
+	
+	public static void initGame()
+	{
+		initDirectories();
+		GameGui.uploadRecordList();
+		GameGui.createLetterScores();
+	}
+	
 	/* Init game directories and upload Records lists. 
 	 * */
 	public static void initDirectories()
@@ -28,10 +40,9 @@ public class gameDirectories {
 		setBasicRecordsFullFileName(recordListDirectorty + "/fileRecordListBasic");
 		setAdvancedRecordsFullFileName(recordListDirectorty + "/fileRecordListAdvanced");
 		initSavedGamesDir();
-		initRecordListDir();
-		GameGui.uploadRecordList();
+		initRecordListDir();	
 	}
-	
+			
 	private static void initSavedGamesDir()
 	{
 		File file = new File(getSavedGamesDirectorty());
