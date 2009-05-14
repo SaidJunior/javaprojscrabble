@@ -2705,9 +2705,9 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			int letterId = PlayerLetters.get(j).intValue();
 			allPlayerLetters[letterId].setVisible(true);
 			GameGui.undoLetterToBoard(x, y,letterId , AddedLetters[AddedLettersSize-1]);
-     		for(int k=0;k<AddedLettersSize+1;k++){
+     /*		for(int k=0;k<AddedLettersSize+1;k++){
 				System.out.println("i "+AddedLetters[k]);
-			}
+			}*/
 			AddedLetters[AddedLettersSize-1]='*';
 			AddedLettersSize--;
 			PlayerLetters.remove(j);
