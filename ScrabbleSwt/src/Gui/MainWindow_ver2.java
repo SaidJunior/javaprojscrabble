@@ -356,20 +356,21 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private boolean addWordFlag = false;
 	private boolean donePressed = false;
 	private static final Color whiteColor = SWTResourceManager.getColor(255,255,255);
-	private List<CellIndAndColor> currentTurnInsertedLetters = new ArrayList<CellIndAndColor>();
+	private List<CellIndAndTetx> currentTurnInsertedLetters = new ArrayList<CellIndAndTetx>();
 	private MenuItem menuItemRLBasic;
 	private MenuItem menuItemRLAdvanced;
 	private static Shell shell;
 	private boolean advancedLetterPlaced = false;
 	
-	private class CellIndAndColor {
+	private class CellIndAndTetx {
 		private int i;
 		private int j;
-//		private int place;
+		private String text;
 		
-		private CellIndAndColor(int i, int j,int place) {
+		private CellIndAndTetx(int i, int j,String text) {
 			this.i = i;
 			this.j = j;
+			this.text = text;
 		}
 	}
 	
@@ -596,13 +597,15 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 //				    	System.out.println("data "+data +"letter "+ letter+ "place "+ place);
 						currentCell.setBackground(new Image(Display.getDefault(),resConfig.getImageStream(letter + "1.PNG")));
 						currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(letter + "1.PNG")));
+						String help = currentCell.getText();
+						currentCell.setText("");
 //						System.out.println(place);
 				    	GameGui.addLetterToBoardBasic(currentI, CurrentJ, place);
 				    	if (GameGui.getG().getMode() == 'a') {
 							advancedLetterPlaced = true;
 //							System.out.println("bla");
 						}
-				    	currentTurnInsertedLetters.add(new CellIndAndColor(currentI, CurrentJ, place));
+				    	currentTurnInsertedLetters.add(new CellIndAndTetx(currentI, CurrentJ, help));
 				    }
 			  });
 			}
@@ -1025,6 +1028,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0000 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0000.setBounds(164, 26, 32, 31);
 					cLabelCell0000.setBackground(SWTResourceManager.getColor(255, 0, 0));
+					cLabelCell0000.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0000.setText("TRIPLE\n WORD");
 					allCellsGrid[0][0] = cLabelCell0000;
 				}
 				{
@@ -1043,6 +1048,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0003 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0003.setBounds(275, 26, 32, 31);
 					cLabelCell0003.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0003.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0003.setText("DOUBLE\nLETTER");
 					allCellsGrid[0][3] = cLabelCell0003;
 				}
 				{
@@ -1067,6 +1074,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0007 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0007.setBounds(424, 26, 31, 31);
 					cLabelCell0007.setBackground(SWTResourceManager.getColor(255,0,0));
+					cLabelCell0007.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0007.setText("TRIPLE\n WORD");
 					allCellsGrid[0][7] = cLabelCell0007;
 				}
 				{
@@ -1089,8 +1098,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					cLabelCell0011 = new CLabel(cLabelBoard, SWT.BORDER);
-					cLabelCell0011.setBounds(571, 26, 29, 31);
+					cLabelCell0011.setBounds(571, 26, 30, 31);
 					cLabelCell0011.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0011.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0011.setText("DOUBLE\nLETTER");
 					allCellsGrid[0][11] = cLabelCell0011;
 				}
 				{
@@ -1109,6 +1120,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0014 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0014.setBounds(677, 26, 29, 31);
 					cLabelCell0014.setBackground(SWTResourceManager.getColor(255,0,0));
+					cLabelCell0014.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0014.setText("TRIPLE\n WORD");
 					allCellsGrid[0][14] = cLabelCell0014;
 				}
 				{
@@ -1121,6 +1134,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0101 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0101.setBounds(202, 63, 32, 31);
 					cLabelCell0101.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell0101.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0101.setText("DOUBLE\n WORD");
 					allCellsGrid[1][1] = cLabelCell0101;
 				}
 				{
@@ -1145,6 +1160,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0105 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0105.setBounds(351, 63, 30, 31);
 					cLabelCell0105.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0105.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0105.setText("TRIPLE\nLETTER");
 					allCellsGrid[1][5] = cLabelCell0105;
 				}
 				{
@@ -1169,6 +1186,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0109 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0109.setBounds(498, 63, 31, 31);
 					cLabelCell0109.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0109.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0109.setText("TRIPLE\nLETTER");
 					allCellsGrid[1][9] = cLabelCell0109;
 				}
 				{
@@ -1179,7 +1198,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					cLabelCell0111 = new CLabel(cLabelBoard, SWT.BORDER);
-					cLabelCell0111.setBounds(571, 63, 29, 31);
+					cLabelCell0111.setBounds(571, 63, 30, 31);
 					cLabelCell0111.setBackground(SWTResourceManager.getColor(239,208,143));
 					allCellsGrid[1][11] = cLabelCell0111;
 				}
@@ -1191,8 +1210,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					cLabelCell0113 = new CLabel(cLabelBoard, SWT.BORDER);
-					cLabelCell0113.setBounds(642, 63, 29, 31);
+					cLabelCell0113.setBounds(642, 63, 30, 31);
 					cLabelCell0113.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell0113.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0113.setText("DOUBLE\n WORD");
 					allCellsGrid[1][13] = cLabelCell0113;
 				}
 				{
@@ -1217,6 +1238,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0202 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0202.setBounds(240, 99, 30, 32);
 					cLabelCell0202.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell0202.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0202.setText("DOUBLE\n WORD");
 					allCellsGrid[2][2] = cLabelCell0202;
 				}
 				{
@@ -1241,6 +1264,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0206 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0206.setBounds(387, 99, 31, 32);
 					cLabelCell0206.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0206.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0206.setText("DOUBLE\nLETTER");
 					allCellsGrid[2][6] = cLabelCell0206;
 				}
 				{
@@ -1253,6 +1278,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0208 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0208.setBounds(461, 99, 31, 32);
 					cLabelCell0208.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0208.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0208.setText("DOUBLE\nLETTER");
 					allCellsGrid[2][8] = cLabelCell0208;
 				}
 				{
@@ -1269,7 +1296,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					cLabelCell0211 = new CLabel(cLabelBoard, SWT.BORDER);
-					cLabelCell0211.setBounds(571, 99, 29, 32);
+					cLabelCell0211.setBounds(571, 99, 30, 32);
 					cLabelCell0211.setBackground(SWTResourceManager.getColor(239,208,143));
 					allCellsGrid[2][11] = cLabelCell0211;
 				}
@@ -1277,6 +1304,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0212 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0212.setBounds(606, 99, 30, 32);
 					cLabelCell0212.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell0212.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0212.setText("DOUBLE\n WORD");
 					allCellsGrid[2][12] = cLabelCell0212;
 				}
 				{
@@ -1295,6 +1324,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0300 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0300.setBounds(164, 135, 32, 33);
 					cLabelCell0300.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0300.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0300.setText("DOUBLE\nLETTER");
 					allCellsGrid[3][0] = cLabelCell0300;
 				}
 				{
@@ -1313,6 +1344,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0303 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0303.setBounds(275, 135, 32, 33);
 					cLabelCell0303.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell0303.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0303.setText("DOUBLE\n WORD");
 					allCellsGrid[3][3] = cLabelCell0303;
 				}
 				{
@@ -1337,6 +1370,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0307 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0307.setBounds(424, 135, 31, 33);
 					cLabelCell0307.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0307.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0307.setText("DOUBLE\nLETTER");
 					allCellsGrid[3][7] = cLabelCell0307;
 				}
 				{
@@ -1359,8 +1394,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					cLabelCell0311 = new CLabel(cLabelBoard, SWT.BORDER);
-					cLabelCell0311.setBounds(571, 135, 29, 33);
+					cLabelCell0311.setBounds(571, 135, 30, 33);
 					cLabelCell0311.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell0311.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0311.setText("DOUBLE\n WORD");
 					allCellsGrid[3][11] = cLabelCell0311;
 				}
 				{
@@ -1377,8 +1414,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					cLabelCell0314 = new CLabel(cLabelBoard, SWT.BORDER);
-					cLabelCell0314.setBounds(677, 135, 29, 33);
+					cLabelCell0314.setBounds(677, 135, 30, 33);
 					cLabelCell0314.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0314.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0314.setText("DOUBLE\nLETTER");
 					allCellsGrid[3][14] = cLabelCell0314;
 				}
 				{
@@ -1409,6 +1448,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0404 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0404.setBounds(313, 171, 32, 34);
 					cLabelCell0404.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell0404.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0404.setText("DOUBLE\n WORD");
 					allCellsGrid[4][4] = cLabelCell0404;
 				}
 				{
@@ -1445,11 +1486,13 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0410 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0410.setBounds(535, 171, 31, 34);
 					cLabelCell0410.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell0410.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0410.setText("DOUBLE\n WORD");
 					allCellsGrid[4][10] = cLabelCell0410;
 				}
 				{
 					cLabelCell0411 = new CLabel(cLabelBoard, SWT.BORDER);
-					cLabelCell0411.setBounds(571, 171, 29, 34);
+					cLabelCell0411.setBounds(571, 171, 30, 34);
 					cLabelCell0411.setBackground(SWTResourceManager.getColor(239,208,143));
 					allCellsGrid[4][11] = cLabelCell0411;
 				}
@@ -1481,6 +1524,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0501 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0501.setBounds(202, 210, 32, 32);
 					cLabelCell0501.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0501.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0501.setText("TRIPLE\nLETTER");
 					allCellsGrid[5][1] = cLabelCell0501;
 				}
 				{
@@ -1505,6 +1550,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0505 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0505.setBounds(351, 210, 30, 32);
 					cLabelCell0505.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0505.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0505.setText("TRIPLE\nLETTER");
 					allCellsGrid[5][5] = cLabelCell0505;
 				}
 				{
@@ -1529,6 +1576,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0509 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0509.setBounds(498, 210, 31, 32);
 					cLabelCell0509.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0509.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0509.setText("TRIPLE\nLETTER");
 					allCellsGrid[5][9] = cLabelCell0509;
 				}
 				{
@@ -1553,6 +1602,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0513 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0513.setBounds(642, 210, 29, 32);
 					cLabelCell0513.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0513.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0513.setText("TRIPLE\nLETTER");
 					allCellsGrid[5][13] = cLabelCell0513;
 				}
 				{
@@ -1577,6 +1628,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0602 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0602.setBounds(240, 248, 30, 31);
 					cLabelCell0602.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0602.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0602.setText("DOUBLE\nLETTER");
 					allCellsGrid[6][2] = cLabelCell0602;
 				}
 				{
@@ -1601,6 +1654,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0606 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0606.setBounds(387, 248, 31, 31);
 					cLabelCell0606.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0606.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0606.setText("DOUBLE\nLETTER");
 					allCellsGrid[6][6] = cLabelCell0606;
 				}
 				{
@@ -1613,6 +1668,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0608 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0608.setBounds(461, 248, 31, 31);
 					cLabelCell0608.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0608.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0608.setText("DOUBLE\nLETTER");
 					allCellsGrid[6][8] = cLabelCell0608;
 				}
 				{
@@ -1637,6 +1694,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0612 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0612.setBounds(606, 248, 30, 31);
 					cLabelCell0612.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0612.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0612.setText("DOUBLE\nLETTER");
 					allCellsGrid[6][12] = cLabelCell0612;
 				}
 				{
@@ -1655,6 +1714,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0700 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0700.setBounds(164, 284, 32, 33);
 					cLabelCell0700.setBackground(SWTResourceManager.getColor(255,0,0));
+					cLabelCell0700.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0700.setText("TRIPLE\n WORD");
 					allCellsGrid[7][0] = cLabelCell0700;
 				}
 				{
@@ -1673,6 +1734,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0703 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0703.setBounds(275, 284, 32, 33);
 					cLabelCell0703.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0703.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0703.setText("DOUBLE\nLETTER");
 					allCellsGrid[7][3] = cLabelCell0703;
 				}
 				{
@@ -1697,6 +1760,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0707 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0707.setBounds(424, 284, 31, 33);
 					cLabelCell0707.setBackground(SWTResourceManager.getColor(255, 128, 128));
+					cLabelCell0707.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0707.setText("DOUBLE\n WORD");
 					allCellsGrid[7][7] = cLabelCell0707;
 				}
 				{
@@ -1721,6 +1786,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0711 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0711.setBounds(571, 284, 30, 33);
 					cLabelCell0711.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0711.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0711.setText("DOUBLE\nLETTER");
 					allCellsGrid[7][11] = cLabelCell0711;
 				}
 				{
@@ -1739,6 +1806,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0714 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0714.setBounds(677, 284, 29, 33);
 					cLabelCell0714.setBackground(SWTResourceManager.getColor(255,0,0));
+					cLabelCell0714.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0714.setText("TRIPLE\n WORD");
 					allCellsGrid[7][14] = cLabelCell0714;
 				}
 				{
@@ -1757,6 +1826,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0802 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0802.setBounds(240, 323, 30, 30);
 					cLabelCell0802.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0802.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0802.setText("DOUBLE\nLETTER");
 					allCellsGrid[8][2] = cLabelCell0802;
 				}
 				{
@@ -1781,6 +1852,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0806 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0806.setBounds(387, 323, 31, 30);
 					cLabelCell0806.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0806.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0806.setText("DOUBLE\nLETTER");
 					allCellsGrid[8][6] = cLabelCell0806;
 				}
 				{
@@ -1793,6 +1866,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0808 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0808.setBounds(461, 323, 31, 30);
 					cLabelCell0808.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0808.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0808.setText("DOUBLE\nLETTER");
 					allCellsGrid[8][8] = cLabelCell0808;
 				}
 				{
@@ -1817,6 +1892,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0812 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0812.setBounds(606, 323, 30, 30);
 					cLabelCell0812.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell0812.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0812.setText("DOUBLE\nLETTER");
 					allCellsGrid[8][12] = cLabelCell0812;
 				}
 				{
@@ -1841,6 +1918,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0901 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0901.setBounds(202, 359, 32, 31);
 					cLabelCell0901.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0901.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0901.setText("TRIPLE\nLETTER");
 					allCellsGrid[9][1] = cLabelCell0901;
 				}
 				{
@@ -1865,6 +1944,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0905 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0905.setBounds(351, 359, 30, 31);
 					cLabelCell0905.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0905.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0905.setText("TRIPLE\nLETTER");
 					allCellsGrid[9][5] = cLabelCell0905;
 				}
 				{
@@ -1889,6 +1970,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0909 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0909.setBounds(498, 359, 31, 31);
 					cLabelCell0909.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0909.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0909.setText("TRIPLE\nLETTER");
 					allCellsGrid[9][9] = cLabelCell0909;
 				}
 				{
@@ -1913,6 +1996,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell0913 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell0913.setBounds(641, 359, 30, 31);
 					cLabelCell0913.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell0913.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell0913.setText("TRIPLE\nLETTER");
 					allCellsGrid[9][13] = cLabelCell0913;
 				}
 				{
@@ -1949,6 +2034,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell1004 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1004.setBounds(313, 395, 32, 32);
 					cLabelCell1004.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell1004.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1004.setText("DOUBLE\n WORD");
 					allCellsGrid[10][4] = cLabelCell1004;
 				}
 				{
@@ -1985,6 +2072,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell1010 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1010.setBounds(535, 395, 31, 32);
 					cLabelCell1010.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell1010.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1010.setText("DOUBLE\n WORD");
 					allCellsGrid[10][10] = cLabelCell1010;
 				}
 				{
@@ -2015,6 +2104,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell1100 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1100.setBounds(164, 431, 32, 33);
 					cLabelCell1100.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell1100.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1100.setText("DOUBLE\nLETTER");
 					allCellsGrid[11][0] = cLabelCell1100;
 				}
 				{
@@ -2033,6 +2124,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell1103 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1103.setBounds(275, 431, 32, 33);
 					cLabelCell1103.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell1103.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1103.setText("DOUBLE\n WORD");
 					allCellsGrid[11][3] = cLabelCell1103;
 				}
 				{
@@ -2057,6 +2150,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell1107 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1107.setBounds(424, 431, 31, 33);
 					cLabelCell1107.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell1107.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1107.setText("DOUBLE\nLETTER");
 					allCellsGrid[11][7] = cLabelCell1107;
 				}
 				{
@@ -2081,6 +2176,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					cLabelCell1111 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1111.setBounds(571, 431, 30, 33);
 					cLabelCell1111.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell1111.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1111.setText("DOUBLE\n WORD");
 					allCellsGrid[11][11] = cLabelCell1111;
 				}
 				{
@@ -2097,86 +2194,114 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					cLabelCell1114 = new CLabel(cLabelBoard, SWT.BORDER);
-					cLabelCell1114.setBounds(677, 431, 29, 33);
+					cLabelCell1114.setBounds(677, 431, 30, 33);
 					cLabelCell1114.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell1114.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1114.setText("DOUBLE\nLETTER");
 					allCellsGrid[11][14] = cLabelCell1114;
 				}
 				{
 					cLabelCell1206 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1206.setBounds(387, 470, 31, 31);
 					cLabelCell1206.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell1206.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1206.setText("DOUBLE\nLETTER");
 					allCellsGrid[12][6] = cLabelCell1206;
 				}
 				{
 					cLabelCell1208 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1208.setBounds(461, 470, 31, 31);
 					cLabelCell1208.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell1208.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1208.setText("DOUBLE\nLETTER");
 					allCellsGrid[12][8] = cLabelCell1208;
 				}
 				{
 					cLabelCell1403 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1403.setBounds(275, 540, 32, 29);
 					cLabelCell1403.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell1403.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1403.setText("DOUBLE\nLETTER");
 					allCellsGrid[14][3] = cLabelCell1403;
 				}
 				{
 					cLabelCell1411 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1411.setBounds(571, 540, 30, 29);
 					cLabelCell1411.setBackground(SWTResourceManager.getColor(13,162,242));
+					cLabelCell1411.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1411.setText("DOUBLE\nLETTER");
 					allCellsGrid[14][11] = cLabelCell1411;
 				}
 				{
 					cLabelCell1400 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1400.setBounds(164, 540, 32, 29);
 					cLabelCell1400.setBackground(SWTResourceManager.getColor(255,0,0));
+					cLabelCell1400.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1400.setText("TRIPLE\n WORD");
 					allCellsGrid[14][0] = cLabelCell1400;
 				}
 				{
 					cLabelCell1407 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1407.setBounds(424, 540, 31, 29);
 					cLabelCell1407.setBackground(SWTResourceManager.getColor(255,0,0));
+					cLabelCell1407.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1407.setText("TRIPLE\n WORD");
 					allCellsGrid[14][7] = cLabelCell1407;
 				}
 				{
 					cLabelCell1414 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1414.setBounds(677, 540, 29, 29);
 					cLabelCell1414.setBackground(SWTResourceManager.getColor(255,0,0));
+					cLabelCell1414.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1414.setText("TRIPLE\n WORD");
 					allCellsGrid[14][14] = cLabelCell1414;
 				}
 				{
 					cLabelCell1309 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1309.setBounds(498, 506, 31, 30);
 					cLabelCell1309.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell1309.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1309.setText("TRIPLE\nLETTER");
 					allCellsGrid[13][9] = cLabelCell1309;
 				}
 				{
 					cLabelCell1305 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1305.setBounds(351, 506, 30, 30);
 					cLabelCell1305.setBackground(SWTResourceManager.getColor(0,0,255));
+					cLabelCell1305.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1305.setText("TRIPLE\nLETTER");
 					allCellsGrid[13][5] = cLabelCell1305;
 				}
 				{
 					cLabelCell1301 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1301.setBounds(202, 506, 32, 30);
 					cLabelCell1301.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell1301.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1301.setText("DOUBLE\n WORD");
 					allCellsGrid[13][1] = cLabelCell1301;
 				}
 				{
 					cLabelCell1313 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1313.setBounds(641, 506, 30, 30);
 					cLabelCell1313.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell1313.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1313.setText("DOUBLE\n WORD");
 					allCellsGrid[13][13] = cLabelCell1313;
 				}
 				{
 					cLabelCell1202 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1202.setBounds(240, 470, 30, 31);
 					cLabelCell1202.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell1202.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1202.setText("DOUBLE\n WORD");
 					allCellsGrid[12][2] = cLabelCell1202;
 				}
 				{
 					cLabelCell1212 = new CLabel(cLabelBoard, SWT.BORDER);
 					cLabelCell1212.setBounds(606, 470, 30, 31);
 					cLabelCell1212.setBackground(SWTResourceManager.getColor(255,128,128));
+					cLabelCell1212.setFont(SWTResourceManager.getFont("Tahoma",5,0,false,false));
+					cLabelCell1212.setText("DOUBLE\n WORD");
 					allCellsGrid[12][12] = cLabelCell1212;
 				}
 				{
@@ -2572,6 +2697,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 						String l = String.valueOf(letter);
 						currentCell.setBackground(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
 						currentCell.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream(l + "1.PNG")));
+						currentCell.setText("");
 					}
 				}
 //				else {
@@ -2701,10 +2827,13 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
       }
       //check that the round is not finished and that there is a letter added to the table
     	if((donePressed == false) && (currentTurnInsertedLetters.size() > 0)){
-    		int x = currentTurnInsertedLetters.get(i).i;
-			int y = currentTurnInsertedLetters.get(i).j;
-			allCellsGrid[x][y].setBackground(allCellsColors[x][y]);
-			allCellsGrid[x][y].setBackgroundImage(null);
+    		CellIndAndTetx currentLetter = currentTurnInsertedLetters.get(i);
+			int x = currentLetter.i;
+			int y = currentLetter.j;
+			CLabel currentCell = allCellsGrid[x][y];
+			currentCell.setBackground(allCellsColors[x][y]);
+			currentCell.setBackgroundImage(null);
+			currentCell.setText(currentLetter.text);
 			int letterId = PlayerLetters.get(j).intValue();
 			allPlayerLetters[letterId].setVisible(true);
 			GameGui.undoLetterToBoard(x, y,letterId , AddedLetters[AddedLettersSize-1]);
@@ -2823,8 +2952,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		for (int i = 0; i < currentTurnInsertedLetters.size(); i++) {
 			int x = currentTurnInsertedLetters.get(i).i;
 			int y = currentTurnInsertedLetters.get(i).j;
-			allCellsGrid[x][y].setBackground(allCellsColors[x][y]);
-			allCellsGrid[x][y].setBackgroundImage(null);
+			CLabel currentCell = allCellsGrid[x][y];
+			currentCell.setBackground(allCellsColors[x][y]);
+			currentCell.setBackgroundImage(null);
+			currentCell.setText(currentTurnInsertedLetters.get(i).text);
 		}
 		
 	}
