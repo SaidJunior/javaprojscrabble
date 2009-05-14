@@ -16,8 +16,7 @@ SETTING THE PREFERENCES
 Now you have to choose the number of players (1-4) and the rules set:
 1) Basic: Each cell is worth exactly one point, and the program decides 
    by herself what is the longest word that was created.
-2) Advanced: Each regular cell(not bonus cells) has a random weight (1-4) and the you can place 
-only one letter.
+2) Advanced: You can place only one letter.
 
 Now enter the names of the players (length less then 15) and choose if 
 anyone of them should be automatic. Notice that the first player must be human.
@@ -32,11 +31,15 @@ it on the board to create a meaningful word.
 
 You are ready to place words. A letter is placed by dragging it to the 
 right place on the board. A valid cell would be marked when hovering over it.
-After you placed a letter there is no way back!!! 
+After you placed letters you may undo it at the reverse order of the insertion,
+by pressing the "Undo" button.
 Your placed letter must be a valid word according to the game's dictionary. 
 It must be placed up-down or left-right. Your placed word must, also, use 
 one of the currently placed letters on the board. It is ALLOWED to attach 
-two different words(for example dogcat)
+two different words(for example dogcat).
+
+The score for your placed Letter would be according to each letter's score(Printed
+each letter cube) and according to any "bonus" cells you used. 
 
 You can also select the button "change letter" to throw one of your letters and
 get a letter from the main letter set. How you do that? after pressing the 
