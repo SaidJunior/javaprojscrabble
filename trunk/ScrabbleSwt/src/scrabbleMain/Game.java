@@ -10,7 +10,7 @@ public class Game{
 		
 		//  initialize all general needs of game: Directories, Records lists, Letter Score*/ 
 		gameDirectories.initGame();
-
+/*
 		char input = 0;
 		boolean validInput = false;
 		BufferedReader reader   = new BufferedReader(new InputStreamReader(System.in));
@@ -30,6 +30,8 @@ public class Game{
 			default:    System.out.println("Not a valit input, try again.");
 
 			}
-		} while (validInput == false);
+		} while (validInput == false);*/
+		
+		MainWindow_ver2.startGuiGame();
 	}
 }
