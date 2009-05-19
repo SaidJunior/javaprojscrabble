@@ -9,7 +9,7 @@ public class GameHistory {
 	private String date;
 	private int currentScrore;
 	//will hold component's names
-	private ArrayList components = new ArrayList<String>();
+	private ArrayList<String> rivals = new ArrayList<String>();
 	
 	
 	public String getDate() {
@@ -17,6 +17,7 @@ public class GameHistory {
 	}
 	public void setDate(String date) {
 		this.date = date;
+		
 	}
 	public int getCurrentScrore() {
 		return currentScrore;
@@ -24,10 +25,10 @@ public class GameHistory {
 	public void setCurrentScrore(int currentScrore) {
 		this.currentScrore = currentScrore;
 	}
-	public ArrayList getComponents() {
-		return components;
+	public ArrayList<String> getComponents() {
+		return rivals;
 	}
-	public void setComponents(ArrayList components) {
-		this.components = components;
+	public void setComponents(ArrayList<String> components) {
+		this.rivals = components;
 	}
 }
