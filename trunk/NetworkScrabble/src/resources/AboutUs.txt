@@ -1,0 +1,1 @@
+This Application is the main project of the course: "Developing software systems in Java" at Tel-Aviv University, school of computer science, ungraduate studies. Team members:AndreeaPolinaRoyErezEviatarAlexFor comments or details, visit us at:http://code.google.com/p/javaprojscrabble/
