@@ -57,8 +57,6 @@ public class LoginThread extends Thread{
 				//Existing request
 				else if (userInfo.getUserEMail() == null) {
 					try {
-						
-						
 						if (userDB.getUserDetails(userName, userPassword, true) == null) {
 							System.out.println("name not exist");
 							returnMismatch();
@@ -80,36 +78,25 @@ public class LoginThread extends Thread{
 				}
 				//New request
 				else {
-					User user = null;
+					User user = new User();
+					user.setName(userName);
+					user.setPassword(userPassword);
+					user.setEmail(userInfo.getUserEMail());
+					boolean addResault;
 					try {
-						user = userDB.getUserDetails(userName, userPassword, false);
+						addResault = userDB.addNewUser(user);
+						if (addResault == true) {
+							returnOK();
+						}
+						else {
+							returnAlreadyExist();
+						}
 					} catch (DBException e) {
 						// TODO Auto-generated catch block
 						System.out.println("data base fail");
 						e.printStackTrace();
 						returnFail();
 					}
-					if (user != null) {
-						returnAlreadyExist();
-					}
-					else {
-						user = new User();
-						user.setName(userName);
-						user.setPassword(userPassword);
-						user.setEmail(userInfo.getUserEMail());
-						try {
-							userDB.addNewUser(user);
-							returnOK();
-						} catch (DBException e) {
-							// TODO Auto-generated catch block
-							System.out.println("data base fail");
-							e.printStackTrace();
-							returnFail();
-						}
-					}
-					//DEBUG
-//					System.out.println("else");
-//					returnMismatch();
 				}
 				/* debug */
 //			    break;
