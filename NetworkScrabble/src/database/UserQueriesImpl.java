@@ -1,8 +1,10 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import gameUsers.GameHistory;
@@ -12,6 +14,11 @@ import gameUsers.UserDBQueries;
 public class UserQueriesImpl implements UserDBQueries{
 
 	private DBConnectionInit db_conn;
+	
+	public UserQueriesImpl()
+	{
+		
+	}
 	
 	public UserQueriesImpl(DBConnectionInit dbcon)
 	{
@@ -23,7 +30,7 @@ public class UserQueriesImpl implements UserDBQueries{
 	{
 		if (user==null)
 			return false;
-		String insertCommand = setInsertUserCommand(user);
+		String insertCommand = DBUtils.setInsertUserCommand(user);
 		String name = user.getName();
 		
 		Connection conn = db_conn.connect();
@@ -57,7 +64,8 @@ public class UserQueriesImpl implements UserDBQueries{
 	public boolean updateUserGames(String userName, int numOfVictories,
 			int bestResult, GameHistory history) throws DBException 		
 	{
-		String insertCommand = setInsertGameCommand(history);
+		String cmd1 = DBUtils.setInsertGameCommand(history);
+		String cmd2 = DBUtils.setUpdateUserCommand(bestResult, numOfVictories, userName);
 		
 		Connection conn = db_conn.connect();
 		try {
@@ -66,10 +74,16 @@ public class UserQueriesImpl implements UserDBQueries{
 				System.out.println("Connectivity failure, for adding the game: " + userName);
 				throw new DBException("Connectivity failure for adding the game: " + userName);
 			}
+			conn.setAutoCommit(false);
 			Statement stmt = conn.createStatement();
-			stmt.execute(insertCommand);
+			if (cmd1 != null)
+				stmt.execute(cmd1);
+			if (cmd2 != null)
+				stmt.execute(cmd2);
 			
 			stmt.close();
+			conn.commit();
+			conn.setAutoCommit(true);
 			db_conn.retConn(conn);
 			
 		} catch (SQLException e) 
@@ -91,49 +105,66 @@ public class UserQueriesImpl implements UserDBQueries{
 	 * gameHistory.  
 	 * */
 	public User getUserDetails(String userName, String password,
-			boolean comaprePassword) throws DBException {
-		return null;
-	}
-	
-	public static String setInsertUserCommand(User user)
-	{
-		String name = user.getName();
-		String password = user.getPassword();
-		String email = user.getEmail();
-		int victories = user.getNumOfVictories();
-		int bestScore = user.getBestResult();
+			boolean comaprePassword) throws DBException {		
 		
-		String cmd = "INSERT INTO USERS(NAME,PASSWORD,EMAIL,VICTORIES,BEST_RESULT) VALUES('" 
-			+ name + "','" + password + "','" + email + "','" + victories + "','" + bestScore + "')";
-		
-		return cmd;
-	}
-
-	public static String setInsertGameCommand(GameHistory game)
-	{
-		String name = game.getName();
-		String rivals = "";
-		if (game.getRivals()!=null)
-		{
-			Iterator<String> iter = game.getRivals().iterator();
-			while (iter.hasNext())
+		if (userName == null)
+			return null;
+		User user = new User();
+		user.setName(userName);
+		String cmd = DBUtils.setSelectUserCommand(userName);
+		Connection conn = db_conn.connect();
+		try {
+			if (conn == null)
 			{
-				rivals += iter.next() + "\n"; 
+				System.out.println("Connectivity failure, for getting the name: " + userName);
+				throw new DBException("Connectivity failure for getting the name: " + userName);
 			}
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(cmd);
+			while (rs.next() == true)
+			{
+				user.setPassword(rs.getString("PASSWORD"));
+				user.setEmail(rs.getString("EMAIL"));
+				user.setBestResult(rs.getInt("BEST_RESULT"));
+				user.setNumOfVictories(rs.getInt("VICTORIES"));
+			}
+			if (comaprePassword)
+			{
+				if (password != null && password.equalsIgnoreCase(user.getPassword()))
+				{
+					cmd = DBUtils.setSelectGameCommand(userName);
+					rs = stmt.executeQuery(cmd);
+					ArrayList<GameHistory> games = new ArrayList<GameHistory>();
+					GameHistory temp = new GameHistory();
+					while (rs.next() == true)
+					{
+						temp.setName(userName);
+						temp.setDate(rs.getString("DATE1"));
+						temp.setCurrentScrore(rs.getInt("SCORE"));
+						String rivals = rs.getString("RIVALS");
+						temp.setRivals(DBUtils.parseRivals(rivals));
+						games.add(temp);
+					}
+				}
+				else
+					return null;
+			}
+			rs.close();
+			stmt.close();
+			db_conn.retConn(conn);
+			
+		} catch (SQLException e) 
+		{	
+			try {
+				db_conn.retConn(conn);
+			} catch (Exception e1) {
+				System.out.println("Connection Pool Error in getting the name.\nFull details: "+ e1.toString());
+				throw new DBException("Connection Pool Error in getting the name.");
+			}
+			throw new DBException ("Error while getting the name: " + userName + ".\nUser does not exists.");
 		}
-		int score = game.getCurrentScrore();
-		String cmd = "INSERT INTO GAMES(NAME,DATE1,RIVALS,SCORE) VALUES('" 
-			+ name + "',SYSDATE,'" + rivals + "','" + score + "')";
-		return cmd;
+		
+		return user;
 	}
 	
-	public static String setSelectUserCommand(String userName)
-	{
-		return "SELECT * FROM USERS WHERE NAME='" + userName +"'";
-	}
-	
-	public static String setSelectGameCommand(String userName)
-	{
-		return "SELECT * FROM GAMES WHERE NAME=" + userName;
-	}
 }
