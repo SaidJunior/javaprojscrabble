@@ -44,7 +44,7 @@ public class AboutDialog extends Dialog {
 		CLabel tauPicture = new CLabel(shell, SWT.NONE);
 		tauPicture.setLocation(300, 10);
 		tauPicture.setSize(80, 80);
-		tauPicture.setBackground(SWTResourceManager.getImage("tau.jpg"));
+		tauPicture.setBackground(SWTResourceManager.getImage("resources/tau.jpg"));
 		
 		shell.open();
 		Display display = getParent().getDisplay();
