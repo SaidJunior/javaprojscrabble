@@ -6,6 +6,8 @@ import java.util.TreeMap;
 
 public class GameHistory {
 
+	private String name;
+	//There is no need to set the date field for GameHistory. DB will generate it.
 	private String date;
 	private int currentScrore;
 	//will hold component's names
@@ -25,10 +27,16 @@ public class GameHistory {
 	public void setCurrentScrore(int currentScrore) {
 		this.currentScrore = currentScrore;
 	}
-	public ArrayList<String> getComponents() {
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public ArrayList<String> getRivals() {
 		return rivals;
 	}
-	public void setComponents(ArrayList<String> components) {
-		this.rivals = components;
+	public void setRivals(ArrayList<String> rivals) {
+		this.rivals = rivals;
 	}
 }
