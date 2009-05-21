@@ -8,7 +8,7 @@ public interface UserDBQueries {
 	 * work with user's accounts from DB side.
 	 * DBException will be thrown, with a message for DB error,
 	 * so we will be able to distinguish between our inner errors to DB errors. 
-	 * 
+	 * There is no need to set the date field for GameHistory. DB will generate it.
 	 *  
 	 * */
 	
