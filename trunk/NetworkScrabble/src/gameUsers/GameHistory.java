@@ -1,8 +1,11 @@
 package gameUsers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class GameHistory {
 
@@ -38,5 +41,18 @@ public class GameHistory {
 	}
 	public void setRivals(ArrayList<String> rivals) {
 		this.rivals = rivals;
+	}
+	
+	public String toString()
+	{
+	Iterator<String> iter = rivals.iterator();
+	String r = "";
+	while (iter.hasNext())
+	{
+		r +=iter.next() + ", ";
+	}
+	
+	return "Name: " + getName() + ", date: " + getDate() + ", score: " + getCurrentScrore() +
+	", rivals: " + r; 
 	}
 }

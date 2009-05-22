@@ -1,6 +1,7 @@
 package gameUsers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class User {
 
@@ -50,5 +51,24 @@ public class User {
 		this.history = history;
 	}
 	
+	public String toStringGames()
+	{
+		if (history == null)
+			return null;
+		Iterator<GameHistory> iter = history.iterator();
+		String res = "";
+		while (iter.hasNext())
+		{
+			res += iter.next().toString() + "\n";
+		}
+		return res;
+	}
+	
+	public String toString()
+	{
+		return "User name: " + getName() + ", password: " + getPassword() + ", email: " +
+		getEmail() + ", best-score: " + getBestResult() + ", victories: " + getNumOfVictories() +
+		"\nGames: " + toStringGames();
+	}
 	
 }

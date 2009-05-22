@@ -56,7 +56,7 @@ public class UserQueriesImpl implements UserDBQueries{
 			}
 			throw new DBException ("Error while adding the user: " + name + ".\nName already exists.");
 		}
-		System.out.println("Done inserting " + name);
+		System.out.println("Done adding user: " + name);
 		return true;
 	}
 
@@ -71,8 +71,8 @@ public class UserQueriesImpl implements UserDBQueries{
 		try {
 			if (conn == null)
 			{
-				System.out.println("Connectivity failure, for adding the game: " + userName);
-				throw new DBException("Connectivity failure for adding the game: " + userName);
+				System.out.println("Connectivity failure, for adding the game for: " + userName);
+				throw new DBException("Connectivity failure for adding the game for: " + userName);
 			}
 			conn.setAutoCommit(false);
 			Statement stmt = conn.createStatement();
@@ -145,8 +145,10 @@ public class UserQueriesImpl implements UserDBQueries{
 						temp.setRivals(DBUtils.parseRivals(rivals));
 						games.add(temp);
 					}
+					user.setHistory(games);
 				}
 				else
+					System.out.println("password does not match");
 					return null;
 			}
 			rs.close();
@@ -163,7 +165,7 @@ public class UserQueriesImpl implements UserDBQueries{
 			}
 			throw new DBException ("Error while getting the name: " + userName + ".\nUser does not exists.");
 		}
-		
+		System.out.println("DOne getting user: " + userName + ", while pswd = " + comaprePassword);
 		return user;
 	}
 	

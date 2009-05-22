@@ -15,9 +15,9 @@ public class DBUtils {
 	{
 		if (user == null)
 			return null;
-		String name = user.getName();
-		String password = user.getPassword();
-		String email = user.getEmail();
+		String name = fixApost(user.getName());
+		String password = fixApost(user.getPassword());
+		String email = fixApost(user.getEmail());
 		int victories = user.getNumOfVictories();
 		int bestScore = user.getBestResult();
 		
@@ -31,7 +31,7 @@ public class DBUtils {
 	{
 		if (game == null)
 			return null;
-		String name = game.getName();
+		String name = fixApost(game.getName());
 		String rivals = "";
 		if (game.getRivals()!=null)
 		{
@@ -41,6 +41,7 @@ public class DBUtils {
 				rivals += iter.next() + sep; 
 			}
 		}
+		rivals = fixApost(rivals);
 		int score = game.getCurrentScrore();
 		String cmd = "INSERT INTO GAMES(NAME,DATE1,RIVALS,SCORE) VALUES('" 
 			+ name + "',SYSDATE,'" + rivals + "','" + score + "')";
@@ -49,16 +50,20 @@ public class DBUtils {
 	
 	public static String setSelectUserCommand(String userName)
 	{
-		return "SELECT * FROM USERS WHERE NAME='" + userName +"'";
+		userName = fixApost(userName);
+		return "SELECT * FROM USERS WHERE NAME='" + userName + "'";
 	}
 	
 	public static String setSelectGameCommand(String userName)
 	{
-		return "SELECT * FROM GAMES WHERE NAME=" + userName;
+		userName = fixApost(userName);
+		return "SELECT * FROM GAMES WHERE NAME='" + userName + "'";
 	}
 	
 	public static ArrayList<String> parseRivals(String rival)
 	{
+		if (rival == null)
+			return null;
 		ArrayList<String> res = new ArrayList<String>();
 		
 		String[] arr = rival.split(sep);
@@ -72,14 +77,45 @@ public class DBUtils {
 	{
 		if (score ==-1 && victories==-1)
 			return null;
+		name = fixApost(name);
 		String cmd = "UPDATE USERS SET ";
 		if (score != -1)
+		{
 			cmd += "BEST_RESULT='" + score + "'";
-		if (victories != -1)
-			cmd += "VICTORIES='" + score + "'";
-		cmd += "WHERE NAME='" + name + "'";
+			if (victories != -1)
+				cmd += ", " + "VICTORIES='" + victories + "'";
+		}
+		else 
+		{
+			if (victories != -1)
+				cmd += "VICTORIES='" + victories + "'";
+		}	
+		cmd += " WHERE NAME='" + name + "'";
 		
 		return cmd;
+	}
+	
+	/* helper function that "fixes" (duplicates) every apostraphy for statement inserts
+	 * Input is any string, output is fixed string*/
+	public static String fixApost (String name)
+	{
+		if (name == null)
+			return null;
+		int ind = name.indexOf("'");
+		if (ind == -1)
+			return name;
+		String sub = "";
+		String suf = name;
+		String res = "";
+		while (ind != -1)
+		{
+			sub = suf.substring(0, ind+1) + "'";
+			suf = suf.substring(ind+1);
+			res = res + sub;
+			ind = suf.indexOf("'");
+			sub=suf;
+		}
+		return res+suf;
 	}
 	
 }

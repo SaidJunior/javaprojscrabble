@@ -7,50 +7,80 @@ import gameUsers.User;
 
 public class mainTests {
 
-	/**
-	 * @param args
-	 */
+	static User user1 = new User();
+	static User user2 = new User();
+	static User user3 = new User();
+	static User user4 = new User();
+	static GameHistory game1 = new GameHistory();
+	static GameHistory game2 = new GameHistory();
+	static GameHistory game3 = new GameHistory();
+	static GameHistory game4 = new GameHistory();
+	
+	
 	public static void main(String[] args) {
-		/*
-		User user = new gameUsers.User();
-		user.setName("Roy1");
-		user.setPassword("scrabble1");
-		user.setEmail("Roy@yadoo.co.il");
-		user.setBestResult(3);
-		user.setNumOfVictories(4);
-		
-		GameHistory game = new GameHistory();
-		game.setName("Roy");
-		game.setCurrentScrore(3);
 		
 		
+		initParams();
+		DBConnectionInit dbcon;
 		try {
-			DBConnectionInit dbcon = new DBConnectionInit();
+			dbcon = new DBConnectionInit();
 			UserQueriesImpl impl = new UserQueriesImpl(dbcon);
-			impl.addNewUser(user);
+			boolean i1 = false;
+			i1 = impl.addNewUser(user4);
+			User temp = impl.getUserDetails(user4.getName(), "", false);
+			System.out.println(temp.getName());
+			System.out.println(user4.getName());
+			
 		} catch (DBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-*/
-		
-		String nn = "roy " + "\n" + "tamar" + "\n";
-		parseRivals(nn);
-		
 	}
-	public static ArrayList<String> parseRivals(String rival)
+	
+	public static void initParams()
 	{
-		ArrayList<String> res = new ArrayList<String>();
+		user1.setName("Roy'1");
+		user1.setPassword("scrabble1");
+		user1.setEmail("Roy@yadoo.co.il");
+		user1.setBestResult(3);
+		user1.setNumOfVictories(4);
 		
-		String[] arr = rival.split("\n");
-		System.out.println(arr.length);
-		for (int i=0;i<arr.length;i++)
-		{
-			res.add(arr[i]);
-			System.out.println(res.get(i));
-		}
-
-		return res;
+		user2.setName("Roy1");
+		user2.setPassword("scrabble");
+		user2.setEmail("Roy@yado.co.il");
+		user2.setBestResult(3);
+		user2.setNumOfVictories(5);
+		
+		user3.setName("Tamar");
+		user3.setPassword("bla");
+		user3.setEmail("Tamar@co.il");
+		user3.setBestResult(56);
+		user3.setNumOfVictories(15);
+		
+		user4.setName("yos't");
+		user4.setPassword("ttt's");	
+		
+		game1.setName("Roy'1");
+		game1.setCurrentScrore(32);
+		ArrayList<String> riv1 = new ArrayList<String>();
+		riv1.add("yosi");
+		riv1.add("Tamar");
+		game1.setRivals(riv1);
+		
+		game2.setName("Roy1");
+		game2.setCurrentScrore(23);
+		
+		ArrayList<GameHistory> games = new ArrayList<GameHistory>();
+		games.add(game1);
+		games.add(game2);
+		
+		user1.setHistory(games);
+		
+		game3.setName("Tamar");
+		game3.setCurrentScrore(54);
+		
+		ArrayList<GameHistory> games3 = new ArrayList<GameHistory>();
+		user3.setHistory(games3);
 	}
 
 }
