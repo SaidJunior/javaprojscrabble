@@ -48,7 +48,13 @@ public class Client {
        /* else if guest button is pressed */
 //     client.loginAsGuest();
        /* else if existing user button pressed */
-     client.loginAsUser();
+       client.loginAsUser();
+       
+       //choose computer vs. human
+       
+       //wait or play
+       
+       client.closeSocket();
     }
 	
 	////// login methods 
@@ -128,16 +134,17 @@ public class Client {
 	}
 	private void userNameAlreadyExist() {
 		// TODO Auto-generated method stub
+		System.out.println("already exists");
 		
 	}
 	private void fail() {
 		// TODO Auto-generated method stub
-		System.out.println("fail");
+		//System.out.println("fail");
 		
 	}
 	private void startGame() {
 		// TODO Auto-generated method stub
-		System.out.println("ok");
+		//System.out.println("ok");
 	}
 	
 	//////////////////
@@ -170,4 +177,16 @@ public class Client {
 	private void setLocalHost(InetAddress add) {
 		serverAddress = add;
 	}
+	
+	public void closeSocket(){
+		try {
+			clientSock.close();
+		} catch (IOException e) {
+			System.out.println("Failed to close socket.");
+			e.printStackTrace();
+		}
+	}
 }
+
+
+ 

@@ -12,25 +12,26 @@ import comunicationProtocol.UserInfo;
 
 import database.DBException;
 
-public class LoginThread extends Thread{
+public class LoginPlayThread extends Thread{
 	private final static int OK = 0;
 	private final static int USER_NAME_ALREADY_EXIST = 1;
 	private final static int FAIL = 2;
 	private final static int USERNAME_AND_PASSWOND_MISMATCH = 3; //also for username not exist
 	
-	private Socket socket = null;
+	private Socket  mySocket   = null;//this socket belongs to the player currently being logged in. we need a better name...
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
+	
 
-    public LoginThread(Socket socket) {
-    	super("ServerLoginThread");
-    	this.socket = socket;
+    public LoginPlayThread(Socket mySocket) {
+    	super("ServerLoginPlayThread");
+    	this.mySocket   = mySocket;
     }
 
     public void run() {
      	try {
-			out = new ObjectOutputStream(socket.getOutputStream());
-		    in  = new ObjectInputStream (socket.getInputStream());
+			out = new ObjectOutputStream(mySocket.getOutputStream());
+		    in  = new ObjectInputStream (mySocket.getInputStream());
 		    UserDBQueries userDB = MultiServer.userDB;
 		    UserInfo userInfo = null;
 		    
@@ -71,6 +72,15 @@ public class LoginThread extends Thread{
 						System.out.println("data base fail");
 						returnFail();
 					}
+					/*DEBUG code*/
+					catch (NullPointerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						System.out.println("data base fail null pointers");
+						returnFail();
+						break;
+					}
+					/*DEBUG end*/
 					
 					//DEBUG
 //					returnFail();
@@ -104,11 +114,25 @@ public class LoginThread extends Thread{
      		}
 		    out.close();
 		    in.close();
-		    socket.close();
+		   //socket.close(); //should not be closed later  
      	} catch (IOException e) {
      		System.out.println("server failed to connect");
      		e.printStackTrace();
      	}
+     	
+     	//ask if computer or player
+     	System.out.println("Reached coputer querry.");//DEBUG
+     	
+     	Socket secondPlayerSock = null;
+     	if((secondPlayerSock = MultiServer.getWaitSocket()) != null /*&& not computer play*/){ // we do have somebody to play with
+     		MultiServer.setWaitSocket(null);
+     		//start playing!!!
+     		
+     	}
+     	/*else if (computer) {....}*/
+     	else{// become a waiting player
+     		MultiServer.setWaitSocket(mySocket);
+     	} 
     }
 
 	private void returnMismatch() {
