@@ -14,7 +14,11 @@ public class UserInfo implements Serializable{
 		this.address = address;
 	}
 	
-	public InetAddress getAddress() {
+	public UserInfo() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public InetAddress getAddress() {// WE DO NOT DEEN IT ANY MORE
 		return address;
 	}
 	public void setAddress(InetAddress address) {
