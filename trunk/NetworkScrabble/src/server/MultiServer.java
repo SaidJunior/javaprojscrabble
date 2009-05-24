@@ -45,7 +45,7 @@ public class MultiServer {
         while (listening){
 			try {
 				playerSocket = serverSocket.accept();
-				new LoginPlayThread_updated(playerSocket).start();
+				new LoginPlayThread(playerSocket).start();
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
