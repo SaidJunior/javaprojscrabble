@@ -17,7 +17,11 @@ public class UserQueriesImpl implements UserDBQueries{
 	
 	public UserQueriesImpl()
 	{
-		
+		try {
+			db_conn = new DBConnectionInit();
+		} catch (DBException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public UserQueriesImpl(DBConnectionInit dbcon)
@@ -37,8 +41,8 @@ public class UserQueriesImpl implements UserDBQueries{
 		try {
 			if (conn == null)
 			{
-				System.out.println("Connectivity failure, for adding the user: " + name);
-				throw new DBException("Connectivity failure for adding the user: " + name);
+				System.out.println("DB Connectivity failure, for adding the user: " + name);
+				throw new DBException("DB Connectivity failure for adding the user: " + name);
 			}
 			Statement stmt = conn.createStatement();
 			stmt.execute(insertCommand);
@@ -51,10 +55,11 @@ public class UserQueriesImpl implements UserDBQueries{
 			try {
 				db_conn.retConn(conn);
 			} catch (Exception e1) {
-				System.out.println("Connection Pool Error in adding the user.\nFull details: "+ e1.toString());
-				throw new DBException("Connection Pool Error in adding the user.");
+				System.out.println("DB Connection Pool Error in adding the user.\nFull details: "+ e1.toString());
+				throw new DBException("DB Connection Pool Error in adding the user.");
 			}
-			throw new DBException ("Error while adding the user: " + name + ".\nName already exists.");
+			System.out.println("Error while adding the user: " + name + ".\nName already exists.");
+			return false;
 		}
 		System.out.println("Done adding user: " + name);
 		return true;
@@ -71,8 +76,8 @@ public class UserQueriesImpl implements UserDBQueries{
 		try {
 			if (conn == null)
 			{
-				System.out.println("Connectivity failure, for adding the game for: " + userName);
-				throw new DBException("Connectivity failure for adding the game for: " + userName);
+				System.out.println("DB Connectivity failure, for adding the game for: " + userName);
+				throw new DBException("DB Connectivity failure for adding the game for: " + userName);
 			}
 			conn.setAutoCommit(false);
 			Statement stmt = conn.createStatement();
@@ -91,10 +96,11 @@ public class UserQueriesImpl implements UserDBQueries{
 			try {
 				db_conn.retConn(conn);
 			} catch (Exception e1) {
-				System.out.println("Connection Pool Error in adding the game.\nFull details: "+ e1.toString());
-				throw new DBException("Connection Pool Error in adding the game.");
+				System.out.println("DB Connection Pool Error in adding the game.\nFull details: "+ e1.toString());
+				throw new DBException("DB Connection Pool Error in adding the game.");
 			}
-			throw new DBException ("Error while adding the game: " + userName + ".\nUser does not exists.");
+			System.out.println("DB error while adding the game: " + userName + ".\nUser does not exists.");
+			return false;
 		}
 		System.out.println("Done inserting game " + userName);
 		return true;
@@ -116,8 +122,8 @@ public class UserQueriesImpl implements UserDBQueries{
 		try {
 			if (conn == null)
 			{
-				System.out.println("Connectivity failure, for getting the name: " + userName);
-				throw new DBException("Connectivity failure for getting the name: " + userName);
+				System.out.println("DB Connectivity failure, for getting the name: " + userName);
+				throw new DBException("DB Connectivity failure for getting the name: " + userName);
 			}
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(cmd);
@@ -160,12 +166,13 @@ public class UserQueriesImpl implements UserDBQueries{
 			try {
 				db_conn.retConn(conn);
 			} catch (Exception e1) {
-				System.out.println("Connection Pool Error in getting the name.\nFull details: "+ e1.toString());
-				throw new DBException("Connection Pool Error in getting the name.");
+				System.out.println("DB Connection Pool Error in getting the name.\nFull details: "+ e1.toString());
+				throw new DBException("DB Connection Pool Error in getting the name.");
 			}
-			throw new DBException ("Error while getting the name: " + userName + ".\nUser does not exists.");
+			System.out.println("Error while getting the name: " + userName + ".\nUser does not exists.");
+			return null;
 		}
-		System.out.println("DOne getting user: " + userName + ", while pswd = " + comaprePassword);
+		System.out.println("Done getting user: " + userName + ", while pswd = " + comaprePassword);
 		return user;
 	}
 	
