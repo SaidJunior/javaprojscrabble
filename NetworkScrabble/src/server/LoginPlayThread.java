@@ -71,6 +71,8 @@ public class LoginPlayThread extends Thread{
                                 
                                 //Guest request
                                 if (userPassword == null || userPassword.equals("")) {
+                                		playerInfo[count] = new PlayerInfo(userName, false);
+                                		count++;
                                         returnOK();
                                         break;
                                 }
@@ -82,6 +84,8 @@ public class LoginPlayThread extends Thread{
                                                         returnMismatch();
                                                 }
                                                 else {
+                                                		playerInfo[count] = new PlayerInfo(userName, false);
+                                                		count++;
                                                         returnOK();
                                                         break;
                                                 }
@@ -117,6 +121,8 @@ public class LoginPlayThread extends Thread{
                                         try {
                                                 addResault = userDB.addNewUser(user);
                                                 if (addResault == true) {
+                                                		playerInfo[count] = new PlayerInfo(userName, false);
+                                                		count++;
                                                         returnOK();
                                                 }
                                                 else {
@@ -148,8 +154,7 @@ public class LoginPlayThread extends Thread{
 			System.out.println("server failed with computer or player");
 			e.printStackTrace();
 		}
-		playerInfo[count] = new PlayerInfo(userName, false);
-        count++;
+	
 
 		char answer = 'y';
 		try {
@@ -169,6 +174,8 @@ public class LoginPlayThread extends Thread{
         //TODO: optimize with Tor
         if((secondPlayerSock = MultiServer.getWaitSocket().getSocket()) != null  && answer == 'h'){ // we do have somebody to play with
         	GameGui.setNumberOfPlayers(2);
+        	if (playerInfo[1] == null)
+        		System.out.println("Fuck this bitch");
         	GameGui.createPlayerList(playerInfo);
 
         	//waiting player closed connection
