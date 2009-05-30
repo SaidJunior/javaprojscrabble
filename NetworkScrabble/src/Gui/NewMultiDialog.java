@@ -32,7 +32,7 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 	private Shell dialogShell;
 	private Label label1;
 	private Button cancelConnect;
-	private Button connect;
+	private Button newUser;
 	private Button AutoCheck;
 	private Text EmailText;
 	private Text text2;
@@ -108,15 +108,15 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 				});
 			}
 			{
-				connect = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
-				connect.setText("Login New User");
+				newUser = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
+				newUser.setText("Login New User");
 				FormData connectLData = new FormData();
 				connectLData.width = 87;
 				connectLData.height = 31;
 				connectLData.top =  new FormAttachment(0, 1000, 165);
 				connectLData.left =  new FormAttachment(0, 1000, 38);
-				connect.setLayoutData(connectLData);
-				connect.addSelectionListener(new SelectionAdapter() {
+				newUser.setLayoutData(connectLData);
+				newUser.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						isClosed = false;
 						if (!text1.getText().equals(""))
