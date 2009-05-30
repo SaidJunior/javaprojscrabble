@@ -38,12 +38,15 @@ import org.eclipse.swt.widgets.Text;
 
 import resources.resConfig;
 import scrabbleMain.Board;
+import scrabbleMain.GameChunk;
 import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
 import scrabbleMain.gameDirectories;
 import scrabbleMain.GameGui.LP;
-import Gui.NewGameDialog.PlayerInfo;
+import Gui.NewMultiDialog.ClientInfo;
+
+import client.Client;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
@@ -71,6 +74,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		SWTResourceManager.registerResourceUser(this);
 	}
 	
+	public boolean isMulti = false;
+	public boolean signalDone = false; //for the delay
 	public static boolean showMenu = true;
 	private Menu menuMain;
 	private Button changeLetterBut;
@@ -362,6 +367,11 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private MenuItem menuItemRLAdvanced;
 	private static Shell shell;
 	private boolean advancedLetterPlaced = false;
+	private MenuItem menuItemGameMulti;
+	private NewMultiDialog multiDialog;
+	private Client client;
+	private MenuItem menuItemGameMultiUser;
+	private Menu menuMulti;
 	
 	private class CellIndAndTetx {
 		private int i;
@@ -643,6 +653,15 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 									menuItemGameNewWidgetSelected(evt);
 								}
 							});
+							
+							menuItemGameMulti = new MenuItem(menu1, SWT.PUSH);
+							menuItemGameMulti.setText("&Multiplay");
+							menuItemGameMulti.addSelectionListener(new SelectionAdapter() {
+								public void widgetSelected(SelectionEvent evt) {
+									menuItemGameNewMultiWidgetSelected(evt);
+								}
+							});
+
 						}
 						{
 							menuItemGameSep = new MenuItem(menu1, SWT.SEPARATOR);
@@ -2570,6 +2589,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
         loadImages();
 	}
 	
+
+
 	private void exitProcedure() {
 		if (isSaved == false) {
 			saveBeforExitMessage();
@@ -2635,6 +2656,40 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 	
+	protected void menuItemGameNewMultiWidgetSelected(SelectionEvent evt) {
+		initMultiGame();
+		
+	}
+	
+	private void initMultiGame() {
+		if (!isSaved) {
+			saveBeforExitMessage();
+		}		
+		multiDialog = new NewMultiDialog(getShell(), SWT.DIALOG_TRIM);
+		multiDialog.open();
+		//user changed his mind and don't want to start a new game
+		if (multiDialog.isClosed() == true) {
+			return;
+		}
+		menuItemGameNew.setEnabled(false);
+		menuItemGameMulti.setEnabled(false);
+		menuItemGameOpen.setEnabled(false);
+		menuItemGameSave.setEnabled(false);
+		menuItemRecordList.setEnabled(false);
+		
+		//Now we need to start the login!!!
+		client = new Client(this);
+		ClientInfo cInfo = multiDialog.getCInfo();
+		client.setClientInfo(cInfo);
+		
+		isMulti = true;
+		advancedLetterPlaced = false;
+		isSaved = false;
+		client.startToPlay();
+
+	}
+	
+
 	private void menuItemGameNewWidgetSelected(SelectionEvent evt) {
 //		System.out.println("menuItemGameNew.widgetSelected, event="+evt);
 		initNewGame();
@@ -2669,8 +2724,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		isSaved = false;
 	}
 
-//	private void updateWindow(boolean cleanBoard) {
-	private void updateWindow() {
+//	public void updateWindow(boolean cleanBoard) {
+	public void updateWindow() {
 		this.updateNowPlayingText();
 		this.updateScoresText();
 		this.updateLetterSetText();
@@ -2863,6 +2918,66 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
     }
 	private void doneButWidgetSelected(SelectionEvent evt) {
 		donePressed = true;
+		if (isMulti){ //If it's a multiplayer game
+			//player pressed done before he pressed "change letters" or "add word"
+			if ((changeLetterFlag == false) && (addWordFlag == false)){
+				setPlayStatusText("Choose add word or change letter");
+				donePressed = false;
+				return;
+			}
+			if (changeLetterFlag == true) {
+				GameGui.moveToNextPlayer();
+				setPlayStatusText("");
+//				donePressed = false;
+			}
+			else if (addWordFlag == true) {
+				if(PlayerLetters.size()==0){
+					setPlayStatusText("Please add letters to the board");
+					donePressed = false;
+					return;	
+				}
+				if (GameGui.placeWordBasic() == false) { //word is not valid
+					this.updateAfterUnSucInsert();
+				}
+				//GameGui.moveToNextPlayer();
+				GameGui.initUsedLetters();
+//				donePressed = false;
+//				setPlayStatusText("");
+			}
+			currentTurnInsertedLetters.clear();
+			PlayerLetters.clear();
+			
+			for(int i=0;i<7;i++){
+				AddedLetters[i]= '*';
+			}
+			AddedLettersSize = 0;
+			
+			changeLetterBut.setEnabled(true);
+			UndoButton.setEnabled(true);
+			doneBut.setEnabled(false);
+			this.enablePlayerLetters(true);
+			
+			updatePlayerLetters();
+			
+			donePressed = false;
+			changeLetterFlag = false;
+			addWordFlag      = false;
+			
+			//check if game finished
+			if (GameGui.getG().getLettersSet().getLetterSetSize() == 0) {
+				changeLetterBut.setEnabled(false);
+				UndoButton.setEnabled(false);
+				doneBut.setEnabled(false);
+				this.makePlayerLettersUnVisible();
+				setPlayStatusText("letters are finished, Game is finished");
+				updateScoresText();
+			}
+			//Now we need to send it to the server...
+			GameChunk gameChunk = GameGui.G.extractGameChunk();
+			client.sendMoveToServer(gameChunk);
+			signalDone = true;
+			return;
+		}
 		//current player is human
 		if (GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto() == false) {
 			//player pressed done before he pressed "change letters" or "add word"

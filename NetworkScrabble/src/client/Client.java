@@ -8,6 +8,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import Gui.MainWindow_ver2;
+import Gui.NewMultiDialog.ClientInfo;
+
+import scrabbleMain.GameChunk;
+import scrabbleMain.GameGui;
 import server.MultiServer;
 import comunicationProtocol.UserInfo;
 
@@ -24,8 +29,10 @@ public class Client {
 	private ObjectInputStream in;
 	private Socket clientSock;
 	private UserInfo userInfo;
+	private ClientInfo clientInfo;
+	private MainWindow_ver2 window;
 	
-	public Client() {
+	public Client(MainWindow_ver2 window) {
         try {
             clientSock = new Socket(serverAddress, 4445);
             out = new ObjectOutputStream(clientSock.getOutputStream());
@@ -41,22 +48,73 @@ public class Client {
         }
         
         userInfo = new UserInfo(getLocalHost());
+        this.window = window;
+	}
+	
+	public void startToPlay(){
+		if (clientInfo.isUser()){ //if user
+			if (clientInfo.isNewUser())
+				loginAsNew();
+			else
+				loginAsUser();
+		}
+		else //if guest
+			loginAsGuest();
+		
+		char answer = chooseGameMode();
+		
+		try {
+	    	   out.writeObject(answer);
+	       } catch (IOException e) {
+			// TODO Auto-generated catch block
+	    	   System.out.println("client failed with choose game mode");
+	    	   e.printStackTrace();
+	       } 
+	    userInformPopUp();
+	    
+	    while (isGameFinished  == false) {
+	    	   GameChunk gameChunk = null;
+	    	   //wait until game start
+		       try {
+					gameChunk = (GameChunk)in.readObject(); //wait for a player
+				} catch (IOException e) {
+					System.out.println("client fail with getting gameChunk");
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					System.out.println("client fail with getting gameChunk");
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//1)paint game window according to gameChunk
+				//2)update gameChunk
+				//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
+				GameGui.G.insertGameChunk(gameChunk);
+				window.updateWindow();
+				//3)is done in window...We need to stall
+				while (window.signalDone == false){}
+				
+				window.signalDone = false;
+	    }
+	    
+	    closeSocket();
 	}
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-       Client client = new Client();
+     //Client client = new Client();
        
        /* if New user button is pressed */
 //       client.loginAsNew();
        /* else if guest button is pressed */
-     client.loginAsGuest();
+     //client.loginAsGuest();
        /* else if existing user button pressed */
 //       client.loginAsUser();
        
       
-       char answer = client.chooseGameMode();
+      /* char answer = client.chooseGameMode();
        try {
     	   client.out.writeObject(answer);
        } catch (IOException e) {
@@ -65,14 +123,16 @@ public class Client {
     	   e.printStackTrace();
        } //choose between a human or computer player
        
-       client.userInformPopUp();
+       client.userInformPopUp();*/
+       
+       
        
        //******* main loop ***************/
-       while (isGameFinished  == false) {
-    	   Object gameChunk = null;
+      /* while (isGameFinished  == false) {
+    	   GameChunk gameChunk = null;
     	   //wait until game start
 	       try {
-				gameChunk = (Object)client.in.readObject(); //wait for a player
+				gameChunk = (GameChunk)client.in.readObject(); //wait for a player
 			} catch (IOException e) {
 				System.out.println("client fail with getting gameChunk");
 				// TODO Auto-generated catch block
@@ -88,12 +148,12 @@ public class Client {
 			//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
 			
 			//debug
-			client.showChunk((String)gameChunk);
-			client.sendMoveToServer(gameChunk + "a");
-       }
+			/*client.showChunk((String)gameChunk);
+			client.sendMoveToServer(gameChunk + "a");*/
+      // }
 	       
        
-       client.closeSocket();
+      // client.closeSocket();
     }
 	
 	
@@ -102,7 +162,7 @@ public class Client {
 		System.out.println(gameChunk);
 	}
 	
-	private void sendMoveToServer(Object gameChunk) {
+	public void sendMoveToServer(Object gameChunk) {
 		try {
 	    	   this.out.writeObject(gameChunk);
 	       } catch (IOException e) {
@@ -150,44 +210,29 @@ public class Client {
 			   e1.printStackTrace();
 		   }
 		 //TODO: add popup for the user to choose between a human player or auto player
-		return 'h';
+		
+		 if( clientInfo.isAuto())
+			return 'a';
+		 return 'h';
 	}
 	////// login methods 
-	private void loginAsUser() {
-		/* Debug */ 
-		userInfo.setUserName("ohad");
-		userInfo.setUserPassword("bla");
-	    /* End Debug */
-		
-		/* TODO: something like
-           userInfo.setName(nameText.getText());
-           userInfo.setPassword(passwordText.getText());
-        */
+	public void loginAsUser() {
+		userInfo.setUserName(clientInfo.getPlayerName());
+		userInfo.setUserPassword(clientInfo.getPassword());
 		
 		loginHandShake();
 	}
-	private void loginAsGuest() {
-		/* Debug */ 
-		userInfo.setUserName("ohad");
-	    /* End Debug */
-		
-		/* TODO: something like
-           userInfo.setName(nameText.getText());
-        */
+	public void loginAsGuest() {
+		userInfo.setUserName(clientInfo.getPlayerName());
+	    
 		loginHandShake();
 	}
 	
-	private void loginAsNew() {
-		/* Debug */ 
-		userInfo.setUserName("ohad");
-		userInfo.setUserPassword("bla");
-	    /* End Debug */
-		
-		/* TODO: something like
-           userInfo.setName(nameText.getText());
-           userInfo.setPassword(passwordText.getText());
-        */
-        userInfo.setUserEMail(getUserEMail());
+	public void loginAsNew() {
+		userInfo.setUserName(clientInfo.getPlayerName());
+		userInfo.setUserPassword(clientInfo.getPassword());
+        userInfo.setUserEMail(clientInfo.getEmail());
+        
         loginHandShake();
 	}
 	
@@ -280,6 +325,12 @@ public class Client {
 			System.out.println("Failed to close socket.");
 			e.printStackTrace();
 		}
+	}
+	public void setClientInfo(ClientInfo clientInfo) {
+		this.clientInfo = clientInfo;
+	}
+	public ClientInfo getClientInfo() {
+		return clientInfo;
 	}
 }
 

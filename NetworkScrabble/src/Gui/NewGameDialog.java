@@ -585,31 +585,6 @@ public class NewGameDialog extends org.eclipse.swt.widgets.Dialog {
 		return ((string == null) || (string.equals(""))) ? "You Can't feed an empty name" : null;
 	}
 	
-	public class PlayerInfo {
-		private String playerName;
-		private boolean isAuto;
-		
-		private PlayerInfo(String playerName, boolean isAuto) {
-			this.playerName = playerName;
-			this.isAuto     = isAuto;
-		}
-		
-		public boolean isAuto() {
-			return isAuto;
-		}
-
-		public void setAuto(boolean isAuto) {
-			this.isAuto = isAuto;
-		}
-
-		public String getPlayerName() {
-			return playerName;
-		}
-		
-		public void setPlayerName(String playerName) {
-			this.playerName = playerName;
-		}
-	}
 
 }
 

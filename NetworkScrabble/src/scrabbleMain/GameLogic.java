@@ -34,7 +34,33 @@ public class GameLogic {
 	private AutoPlayer ap = new AutoPlayer(board, dictionary, randWord); 
 
 	public GameLogic(){
-		}
+	}
+	
+	public GameChunk extractGameChunk(){
+		
+		GameChunk chunk = new GameChunk();
+		chunk.setNumberOfPlayers(numberOfPlayers);
+		chunk.setFinishGame(finishGame);
+		chunk.setPlayerList(playerList);
+		chunk.setMode(mode);
+		chunk.setLettersSet(lettersSet);
+		chunk.setBoard(board);
+		chunk.setLetterMode(LetterMode);
+		chunk.setturnInd(turnInd);
+		
+		return chunk;
+	}
+	
+	public void insertGameChunk(GameChunk chunk){
+		setNumberOfPlayers(chunk.getNumberOfPlayers());
+		setFinishGame(chunk.getFinishGame());
+		setPlayerList(chunk.getPlayerList());
+		setMode(chunk.getMode());
+		setLettersSet(chunk.getLettersSet());
+		setBoard(chunk.getBoard());
+		setLetterMode(chunk.getLetterMode());
+		setturnInd(chunk.getTurnInd());
+	}
 
     public int getLetterMode(){
     	return LetterMode;
