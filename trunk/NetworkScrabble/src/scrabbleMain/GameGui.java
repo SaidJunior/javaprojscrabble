@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import resources.resConfig;
-import Gui.NewGameDialog.PlayerInfo;
 
 public class GameGui {
 	public static GameLogic G = new GameLogic();
@@ -160,7 +159,7 @@ public class GameGui {
 		}
 	}
 	
-	public static void createPlayerList(PlayerInfo[] playerInfo) {
+	public static void createPlayerList(Gui.PlayerInfo[] playerInfo) {
 		for (int i = 0; i < G.getNumberOfPlayers(); i++) {
 			Player newPlayer = new Player(playerInfo[i].getPlayerName(), playerInfo[i].isAuto());
 			for (int j = 0; j < 7; j++) {

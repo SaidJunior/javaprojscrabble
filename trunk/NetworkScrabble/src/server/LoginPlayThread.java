@@ -8,6 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import Gui.PlayerInfo;
+
+import scrabbleMain.GameChunk;
+import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
 
 import comunicationProtocol.UserInfo;
@@ -25,17 +29,25 @@ public class LoginPlayThread extends Thread{
         private ObjectOutputStream out;
         private ObjectInputStream in;
         
-        private GameLogic G = new GameLogic();
-        private Object gameChunk; // this is the information package that would be sent  
-        
+        //private GameLogic G = new GameLogic();
+        private GameChunk gameChunk; // this is the information package that would be sent  
+        PlayerInfo[] playerInfo = new PlayerInfo[2];
+        private int count = 0;
 
     public LoginPlayThread(Socket mySocket) {
         super("ServerLoginPlayThread");
         this.mySocket   = mySocket;
+        GameGui.initGameLogic();
+        GameLogic G = GameGui.getG();
+        G.setMode('b');
+        //GameGui.setNumberOfPlayers(2);
+        
     }
 
     public void run() {
-        try {
+        String userName="";
+        String userPassword;
+		try {
                     out = new ObjectOutputStream(mySocket.getOutputStream());
                     in  = new ObjectInputStream (mySocket.getInputStream());
                     UserDBQueries userDB = MultiServer.userDB;
@@ -50,19 +62,20 @@ public class LoginPlayThread extends Thread{
                                         e.printStackTrace();
                                 }
                                 
-                                String userName     = userInfo.getUserName();
-                                String userPassword = userInfo.getUserPassword();
+                                userName     = userInfo.getUserName();
+                                userPassword = userInfo.getUserPassword();
+                               
 //                              System.out.println(userName);
 //                              System.out.println(userPassword);
 //                              System.out.println(userInfo.getUserEMail());
                                 
                                 //Guest request
-                                if (userPassword == null) {
+                                if (userPassword == null || userPassword.equals("")) {
                                         returnOK();
                                         break;
                                 }
                                 //Existing request
-                                else if (userInfo.getUserEMail() == null) {
+                                else if (userInfo.getUserEMail() == null || userInfo.equals("")) {
                                         try {
                                                 if (userDB.getUserDetails(userName, userPassword, true) == null) {
                                                         System.out.println("name not exist");
@@ -86,6 +99,8 @@ public class LoginPlayThread extends Thread{
                                                 returnFail();
                                                 break;
                                         }
+                                        
+                                        
                                         /*DEBUG end*/
                                         
                                         //DEBUG
@@ -133,7 +148,9 @@ public class LoginPlayThread extends Thread{
 			System.out.println("server failed with computer or player");
 			e.printStackTrace();
 		}
-		
+		playerInfo[count] = new PlayerInfo(userName, false);
+        count++;
+
 		char answer = 'y';
 		try {
 			answer = (Character)in.readObject();
@@ -151,7 +168,9 @@ public class LoginPlayThread extends Thread{
         Socket secondPlayerSock = null;
         //TODO: optimize with Tor
         if((secondPlayerSock = MultiServer.getWaitSocket().getSocket()) != null  && answer == 'h'){ // we do have somebody to play with
-                
+        	GameGui.setNumberOfPlayers(2);
+        	GameGui.createPlayerList(playerInfo);
+
         	//waiting player closed connection
         		if (!secondPlayerSock.isConnected()) {
                 	 MultiServer.setWaitSocket(mySocket, in, out);
@@ -167,10 +186,10 @@ public class LoginPlayThread extends Thread{
         			ObjectInputStream currentIn = in;
         			boolean player1Turn = true;
         			
-        			//Debug
-        			gameChunk = "chunk";
-        			//End debug
-	                while (G.getFinishGame() == false) {
+        			
+        			gameChunk = GameGui.G.extractGameChunk();
+	                
+        			while (GameGui.G.getFinishGame() == false) {
 		                 
 	                	//send to client game object chunk
 		                try {
@@ -181,10 +200,10 @@ public class LoginPlayThread extends Thread{
 							e1.printStackTrace();
 						}
 						
-						Object tmpInChank = null;
+						GameChunk tmpInChank = null;
 						//get response from client1
 						try {
-							tmpInChank = currentIn.readObject();
+							tmpInChank = (GameChunk)currentIn.readObject();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -195,10 +214,9 @@ public class LoginPlayThread extends Thread{
 						//************TODO: change game logic according to the in chunk********************
 						//don't forget to update gameChunk;
 						
-						//debug
-//						System.out.println(tmpInChank);
+					
 						gameChunk = tmpInChank;
-						//end debug
+						GameGui.G.insertGameChunk(gameChunk);
 						if (player1Turn == false) {
 							currentIn = in;
 							currentOut = out;
@@ -223,8 +241,12 @@ public class LoginPlayThread extends Thread{
         }
         else if (answer == 'a') {
         	returnOK();
-        	
-        	while (G.getFinishGame() == true) {
+        	GameGui.setNumberOfPlayers(1);
+    		GameGui.createPlayerList(playerInfo);
+    		
+			gameChunk = GameGui.G.extractGameChunk();
+			
+    		while (GameGui.G.getFinishGame() == true) {
                 
             	//send to client game object chunk
                 try {
@@ -235,10 +257,10 @@ public class LoginPlayThread extends Thread{
 					e1.printStackTrace();
 				}
 				
-				Object tmpInChank;
+				GameChunk tmpInChank = null;
 				//get response from client1
 				try {
-					tmpInChank = in.readObject();
+					tmpInChank = (GameChunk)in.readObject();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -248,6 +270,10 @@ public class LoginPlayThread extends Thread{
 				}
 				//************TODO: change game logic according to the in-chunk and make an auto player move***************
 				//don't forget to update gameChunk;
+				gameChunk = tmpInChank;
+				GameGui.G.insertGameChunk(gameChunk);
+				GameGui.placeAutoWord();
+				gameChunk = GameGui.G.extractGameChunk();
             }
         	
         	try {

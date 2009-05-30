@@ -42,7 +42,6 @@ import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
 import scrabbleMain.gameDirectories;
-import Gui.NewGameDialog.PlayerInfo;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
