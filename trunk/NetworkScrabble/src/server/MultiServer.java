@@ -8,15 +8,17 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import comunicationProtocol.UserInfo;
+
 import database.UserQueriesImpl;
 
 public class MultiServer {
 	public static UserDBQueries userDB = new UserQueriesImpl();	
 	
-	private static SocketAndStreams  waitSocket = new SocketAndStreams();  // Waiting user socket, shared between threads, private insures synchronized access 
+	private static SocketStreamsAndUserInfo  waitSocket = new SocketStreamsAndUserInfo();  // Waiting user socket, shared between threads, private insures synchronized access 
 	
 	
-	public  static synchronized void   setWaitSocket(Socket socket, ObjectInputStream in, ObjectOutputStream out){
+	public  static synchronized void   setWaitSocket(Socket socket, ObjectInputStream in, ObjectOutputStream out, UserInfo userInfo){
 		/*DEBUG*/
 		if(waitSocket.socket == null)
 			System.out.println("null socket changed!");
@@ -26,9 +28,10 @@ public class MultiServer {
 		waitSocket.socket = socket;
 		waitSocket.in = in;
 		waitSocket.out = out;
+		waitSocket.userInfo = userInfo;
 	}
 	
-	public  static synchronized SocketAndStreams getWaitSocket()                {return waitSocket;}
+	public  static synchronized SocketStreamsAndUserInfo getWaitSocket()  {return waitSocket;}
 	
 	public static void main(String[] args) {
 		ServerSocket serverSocket = null;
@@ -60,11 +63,18 @@ public class MultiServer {
 		}
 	}
 	
-	public static class SocketAndStreams {
+	public static class SocketStreamsAndUserInfo {
 		private Socket socket = null;
 		private ObjectOutputStream out = null;
         private ObjectInputStream  in  = null;
+        private UserInfo userInfo = null;
         
+		public UserInfo getUserInfo() {
+			return userInfo;
+		}
+		public void setUserInfo(UserInfo userInfo) {
+			this.userInfo = userInfo;
+		}
 		public Socket getSocket() {
 			return socket;
 		}

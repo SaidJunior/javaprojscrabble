@@ -47,11 +47,11 @@ public class LoginPlayThread extends Thread{
     public void run() {
         String userName="";
         String userPassword;
+        UserInfo userInfo = null;
 		try {
                     out = new ObjectOutputStream(mySocket.getOutputStream());
                     in  = new ObjectInputStream (mySocket.getInputStream());
                     UserDBQueries userDB = MultiServer.userDB;
-                    UserInfo userInfo = null;
                     
                     while (true) {
                             try {
@@ -180,13 +180,13 @@ public class LoginPlayThread extends Thread{
 
         	//waiting player closed connection
         		if (!secondPlayerSock.isConnected()) {
-                	 MultiServer.setWaitSocket(mySocket, in, out);
+                	 MultiServer.setWaitSocket(mySocket, in, out, userInfo);
                      returnWait();
                 }
         		else {
         			ObjectOutputStream secondPlayerOut = MultiServer.getWaitSocket().getOut();
         			ObjectInputStream  secondPlayerIn = MultiServer.getWaitSocket().getIn();
-        			MultiServer.setWaitSocket(null, null, null);
+        			MultiServer.setWaitSocket(null, null, null, null);
         			returnOK();
         			
         			ObjectOutputStream currentOut = out;
@@ -294,7 +294,7 @@ public class LoginPlayThread extends Thread{
         	
         }
         else{// become a waiting player
-                MultiServer.setWaitSocket(mySocket, in, out);
+                MultiServer.setWaitSocket(mySocket, in, out, userInfo);
                 returnWait();
 //                try {
 //            		out.close();
