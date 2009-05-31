@@ -12,9 +12,9 @@ public class DBConnectionInit
     private DBConnectionPool pool;
     private String driver = "oracle.jdbc.OracleDriver";
     //These parameters are for local-host using oracle connection 
-	private String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	private String user = "scrabble";
-	private String password = "scrabble";
+	private String url = "jdbc:oracle:thin:@localhost:1555:csodb";
+	private String user = "andreeac";
+	private String password = "Iubire12";
 
     public DBConnectionInit() throws DBException 
     {

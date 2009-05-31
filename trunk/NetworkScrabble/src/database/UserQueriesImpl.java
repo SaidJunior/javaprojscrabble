@@ -1,11 +1,16 @@
 package database;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import resources.resConfig;
 
 import gameUsers.GameHistory;
 import gameUsers.User;
@@ -176,4 +181,59 @@ public class UserQueriesImpl implements UserDBQueries{
 		return user;
 	}
 	
+	//This function creates the users and games tables 
+/*	public  void CreateTables ()throws DBException{
+		Connection conn = db_conn.connect();
+			if (conn == null)
+			{
+				System.out.println("Connectivity failure in creating the tables");
+				
+			}
+			String DBschema = "src\\resources\\schema.sql";
+			String CollectorString = "";
+			try {
+				conn.setAutoCommit(false);
+				FileInputStream fstream = new FileInputStream(DBschema);
+				// Get the object of DataInputStream
+				DataInputStream in = new DataInputStream(fstream);
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				String strLine;
+
+				while ((strLine = br.readLine()) != null) {
+					if (!strLine.startsWith("--")) {
+						if (strLine.endsWith(";")) {
+							CollectorString += strLine.substring(0, strLine
+									.length() - 1);
+							Statement Start = conn.createStatement();
+							Start.execute(CollectorString);
+							Start.close();
+							CollectorString = "";
+						} else {
+							CollectorString += strLine + "\n";
+						}
+					}
+				}
+				conn.commit();
+				conn.setAutoCommit(true);
+				db_conn.retConn(conn);
+
+			} catch (SQLException oracleError) {
+				System.out.println(CollectorString);
+				oracleError.printStackTrace();
+				db_conn.retConn(conn);
+				try {
+					conn.rollback();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					db_conn.retConn(conn);
+				}
+			} catch (Exception e) {
+				System.out.print("\nThere was some error\n");
+				db_conn.retConn(conn);
+			}
+	
+
+		
+	}*/
 }
