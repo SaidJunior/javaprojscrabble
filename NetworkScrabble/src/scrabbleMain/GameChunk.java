@@ -2,10 +2,11 @@ package scrabbleMain;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameChunk {
+public class GameChunk implements Serializable{
 	
 	private  int            numberOfPlayers = 0;
 	private  boolean        finishGame      = false;
