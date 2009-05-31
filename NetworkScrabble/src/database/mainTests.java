@@ -25,11 +25,15 @@ public class mainTests {
 		try {
 			dbcon = new DBConnectionInit();
 			UserQueriesImpl impl = new UserQueriesImpl(dbcon);
-			boolean i1 = false;
-			i1 = impl.addNewUser(user4);
-			User temp = impl.getUserDetails(user4.getName(), "", false);
+			boolean i = false;
+//			impl.CreateTables();
+//			System.out.println("The tables were created");
+//			i = impl.addNewUser(user4);
+			impl.addNewUser(user1);
+			impl.updateUserGames(user1.getName(), user1.getNumOfVictories(), user1.getBestResult(),game1);
+			User temp = impl.getUserDetails(user1.getName(), "", false);
 			System.out.println(temp.getName());
-			System.out.println(user4.getName());
+			System.out.println(user1.getName());
 			
 		} catch (DBException e) {
 			// TODO Auto-generated catch block
