@@ -7,6 +7,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+import Gui.PlayerInfo;
 
 import comunicationProtocol.UserInfo;
 
@@ -67,7 +71,7 @@ public class MultiServer {
 		private Socket socket = null;
 		private ObjectOutputStream out = null;
         private ObjectInputStream  in  = null;
-        private UserInfo userInfo = null;
+        public UserInfo userInfo = null;
         
 		public UserInfo getUserInfo() {
 			return userInfo;

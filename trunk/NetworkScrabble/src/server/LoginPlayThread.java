@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 import Gui.PlayerInfo;
 
@@ -31,8 +32,8 @@ public class LoginPlayThread extends Thread{
         
         //private GameLogic G = new GameLogic();
         private GameChunk gameChunk; // this is the information package that would be sent  
-        PlayerInfo[] playerInfo = new PlayerInfo[2];
-        private int count = 0;
+		//private List<PlayerInfo> players;
+        //static PlayerInfo[] playerInfo = new PlayerInfo[2];
 
     public LoginPlayThread(Socket mySocket) {
         super("ServerLoginPlayThread");
@@ -71,8 +72,7 @@ public class LoginPlayThread extends Thread{
                                 
                                 //Guest request
                                 if (userPassword == null || userPassword.equals("")) {
-                                		playerInfo[count] = new PlayerInfo(userName, false);
-                                		count++;
+                                		
                                         returnOK();
                                         break;
                                 }
@@ -84,8 +84,7 @@ public class LoginPlayThread extends Thread{
                                                         returnMismatch();
                                                 }
                                                 else {
-                                                		playerInfo[count] = new PlayerInfo(userName, false);
-                                                		count++;
+                                                		
                                                         returnOK();
                                                         break;
                                                 }
@@ -121,8 +120,7 @@ public class LoginPlayThread extends Thread{
                                         try {
                                                 addResault = userDB.addNewUser(user);
                                                 if (addResault == true) {
-                                                		playerInfo[count] = new PlayerInfo(userName, false);
-                                                		count++;
+                                                		
                                                         returnOK();
                                                 }
                                                 else {
@@ -174,19 +172,24 @@ public class LoginPlayThread extends Thread{
         //TODO: optimize with Tor
         if((secondPlayerSock = MultiServer.getWaitSocket().getSocket()) != null  && answer == 'h'){ // we do have somebody to play with
         	GameGui.setNumberOfPlayers(2);
-        	if (playerInfo[1] == null)
-        		System.out.println("Fuck this bitch");
-        	GameGui.createPlayerList(playerInfo);
+        	
 
         	//waiting player closed connection
         		if (!secondPlayerSock.isConnected()) {
                 	 MultiServer.setWaitSocket(mySocket, in, out, userInfo);
-                     returnWait();
+                	 returnWait();
                 }
         		else {
         			ObjectOutputStream secondPlayerOut = MultiServer.getWaitSocket().getOut();
         			ObjectInputStream  secondPlayerIn = MultiServer.getWaitSocket().getIn();
+        			UserInfo u = MultiServer.getWaitSocket().getUserInfo();
+        			PlayerInfo p[] = new PlayerInfo[2];
+        			p[0] = new PlayerInfo(userInfo.getUserName(), false);
+        			p[1] = new PlayerInfo(u.getUserName(), false);
+        			GameGui.createPlayerList(p);
         			MultiServer.setWaitSocket(null, null, null, null);
+                			
+
         			returnOK();
         			
         			ObjectOutputStream currentOut = out;
@@ -249,7 +252,13 @@ public class LoginPlayThread extends Thread{
         else if (answer == 'a') {
         	returnOK();
         	GameGui.setNumberOfPlayers(1);
-    		GameGui.createPlayerList(playerInfo);
+        	
+        	PlayerInfo p[] = new PlayerInfo[1];
+        	
+			p[0] = new PlayerInfo(userInfo.getUserName(), false);
+			
+			GameGui.createPlayerList(p);
+        			
     		
 			gameChunk = GameGui.G.extractGameChunk();
 			
