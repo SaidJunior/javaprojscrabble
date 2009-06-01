@@ -349,7 +349,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private CLabel playerLetter0;
 	private CLabel letterStandLabel;
 	private static Display display;
-	private GameLogic G;
+	private GameLogic GLogic;
 	private static boolean isSaved = true;
 	private boolean changeLetterFlag;
 	private CLabel[][] allCellsGrid = new CLabel[15][15];
@@ -372,6 +372,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private Client client;
 	private MenuItem menuItemGameMultiUser;
 	private Menu menuMulti;
+	private Thread gameThread;
 	
 	private class CellIndAndTetx {
 		private int i;
@@ -551,10 +552,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 					   
 				     if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
 				    	  StringBuffer data = new StringBuffer();
-				    	  char let = G.getCurrentPlayer().getLetter(currentI);
+				    	  char let = GLogic.getCurrentPlayer().getLetter(currentI);
 				    	  AddedLetters[AddedLettersSize]=let;
 				    	  AddedLettersSize++;
-				    	  String letter = String.valueOf(G.getCurrentPlayer().getLetter(currentI));
+				    	  String letter = String.valueOf(GLogic.getCurrentPlayer().getLetter(currentI));
 				    	  data.append(letter);
 				    	  data.append(currentI);
 				          event.data = data.toString();
@@ -686,7 +687,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 											advancedLetterPlaced = false;
 											isSaved = false;
 //											updateWindow(false);
-											G = GameGui.getG();
+											GLogic = GameGui.getG();
 											updateWindow();
 										} else {
 											MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
@@ -2671,6 +2672,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		if (multiDialog.isClosed() == true) {
 			return;
 		}
+		GLogic = GameGui.getG();
 		menuItemGameNew.setEnabled(false);
 		menuItemGameMulti.setEnabled(false);
 		menuItemGameOpen.setEnabled(false);
@@ -2685,7 +2687,12 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		isMulti = true;
 		advancedLetterPlaced = false;
 		isSaved = false;
-		client.startToPlay();
+		gameThread = new Thread(new Runnable(){
+			public void run(){
+				client.startToPlay();
+			}
+		});
+		gameThread.start();
 
 	}
 	
@@ -2711,12 +2718,12 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		if (playerInfo == null) {
 			return;
 		}
-		G = GameGui.getG();
-		G.setMode(newGameDialog.getGameMode());
+		GLogic = GameGui.getG();
+		GLogic.setMode(newGameDialog.getGameMode());
 		GameGui.setNumberOfPlayers(playerInfo.length);
 //		System.out.println(newGameDialog.getGameMode());
 		GameGui.createPlayerList(playerInfo);
-		G.mainWindow = this;
+		GLogic.mainWindow = this;
 //		this.updateWindow(true);
 		this.updateWindow();
 		this.updateStatusText("Start placing your word or Press 'Change Letter' and make your move. When finished press 'Done'");
@@ -2726,20 +2733,27 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 
 //	public void updateWindow(boolean cleanBoard) {
 	public void updateWindow() {
-		this.updateNowPlayingText();
-		this.updateScoresText();
-		this.updateLetterSetText();
-		this.updatePlayerLetters();
-		changeLetterBut.setEnabled(true);
-		menuItemGameSave.setEnabled(true);
-		updateBoard();
+		if (!isMulti){
+			this.updateNowPlayingText();
+			this.updateScoresText();
+			this.updateLetterSetText();
+		}
+		final MainWindow_ver2 w = this;
+		System.out.println("Update Window");
+		Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+            	w.updatePlayerLetters();
+            	changeLetterBut.setEnabled(true);
+            	menuItemGameSave.setEnabled(true);
+            	updateBoard();
+            }});
 //		if (cleanBoard == true) {
 //			this.putRandomWord();
 //		} 
 	}
 	
 	private void updateBoard() {
-		Board board = G.getBoard();
+		Board board = GLogic.getBoard();
 		for (int i = 0; i < board.getWidth(); i++) {
 			for (int j = 0; j < board.getLength(); j++) {
 				CLabel currentCell = allCellsGrid[i][j];
@@ -2794,7 +2808,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void updatePlayerLetters() {
-		Player currentPlayer = G.getCurrentPlayer();
+		Player currentPlayer = GLogic.getCurrentPlayer();
 //		int numberOfPlayerLetters = currentPlayer.getNumberOfLetters();
 //		for (int i = 0; i < numberOfPlayerLetters; i++) {
 //			allPlayerLetters[i].setBackgroundImage(getLetterImage(currentPlayer.getLetter(i)));
@@ -2805,13 +2819,14 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 //		}
 		for (int i = 0; i < 7; i++) {
 			char currentLetter = currentPlayer.getLetter(i);
+			System.out.println(currentLetter);
 			if (currentLetter != '*') {
 				allPlayerLetters[i].setBackgroundImage(getLetterImage(currentLetter));
-				allPlayerLetters[i].setVisible(true);
-			}
+		        allPlayerLetters[i].setVisible(true);			
+		    }	
 			else {
 				allPlayerLetters[i].setBackgroundImage(null);
-				allPlayerLetters[i].setVisible(false);
+		        allPlayerLetters[i].setVisible(false);
 			}
 		}
 	}
@@ -2823,16 +2838,16 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private void updateLetterSetText() {
 		lettersLeftBut.setVisible(true);
 		lettersLeftLabel.setVisible(true);
-		lettersLeftLabel.setText(Integer.valueOf(G.getLettersSet().getLetterSetSize()).toString());	
+		lettersLeftLabel.setText(Integer.valueOf(GLogic.getLettersSet().getLetterSetSize()).toString());	
 	}
 
 	private void updateScoresText() {
 		textScores.setVisible(true);
 		String allPlayers = "";
-		String finish = (G.getLettersSet().getLetterSetSize() > 0) ? "Current" : "";
+		String finish = (GLogic.getLettersSet().getLetterSetSize() > 0) ? "Current" : "";
 		int winner = 0;
 		int winningScore = 0;
-		List<Player> playerList = G.getPlayerList();
+		List<Player> playerList = GLogic.getPlayerList();
 		for (int i = 0; i < playerList.size(); i++) {
 			Player currentPlayer = playerList.get(i);
 			int temp_score = currentPlayer.getScore();
@@ -2857,7 +2872,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private void updateNowPlayingText() {
 		textNowPlaying.setVisible(true);
 //		if (G == null) System.out.println("bla");
-		textNowPlaying.setText(G.getCurrentPlayerName());
+		textNowPlaying.setText(GLogic.getCurrentPlayerName());
 	}
 	
 	private void changeLetterButWidgetSelected(SelectionEvent evt) {
@@ -2878,7 +2893,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			
 		}
 		else { //word adding
-			if ((G.getMode() == 'a') && (advancedLetterPlaced == true)) {
+			if ((GLogic.getMode() == 'a') && (advancedLetterPlaced == true)) {
 				updateStatusText("In advanced mode you may place only one letter. Press Done to continue");
 				return;
 			}
@@ -3095,6 +3110,13 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
          letterStandLabel.setBackgroundImage(new Image(Display.getDefault(),resConfig.getImageStream("lettersStand.PNG")));
          letterSetImageLabel.setBackground(new Image(Display.getDefault(),resConfig.getImageStream("LetterSet.jpg")));
  }
+	 
+	 public void displayMessage(String text){
+		 MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+			messageBox.setText("Debug");
+			messageBox.setMessage(text);
+			messageBox.open();
+	 }
 }
 
 
