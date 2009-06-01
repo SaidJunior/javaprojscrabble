@@ -18,6 +18,7 @@ import resources.resConfig;
 public class LettersSet implements Serializable{
 	private List <Character> letters = new ArrayList<Character>();
 	private int number = 0;
+	private Random generator = new Random();
 	
 	public LettersSet() {
 		
@@ -41,8 +42,10 @@ public class LettersSet implements Serializable{
 	
 	//@Pre letters.size() > 0
 	public char getLetter() {
-		Random generator = new Random();
-		return letters.remove(generator.nextInt(letters.size()));
+		
+		char c = letters.remove(generator.nextInt(letters.size()));
+		System.out.println(c);
+		return c;
 	}
 	
 	public int getLetterSetSize() {

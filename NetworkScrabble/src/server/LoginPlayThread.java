@@ -14,6 +14,7 @@ import Gui.PlayerInfo;
 import scrabbleMain.GameChunk;
 import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
+import scrabbleMain.Player;
 
 import comunicationProtocol.UserInfo;
 
@@ -184,6 +185,8 @@ public class LoginPlayThread extends Thread{
         			ObjectInputStream  secondPlayerIn = MultiServer.getWaitSocket().getIn();
         			UserInfo u = MultiServer.getWaitSocket().getUserInfo();
         			PlayerInfo p[] = new PlayerInfo[2];
+        			//System.out.println(userInfo.getUserName());
+        			//System.out.println(u.getUserName());
         			p[0] = new PlayerInfo(userInfo.getUserName(), false);
         			p[1] = new PlayerInfo(u.getUserName(), false);
         			GameGui.createPlayerList(p);
@@ -198,7 +201,9 @@ public class LoginPlayThread extends Thread{
         			
         			
         			gameChunk = GameGui.G.extractGameChunk();
-	                
+        			List<Player> p1 = gameChunk.getPlayerList();
+	                System.out.println("***"+p1.get(0).getName()); 
+	                System.out.println("***"+p1.get(1).getName()); 
         			while (GameGui.G.getFinishGame() == false) {
 		                 
 	                	//send to client game object chunk

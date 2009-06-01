@@ -2954,14 +2954,14 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				if (GameGui.placeWordBasic() == false) { //word is not valid
 					this.updateAfterUnSucInsert();
 				}
-				//GameGui.moveToNextPlayer();
+				GameGui.moveToNextPlayer();
 				GameGui.initUsedLetters();
 //				donePressed = false;
 //				setPlayStatusText("");
 			}
 			currentTurnInsertedLetters.clear();
 			PlayerLetters.clear();
-			
+			System.out.println(GameGui.G.getCurrentPlayerName());
 			for(int i=0;i<7;i++){
 				AddedLetters[i]= '*';
 			}

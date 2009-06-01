@@ -160,6 +160,7 @@ public class GameGui {
 	}
 	
 	public static void createPlayerList(Gui.PlayerInfo[] playerInfo) {
+		System.out.println("&&&&");
 		for (int i = 0; i < G.getNumberOfPlayers(); i++) {
 			Player newPlayer = new Player(playerInfo[i].getPlayerName(), playerInfo[i].isAuto());
 			for (int j = 0; j < 7; j++) {

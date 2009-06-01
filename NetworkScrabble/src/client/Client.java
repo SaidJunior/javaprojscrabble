@@ -52,7 +52,6 @@ public class Client {
 	}
 	
 	public void startToPlay(){
-		System.out.println("1");
 		if (clientInfo.isUser()){ //if user
 			if (clientInfo.isNewUser())
 				loginAsNew();
@@ -63,7 +62,6 @@ public class Client {
 			loginAsGuest();
 		
 		char answer = chooseGameMode();
-		System.out.println("2");
 		try {
 	    	   out.writeObject(answer);
 	       } catch (IOException e) {
@@ -71,16 +69,13 @@ public class Client {
 	    	   System.out.println("client failed with choose game mode");
 	    	   e.printStackTrace();
 	       } 
-	       System.out.println("3");
 	    userInformPopUp();
 	   
 	    while (isGameFinished  == false) {
 	    	   GameChunk gameChunk = null;
 	    	   //wait until game start
 		       try {
-		    	   System.out.println("before");
 		    	   gameChunk = (GameChunk)in.readObject(); //wait for a player
-		    	   System.out.println("after");
 		       } catch (IOException e) {
 					System.out.println("client fail with getting gameChunk");
 					// TODO Auto-generated catch block
@@ -97,6 +92,7 @@ public class Client {
 				GameGui.G.insertGameChunk(gameChunk);
 				window.updateWindow();
 				//3)is done in window...We need to stall
+				//System.out.println(GameGui.G.getCurrentPlayerName());
 				while (window.signalDone == false){}
 				
 				window.signalDone = false;
