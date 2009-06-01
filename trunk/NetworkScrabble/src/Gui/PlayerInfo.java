@@ -6,8 +6,8 @@ public class PlayerInfo {
 	boolean isAuto;
 	
 	public PlayerInfo(String playerName, boolean isAuto) {
-		playerName = playerName;
-		isAuto     = isAuto;
+		this.playerName = playerName;
+		this.isAuto     = isAuto;
 	}
 	
 	public boolean isAuto() {
