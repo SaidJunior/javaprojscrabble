@@ -436,7 +436,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		inst.pack();
 //		shell.setSize(1200, 750);
 		shell.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
-		shell.setImage(new Image(Display.getDefault(),resConfig.getImageStream("scrabble_icon.PNG")));
+		shell.setImage(new Image(Display.getDefault(),resConfig.getImageStream("scrabble_icon.png")));
 		shell.setText("Scrabble");
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent evt) {
@@ -2748,6 +2748,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
             	changeLetterBut.setEnabled(true);
             	menuItemGameSave.setEnabled(true);
             	updateBoard();
+            	System.out.println("THIS SHIT");
             }});
 //		if (cleanBoard == true) {
 //			this.putRandomWord();

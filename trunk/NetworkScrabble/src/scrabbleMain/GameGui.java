@@ -966,6 +966,7 @@ public class GameGui {
 		String retWord=null;
 		if(GameGui.getG().getMode() == 'b'){
 			retWord = G.getAp().placeAutoWordAndUpdate(player);
+			System.out.println(retWord+" AAAAA");
 		}
 		else{//advanced
 			retWord = G.getAp().placeAutoWordAndUpdateAdvanced(player);
@@ -982,11 +983,15 @@ public class GameGui {
 //			}
 			player.getPlayerLetters().completeLetters(G);
 			player.setScore(retWord.length());
-			G.mainWindow.setPlayStatusText("Auto player " + player.getName() + " placed the word: " + retWord + " and won " + retWord.length() + "points");
+			
+			if (!G.isMulti)
+				G.mainWindow.setPlayStatusText("Auto player " + player.getName() + " placed the word: " + retWord + " and won " + retWord.length() + "points");
 		}
 		else {
-			G.mainWindow.setPlayStatusText("Auto player " + player.getName() + " failed to place a word");
+			if (!G.isMulti)
+				G.mainWindow.setPlayStatusText("Auto player " + player.getName() + " failed to place a word");
 		}
+
 	}
 	
 }

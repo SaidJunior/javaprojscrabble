@@ -42,6 +42,7 @@ public class LoginPlayThread extends Thread{
         GameGui.initGameLogic();
         GameLogic G = GameGui.getG();
         G.setMode('b');
+        G.setMulti();
         //GameGui.setNumberOfPlayers(2);
         
     }
@@ -250,18 +251,18 @@ public class LoginPlayThread extends Thread{
         }
         else if (answer == 'a') {
         	returnOK();
-        	GameGui.setNumberOfPlayers(1);
+        	GameGui.setNumberOfPlayers(2);
         	
-        	PlayerInfo p[] = new PlayerInfo[1];
+        	PlayerInfo p[] = new PlayerInfo[2];
         	
 			p[0] = new PlayerInfo(userInfo.getUserName(), false);
-			
+			p[1] = new PlayerInfo("comp1",true);
 			GameGui.createPlayerList(p);
         			
     		
 			gameChunk = GameGui.G.extractGameChunk();
 			
-    		while (GameGui.G.getFinishGame() == true) {
+    		while (GameGui.G.getFinishGame() == false) {
                 
             	//send to client game object chunk
                 try {
@@ -288,6 +289,7 @@ public class LoginPlayThread extends Thread{
 				gameChunk = tmpInChank;
 				GameGui.G.insertGameChunk(gameChunk);
 				GameGui.placeAutoWord();
+				GameGui.moveToNextPlayer();
 				gameChunk = GameGui.G.extractGameChunk();
             }
         	

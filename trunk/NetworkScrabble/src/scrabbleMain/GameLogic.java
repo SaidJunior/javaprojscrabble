@@ -32,7 +32,8 @@ public class GameLogic {
 //	public Gui.MainWindow mainWindow;
 	public Gui.MainWindow_ver2 mainWindow;
 	private AutoPlayer ap = new AutoPlayer(board, dictionary, randWord); 
-
+	public boolean isMulti = false;
+	
 	public GameLogic(){
 	}
 	
@@ -49,6 +50,10 @@ public class GameLogic {
 		chunk.setturnInd(turnInd);
 		
 		return chunk;
+	}
+	
+	public void setMulti(){
+		isMulti = true;
 	}
 	
 	public void insertGameChunk(GameChunk chunk){
