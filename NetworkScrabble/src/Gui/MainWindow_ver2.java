@@ -41,7 +41,9 @@ import scrabbleMain.Board;
 import scrabbleMain.GameChunk;
 import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
+import scrabbleMain.LettersSet;
 import scrabbleMain.Player;
+import scrabbleMain.PlayerLetters;
 import scrabbleMain.gameDirectories;
 import scrabbleMain.GameGui.LP;
 import Gui.NewMultiDialog.ClientInfo;
@@ -2931,6 +2933,17 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			currentTurnInsertedLetters.remove(i);
     	}
     }
+    
+    public void onOffButtonsAndDrag(final boolean flag){
+    	final MainWindow_ver2 w = this;
+    	Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+            	changeLetterBut.setEnabled(flag);
+            	UndoButton.setEnabled(flag);
+            	doneBut.setEnabled(flag);
+				w.enablePlayerLetters(flag);
+            }});
+    }
 	private void doneButWidgetSelected(SelectionEvent evt) {
 		donePressed = true;
 		if (isMulti){ //If it's a multiplayer game
@@ -2961,7 +2974,6 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			}
 			currentTurnInsertedLetters.clear();
 			PlayerLetters.clear();
-			System.out.println(GameGui.G.getCurrentPlayerName());
 			for(int i=0;i<7;i++){
 				AddedLetters[i]= '*';
 			}
@@ -2972,7 +2984,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			doneBut.setEnabled(false);
 			this.enablePlayerLetters(true);
 			
-			updatePlayerLetters();
+			//updatePlayerLetters();
 			
 			donePressed = false;
 			changeLetterFlag = false;
@@ -2987,12 +2999,14 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 				setPlayStatusText("letters are finished, Game is finished");
 				updateScoresText();
 			}
+			
 			//Now we need to send it to the server...
 			GameChunk gameChunk = GameGui.G.extractGameChunk();
 			client.sendMoveToServer(gameChunk);
 			signalDone = true;
 			return;
 		}
+		
 		//current player is human
 		if (GameGui.getG().getPlayerList().get(GameGui.getG().getTurnInd()).isAuto() == false) {
 			//player pressed done before he pressed "change letters" or "add word"

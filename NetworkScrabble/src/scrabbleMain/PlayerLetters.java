@@ -8,6 +8,12 @@ public class PlayerLetters implements Serializable{
 	public PlayerLetters() {
 		playerLetters = new char[7];
 	}
+	
+	public void printPlayerLetters(){
+		for (int i = 0; i < 7; i++)
+			System.out.print(playerLetters[i]+" ");
+		System.out.println();
+	}
 
 	public void add(char letter, int index) {
 		if (index > 6) {System.out.println("ERROR: PlayerLatters got index bigger than 6");return;}
