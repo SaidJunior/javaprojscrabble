@@ -85,7 +85,7 @@ public class Client {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+				window.onOffButtonsAndDrag(true);
 				//1)paint game window according to gameChunk
 				//2)update gameChunk
 				//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
@@ -94,7 +94,7 @@ public class Client {
 				//3)is done in window...We need to stall
 				//System.out.println(GameGui.G.getCurrentPlayerName());
 				while (window.signalDone == false){}
-				
+				window.onOffButtonsAndDrag(false);
 				window.signalDone = false;
 	    }
 	    
