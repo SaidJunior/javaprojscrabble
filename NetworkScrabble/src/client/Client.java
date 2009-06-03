@@ -37,6 +37,7 @@ public class Client {
             clientSock = new Socket(serverAddress, 4445);
             out = new ObjectOutputStream(clientSock.getOutputStream());
             in  = new ObjectInputStream (clientSock.getInputStream());
+            
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: local host");
         	//TODO: popup connection to server failed
@@ -90,6 +91,7 @@ public class Client {
 				//2)update gameChunk
 				//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
 				GameGui.G.insertGameChunk(gameChunk);
+		    	//window.updateNowPlayingText();
 				window.updateWindow();
 				//3)is done in window...We need to stall
 				//System.out.println(GameGui.G.getCurrentPlayerName());
@@ -320,7 +322,10 @@ public class Client {
 	
 	public void closeSocket(){
 		try {
+			out.close();
+			in.close();
 			clientSock.close();
+	
 		} catch (IOException e) {
 			System.out.println("Failed to close socket.");
 			e.printStackTrace();
