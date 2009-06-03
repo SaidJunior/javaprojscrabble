@@ -41,13 +41,10 @@ import scrabbleMain.Board;
 import scrabbleMain.GameChunk;
 import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
-import scrabbleMain.LettersSet;
 import scrabbleMain.Player;
-import scrabbleMain.PlayerLetters;
 import scrabbleMain.gameDirectories;
 import scrabbleMain.GameGui.LP;
 import Gui.NewMultiDialog.ClientInfo;
-
 import client.Client;
 
 import com.cloudgarden.resource.SWTResourceManager;
@@ -372,8 +369,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 	private MenuItem menuItemGameMulti;
 	private NewMultiDialog multiDialog;
 	private Client client;
-	private MenuItem menuItemGameMultiUser;
-	private Menu menuMulti;
+//	private MenuItem menuItemGameMultiUser;
+//	private Menu menuMulti;
 	private Thread gameThread;
 	
 	private class CellIndAndTetx {
@@ -3151,6 +3148,16 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			messageBox.setMessage(text);
 			messageBox.open();
 	 }
+
+	public  Shell getShell() {
+		return shell;
+	}
+
+//	public void setShell(Shell shell) {
+//		MainWindow_ver2.shell = shell;
+//	}
+	 
+	 
 }
 
 

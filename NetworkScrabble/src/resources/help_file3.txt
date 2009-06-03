@@ -9,10 +9,13 @@ http://en.wikipedia.org/wiki/Scrabble
 THE BEGINNING
 =============
 Once you start the application you can choose between a new 
-game or to load an existing game.
+game load an existing game, or to play against someone via
+the Internet.
 
 SETTING THE PREFERENCES
 =======================
+For a local game:
+
 Now you have to choose the number of players (1-4) and the rules set:
 1) Basic: Each cell is worth exactly one point, and the program decides 
    by herself what is the longest word that was created.
@@ -20,6 +23,15 @@ Now you have to choose the number of players (1-4) and the rules set:
 
 Now enter the names of the players (length less then 15) and choose if 
 anyone of them should be automatic. Notice that the first player must be human.
+
+
+For an Internet game:
+
+If you are a new user, enter your wanted user name, password and email.
+If you are already registered, only name and password
+If there a are no players available currently, you can choose to abort
+and play a local game. 
+The Internet game is only for the basic rule set.
 
 =======================
 
