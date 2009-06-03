@@ -438,27 +438,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		shell.setLocation(new org.eclipse.swt.graphics.Point(10, 10));
 		shell.setImage(new Image(Display.getDefault(),resConfig.getImageStream("scrabble_icon.png")));
 		shell.setText("Scrabble");
-		shell.addShellListener(new ShellAdapter() {
-			public void shellClosed(ShellEvent evt) {
-//				System.out.println("shell.shellClosed, event="+evt);
-				if (isSaved == false) {
-					saveBeforExitMessage();
-				}
-				MessageBox m = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-				m.setMessage("Are you sure you want to exit?");
-				m.setText("Game Exit");
-				if (m.open() == SWT.YES) {
-					GameGui.updateRecordList();
-					GameGui.saveRecordList('b');
-			    	GameGui.saveRecordList('a');
-					display.dispose();
-//					System.out.println("bla");
-				}
-				else {
-					evt.doit = false;
-				}
-			}
-		});
+		
 //		} else {
 //			Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
 //			shell.setSize(shellBounds.width, shellBounds.height);
@@ -486,6 +466,31 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		initAllCellsColors();
 		initWindow();
 		GameGui.initUsedLetters();
+		shell.addShellListener(new ShellAdapter() {
+			public void shellClosed(ShellEvent evt) {
+//				System.out.println("shell.shellClosed, event="+evt);
+				if (isSaved == false) {
+					saveBeforExitMessage();
+				}
+				MessageBox m = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				m.setMessage("Are you sure you want to exit?");
+				m.setText("Game Exit");
+				if (m.open() == SWT.YES) {
+					GameGui.updateRecordList();
+					GameGui.saveRecordList('b');
+			    	GameGui.saveRecordList('a');
+					display.dispose();
+					try{
+						client.closeSocket();
+						gameThread.stop();
+					}
+					catch(Exception e){}
+				}
+				else {
+					evt.doit = false;
+				}
+			}
+		});
 	}
 
 	private void initAllCellsColors() {
@@ -2603,6 +2608,11 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			GameGui.saveRecordList('b');
 	    	GameGui.saveRecordList('a');
 			display.dispose();
+			try{
+				client.closeSocket();
+				gameThread.stop();
+			}
+			catch(Exception e){}
 		}
 	}
 	
@@ -2735,21 +2745,29 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 
 //	public void updateWindow(boolean cleanBoard) {
 	public void updateWindow() {
-		if (!isMulti){
-			this.updateNowPlayingText();
-			this.updateScoresText();
-			this.updateLetterSetText();
-		}
 		final MainWindow_ver2 w = this;
-		System.out.println("Update Window");
-		Display.getDefault().asyncExec(new Runnable() {
+		if (isMulti){
+			Display.getDefault().asyncExec(new Runnable() {
             public void run() {
+            	w.updateNowPlayingText();
+            	w.updateScoresText();
+            	w.updateLetterSetText();
             	w.updatePlayerLetters();
             	changeLetterBut.setEnabled(true);
             	menuItemGameSave.setEnabled(true);
             	updateBoard();
-            	System.out.println("THIS SHIT");
-            }});
+            }
+		});
+		}
+		else{
+			w.updateNowPlayingText();
+        	w.updateScoresText();
+        	w.updateLetterSetText();
+            w.updatePlayerLetters();
+            changeLetterBut.setEnabled(true);
+            menuItemGameSave.setEnabled(true);
+            updateBoard();
+		}
 //		if (cleanBoard == true) {
 //			this.putRandomWord();
 //		} 
@@ -2872,7 +2890,8 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		textStatus.setText(text);
 	}
 
-	private void updateNowPlayingText() {
+	public void updateNowPlayingText() {
+		
 		textNowPlaying.setVisible(true);
 //		if (G == null) System.out.println("bla");
 		textNowPlaying.setText(GLogic.getCurrentPlayerName());
