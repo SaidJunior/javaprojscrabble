@@ -33,9 +33,11 @@ public class Client {
 	private ClientInfo clientInfo;
 	private MainWindow_ver2 window;
 	private MessageBox connectionFailBox = null;
+	private MessageBox loginErrorMsgBox = null; 
 	
 	public Client(MainWindow_ver2 window) {
         connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+        loginErrorMsgBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
         connectionFailBox.setText("Connection Fail");
         connectionFailBox.setMessage("Failed to connect to server, try again later");
 		try {
@@ -288,7 +290,6 @@ public class Client {
 		}
 	}
 	
-	private MessageBox loginErrorMsgBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 	private MessageBox waitMsgBox; 
 	private void userPassWordMis() {
 		loginErrorMsgBox.setText("Login Error");
