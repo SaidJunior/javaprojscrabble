@@ -38,17 +38,21 @@ public class DBConnectionPool
 {
 
    private 				Vector<DBConnection> connections;
-   private 				String url, user, password;
+ //  private 				String url, user, password;
+   private              String protocol;
+   private              Properties prop;
+   private              String dbName;
    final private long 	timeout = 60000;
    final private int retries = 5;
    private 				ConnectionInspector inspector;
    final private int 	poolsize = 10;
 
-   public DBConnectionPool(String url, String user, String password) 
+   public DBConnectionPool(String protocol,Properties prop,String dbName) 
    {
-		this.url = url;
-		this.user = user;
-		this.password = password;
+
+       this.dbName = dbName;
+       this.prop = prop;
+       this.protocol = protocol;
 		  
 		connections = new Vector<DBConnection>(poolsize);
 		inspector = new ConnectionInspector(this);
@@ -76,7 +80,8 @@ public class DBConnectionPool
     	   int i=0;
     	   while(i<retries && conn==null)
 		   {
-		   		conn = DriverManager.getConnection(url, user, password);
+		   		conn = DriverManager.getConnection(protocol + dbName
+	                    + ";create=true", prop);
 		   		i++;
 		   }
            c = new DBConnection(conn, this);

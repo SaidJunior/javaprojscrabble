@@ -22,7 +22,7 @@ public class DBUtils {
 		int bestScore = user.getBestResult();
 		
 		String cmd = "INSERT INTO USERS(NAME,PASSWORD,EMAIL,VICTORIES,BEST_RESULT) VALUES('" 
-			+ name + "','" + password + "','" + email + "','" + victories + "','" + bestScore + "')";
+			+ name + "','" + password + "','" + email + "'," + victories + "," + bestScore + ")";
 		
 		return cmd;
 	}
@@ -44,7 +44,7 @@ public class DBUtils {
 		rivals = fixApost(rivals);
 		int score = game.getCurrentScrore();
 		String cmd = "INSERT INTO GAMES(NAME,DATE1,RIVALS,SCORE) VALUES('" 
-			+ name + "',SYSDATE,'" + rivals + "','" + score + "')";
+			+ name + "',CURRENT_DATE,'" + rivals + "'," + score + ")";
 		return cmd;
 	}
 	
@@ -81,14 +81,14 @@ public class DBUtils {
 		String cmd = "UPDATE USERS SET ";
 		if (score != -1)
 		{
-			cmd += "BEST_RESULT='" + score + "'";
+			cmd += "BEST_RESULT=" + score;
 			if (victories != -1)
-				cmd += ", " + "VICTORIES='" + victories + "'";
+				cmd += ", " + "VICTORIES=" + victories;
 		}
 		else 
 		{
 			if (victories != -1)
-				cmd += "VICTORIES='" + victories + "'";
+				cmd += "VICTORIES=" + victories;
 		}	
 		cmd += " WHERE NAME='" + name + "'";
 		
