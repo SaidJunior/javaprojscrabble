@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,6 +25,10 @@ public class UserQueriesImpl implements UserDBQueries{
 	{
 		try {
 			db_conn = new DBConnectionInit();
+			Connection con = db_conn.connect();
+			db_conn.CreateUsersTable(con);
+			db_conn.CreateGamesTable(con);
+			db_conn.retConn(con);
 		} catch (DBException e) {
 			e.printStackTrace();
 		}
@@ -34,6 +39,35 @@ public class UserQueriesImpl implements UserDBQueries{
 		db_conn = dbcon;
 		
 	}
+	
+	public void CloseConnectionsDB(){
+		  try
+          {
+              // the shutdown=true attribute shuts down Derby
+              DriverManager.getConnection("jdbc:derby:;shutdown=true");
+
+              // To shut down a specific database only, but keeep the
+              // engine running (for example for connecting to other
+              // databases), specify a database in the connection URL:
+              //DriverManager.getConnection("jdbc:derby:" + dbName + ";shutdown=true");
+          }
+          catch (SQLException se)
+          {
+              if (( (se.getErrorCode() == 50000)
+                      && ("XJ015".equals(se.getSQLState()) ))) {
+                  // we got the expected exception
+                  System.out.println("Derby shut down normally");
+                  // Note that for single database shutdown, the expected
+                  // SQL state is "08006", and the error code is 45000.
+              } else {
+                  // if the error code or SQLState is different, we have
+                  // an unexpected exception (shutdown failed)
+                  System.err.println("Derby did not shut down normally");
+                  System.out.println(se.getMessage());
+              }
+          }
+      }
+
 	
 	public boolean addNewUser(User user) throws DBException 
 	{
@@ -158,10 +192,12 @@ public class UserQueriesImpl implements UserDBQueries{
 					}
 					user.setHistory(games);
 				}
-				else
+				else{
 					System.out.println("password does not match");
 					return null;
 			}
+			}
+				
 			rs.close();
 			stmt.close();
 			db_conn.retConn(conn);
@@ -181,59 +217,5 @@ public class UserQueriesImpl implements UserDBQueries{
 		return user;
 	}
 	
-	//This function creates the users and games tables 
-/*	public  void CreateTables ()throws DBException{
-		Connection conn = db_conn.connect();
-			if (conn == null)
-			{
-				System.out.println("Connectivity failure in creating the tables");
-				
-			}
-			String DBschema = "src\\resources\\schema.sql";
-			String CollectorString = "";
-			try {
-				conn.setAutoCommit(false);
-				FileInputStream fstream = new FileInputStream(DBschema);
-				// Get the object of DataInputStream
-				DataInputStream in = new DataInputStream(fstream);
-				BufferedReader br = new BufferedReader(new InputStreamReader(in));
-				String strLine;
 
-				while ((strLine = br.readLine()) != null) {
-					if (!strLine.startsWith("--")) {
-						if (strLine.endsWith(";")) {
-							CollectorString += strLine.substring(0, strLine
-									.length() - 1);
-							Statement Start = conn.createStatement();
-							Start.execute(CollectorString);
-							Start.close();
-							CollectorString = "";
-						} else {
-							CollectorString += strLine + "\n";
-						}
-					}
-				}
-				conn.commit();
-				conn.setAutoCommit(true);
-				db_conn.retConn(conn);
-
-			} catch (SQLException oracleError) {
-				System.out.println(CollectorString);
-				oracleError.printStackTrace();
-				db_conn.retConn(conn);
-				try {
-					conn.rollback();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					db_conn.retConn(conn);
-				}
-			} catch (Exception e) {
-				System.out.print("\nThere was some error\n");
-				db_conn.retConn(conn);
-			}
-	
-
-		
-	}*/
 }

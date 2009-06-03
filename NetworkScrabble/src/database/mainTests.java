@@ -1,5 +1,8 @@
 package database;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import gameUsers.GameHistory;
@@ -22,20 +25,39 @@ public class mainTests {
 		
 		initParams();
 		DBConnectionInit dbcon;
+		
 		try {
 			dbcon = new DBConnectionInit();
 			UserQueriesImpl impl = new UserQueriesImpl(dbcon);
 			boolean i = false;
-//			impl.CreateTables();
-//			System.out.println("The tables were created");
-//			i = impl.addNewUser(user4);
+             Connection con =dbcon.connect();
+  //           con.setAutoCommit(false);
+             dbcon.CreateGamesTable(con);
+             dbcon.CreateUsersTable(con);
+             ResultSet result=null;
+			 result = con.getMetaData().getTables(null,null, "USERS", null);
+			  if(result.next()){
+			  System.out.println("The tables were created");
+			  }
+			
 			impl.addNewUser(user1);
 			impl.updateUserGames(user1.getName(), user1.getNumOfVictories(), user1.getBestResult(),game1);
-			User temp = impl.getUserDetails(user1.getName(), "", false);
-			System.out.println(temp.getName());
+//			User temp = impl.getUserDetails(user1.getName(), "", false);
+			User tempRivals= impl.getUserDetails(user1.getName(), user1.getPassword(), true);
+//			System.out.println(temp.getName());
 			System.out.println(user1.getName());
+			System.out.println(tempRivals.getHistory().get(0).getRivals().get(1));
+			System.out.println("the first rival of the game is " +game1.getRivals().get(1));
+//			con.commit();
+//			con.setAutoCommit(true);
+			dbcon.retConn(con);
+			impl.CloseConnectionsDB();
 			
-		} catch (DBException e) {
+		}  catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (DBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -43,9 +65,9 @@ public class mainTests {
 	
 	public static void initParams()
 	{
-		user1.setName("Roy'1");
-		user1.setPassword("scrabble1");
-		user1.setEmail("Roy@yadoo.co.il");
+		user1.setName("Andreea17");
+		user1.setPassword("scrabble");
+		user1.setEmail("Andreea1@yadoo.co.il");
 		user1.setBestResult(3);
 		user1.setNumOfVictories(4);
 		
@@ -64,7 +86,7 @@ public class mainTests {
 		user4.setName("yos't");
 		user4.setPassword("ttt's");	
 		
-		game1.setName("Roy'1");
+		game1.setName("Andreea17");
 		game1.setCurrentScrore(32);
 		ArrayList<String> riv1 = new ArrayList<String>();
 		riv1.add("yosi");
