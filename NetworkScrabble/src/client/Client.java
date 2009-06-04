@@ -25,7 +25,8 @@ public class Client {
 	private final static int USERNAME_AND_PASSWOND_MISMATCH = 3; //also for username not exist
 	private final static int WAIT = 4;
 	private static boolean isGameFinished = false; //update this according to the received object
-	
+	//log to local server
+	@SuppressWarnings("unused")
 	private InetAddress serverAddress = getLocalHost();
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
@@ -36,7 +37,10 @@ public class Client {
 	
 	public Client(final MainWindow_ver2 window) {
 		try {
-            clientSock = new Socket(serverAddress, 4445);
+			//log to server in tau:
+            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
+			//log to local server
+//            clientSock = new Socket(serverAddress, 40775);
             out = new ObjectOutputStream(clientSock.getOutputStream());
             in  = new ObjectInputStream (clientSock.getInputStream());
             
