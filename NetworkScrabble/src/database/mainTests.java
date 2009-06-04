@@ -65,7 +65,7 @@ public class mainTests {
 	
 	public static void initParams()
 	{
-		user1.setName("Andreea17");
+		user1.setName("Andreea300");
 		user1.setPassword("scrabble");
 		user1.setEmail("Andreea1@yadoo.co.il");
 		user1.setBestResult(3);
@@ -86,7 +86,7 @@ public class mainTests {
 		user4.setName("yos't");
 		user4.setPassword("ttt's");	
 		
-		game1.setName("Andreea17");
+		game1.setName("Andreea300");
 		game1.setCurrentScrore(32);
 		ArrayList<String> riv1 = new ArrayList<String>();
 		riv1.add("yosi");
