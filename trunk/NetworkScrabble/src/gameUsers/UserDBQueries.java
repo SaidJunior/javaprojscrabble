@@ -44,6 +44,6 @@ public interface UserDBQueries {
 			GameHistory currentGame)throws DBException;
 	
 
-	
+	public void CloseConnectionsDB();
 }
 ;

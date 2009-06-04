@@ -1,21 +1,15 @@
 package database;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import gameUsers.GameHistory;
+import gameUsers.User;
+import gameUsers.UserDBQueries;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
-import resources.resConfig;
-
-import gameUsers.GameHistory;
-import gameUsers.User;
-import gameUsers.UserDBQueries;
 
 public class UserQueriesImpl implements UserDBQueries{
 

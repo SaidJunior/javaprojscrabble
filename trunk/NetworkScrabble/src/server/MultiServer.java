@@ -7,10 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-
-import Gui.PlayerInfo;
 
 import comunicationProtocol.UserInfo;
 
@@ -41,13 +37,17 @@ public class MultiServer {
 		ServerSocket serverSocket = null;
         boolean listening  = true;
         Socket  playerSocket = null;
-
+        
+       
         try {
             serverSocket = new ServerSocket(4445);
         } catch (IOException e) {
             System.err.println("Could not listen on port: 4445");
             System.exit(-1);
         }
+        
+        Thread hook = new ServerShutDownTread(serverSocket, userDB);
+		Runtime.getRuntime().addShutdownHook(hook);
 
         while (listening){
 			try {
