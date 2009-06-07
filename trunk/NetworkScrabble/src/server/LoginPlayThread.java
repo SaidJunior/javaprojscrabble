@@ -7,14 +7,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.List;
-
-import Gui.PlayerInfo;
 
 import scrabbleMain.GameChunk;
 import scrabbleMain.GameGui;
 import scrabbleMain.GameLogic;
-import scrabbleMain.Player;
+import Gui.PlayerInfo;
 
 import comunicationProtocol.UserInfo;
 
@@ -25,7 +22,7 @@ public class LoginPlayThread extends Thread{
         private final static int USER_NAME_ALREADY_EXIST = 1;
         private final static int FAIL = 2;
         private final static int USERNAME_AND_PASSWOND_MISMATCH = 3; //also for username not exist
-        private final static int WAIT = 4;
+//        private final static int WAIT = 4;
         
         private Socket  mySocket   = null;//this socket belongs to the player currently being logged in. we need a better name...
         private ObjectOutputStream out;
@@ -145,39 +142,35 @@ public class LoginPlayThread extends Thread{
                 e.printStackTrace();
         }
         
+        //inform client that login completed
         try {
-			out.writeObject("ComputerOrPlayer");
+			out.writeObject("loginCompleted");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("server failed with computer or player");
 			e.printStackTrace();
 		}
 	
-
-		char answer = 'y';
-		try {
-			answer = (Character)in.readObject();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("server failed to get yes or no");
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			System.out.println("server failed to get yes or no");
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         System.out.println("Reached coputer querry.");//DEBUG
         
         Socket secondPlayerSock = null;
         //TODO: optimize with Tor
-        if((secondPlayerSock = MultiServer.getWaitSocket().getSocket()) != null  && answer == 'h'){ // we do have somebody to play with
+        if((secondPlayerSock = MultiServer.getWaitSocket().getSocket()) != null) { // we do have somebody to play with
+        	try {
+				out.writeObject('n');
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
         	GameGui.setNumberOfPlayers(2);
         	
 
         	//waiting player closed connection
-        		if (!secondPlayerSock.isConnected()) {
-                	 MultiServer.setWaitSocket(mySocket, in, out, userInfo);
-                	 returnWait();
+        		if (secondPlayerSock.isClosed() || !secondPlayerSock.isConnected()) {
+        			System.out.println("try");
+//                	 MultiServer.setWaitSocket(mySocket, in, out, userInfo);
+//                	 returnWait();
+        			waitingProcedure(userInfo);
                 }
         		else {
         			ObjectOutputStream secondPlayerOut = MultiServer.getWaitSocket().getOut();
@@ -191,7 +184,7 @@ public class LoginPlayThread extends Thread{
         			MultiServer.setWaitSocket(null, null, null, null);
                 			
 
-        			returnOK();
+//        			returnOK();
         			
         			ObjectOutputStream currentOut = out;
         			ObjectInputStream currentIn = in;
@@ -250,77 +243,109 @@ public class LoginPlayThread extends Thread{
 					}
         		}
         }
-        else if (answer == 'a') {
-        	returnOK();
-        	GameGui.setNumberOfPlayers(2);
-        	
-        	PlayerInfo p[] = new PlayerInfo[2];
-        	
-			p[0] = new PlayerInfo(userInfo.getUserName(), false);
-			p[1] = new PlayerInfo("comp1",true);
-			GameGui.createPlayerList(p);
-        			
-    		
-			gameChunk = GameGui.G.extractGameChunk();
-			
-    		while (GameGui.G.getFinishGame() == false) {
-                
-            	//send to client game object chunk
-                try {
-					out.writeObject(gameChunk);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("sending chunk to client failed");
-					e1.printStackTrace();
-				}
-				
-				GameChunk tmpInChank = null;
-				//get response from client1
-				try {
-					tmpInChank = (GameChunk)in.readObject();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				//************TODO: change game logic according to the in-chunk and make an auto player move***************
-				//don't forget to update gameChunk;
-				gameChunk = tmpInChank;
-				GameGui.G.insertGameChunk(gameChunk);
-				GameGui.placeAutoWord();
-				GameGui.moveToNextPlayer();
-				gameChunk = GameGui.G.extractGameChunk();
-            }
-        	
-        	try {
-        		out.close();
-            	in.close();
-				mySocket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	
-        }
-        else{// become a waiting player
-                MultiServer.setWaitSocket(mySocket, in, out, userInfo);
-                returnWait();
+//        else if (answer == 'a') {
+//        	returnOK();
+//        	GameGui.setNumberOfPlayers(2);
+//        	
+//        	PlayerInfo p[] = new PlayerInfo[2];
+//        	
+//			p[0] = new PlayerInfo(userInfo.getUserName(), false);
+//			p[1] = new PlayerInfo("comp1",true);
+//			GameGui.createPlayerList(p);
+//        			
+//    		
+//			gameChunk = GameGui.G.extractGameChunk();
+//			
+//    		while (GameGui.G.getFinishGame() == false) {
+//                
+//            	//send to client game object chunk
 //                try {
-//            		out.close();
-//                	in.close();
-//    			} catch (IOException e) {
-//    				// TODO Auto-generated catch block
-//    				e.printStackTrace();
-//    			}
+//					out.writeObject(gameChunk);
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					System.out.println("sending chunk to client failed");
+//					e1.printStackTrace();
+//				}
+//				
+//				GameChunk tmpInChank = null;
+//				//get response from client1
+//				try {
+//					tmpInChank = (GameChunk)in.readObject();
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				} catch (ClassNotFoundException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				//************TODO: change game logic according to the in-chunk and make an auto player move***************
+//				//don't forget to update gameChunk;
+//				gameChunk = tmpInChank;
+//				GameGui.G.insertGameChunk(gameChunk);
+//				GameGui.placeAutoWord();
+//				GameGui.moveToNextPlayer();
+//				gameChunk = GameGui.G.extractGameChunk();
+//            }
+//        	
+//        	try {
+//        		out.close();
+//            	in.close();
+//				mySocket.close();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//        	
+//        }
+        else{// ask if you want to become a waiting player
+        	waitingProcedure(userInfo);
+//            		
         } 
     }
 
-        private void returnWait() {
-        	sendResponseToClient(WAIT);
+	private void waitingProcedure(UserInfo userInfo) {
+		try {
+			out.writeObject('y');
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
+		int answer = 'y';
+		try {
+			answer = (Integer)in.readObject();
+			System.out.println(answer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("server failed to get yes or no");
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("server failed to get yes or no");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println((char)answer);
+		if (answer == 'y') {    
+			MultiServer.setWaitSocket(mySocket, in, out, userInfo);
+//                returnWait();
+		}
+        else {     
+		  try {
+			  out.close();
+		  	  in.close();
+		  	  mySocket.close();
+		  } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		  }
         }
+	}
+
+//        private void returnWait() {
+//        	sendResponseToClient(WAIT);
+//		
+//        }
 
 		private void returnMismatch() {
                 sendResponseToClient(USERNAME_AND_PASSWOND_MISMATCH);
