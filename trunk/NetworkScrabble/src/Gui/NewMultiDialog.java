@@ -1,7 +1,7 @@
 package Gui;
-import com.cloudgarden.resource.SWTResourceManager;
-
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -11,9 +11,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+
+import com.cloudgarden.resource.SWTResourceManager;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -78,13 +77,31 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 					public void widgetSelected(SelectionEvent evt) {
 						//System.out.println("Existing.widgetSelected, event="+evt);
 						isClosed = false;
-						if (!text1.getText().equals(""))
-							setClientInfo(false);
-						else{
+						if (text1.getText().equals("")) {
 							MessageBox m = new MessageBox(dialogShell, SWT.ICON_ERROR);
 							m.setText("Error");
-							m.setMessage("You must specify the name");
+							m.setMessage("You must specify your name");
 							m.open();
+							
+						} else if (EmailText.isEnabled() == true) {  //new user login
+							if (EmailText.getText().equals("")) {
+								MessageBox m = new MessageBox(dialogShell, SWT.ICON_ERROR);
+								m.setText("Error");
+								m.setMessage("If you login as new user you must specify your email");
+								m.open();
+							} else if (text2.getText().equals("")) {
+								MessageBox m = new MessageBox(dialogShell, SWT.ICON_ERROR);
+								m.setText("Error");
+								m.setMessage("You must specify your password");
+								m.open();
+							} else {
+								setClientInfo(true);
+//								System.out.println("login as new");
+							}
+						}
+						else{
+							setClientInfo(false);
+//							System.out.println("login as user");
 						}
 					}
 				});
@@ -118,14 +135,16 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 				newUser.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						isClosed = false;
-						if (!text1.getText().equals(""))
-							setClientInfo(true);
-						else{
-							MessageBox m = new MessageBox(dialogShell, SWT.ICON_ERROR);
-							m.setText("Error");
-							m.setMessage("You must specify the name");
-							m.open();
-						}
+						EmailText.setEnabled(true);
+						newUser.setEnabled(false);
+//						if (!text1.getText().equals(""))
+//							setClientInfo(true);
+//						else{
+//							MessageBox m = new MessageBox(dialogShell, SWT.ICON_ERROR);
+//							m.setText("Error");
+//							m.setMessage("You must specify the name");
+//							m.open();
+//						}
 					}
 					
 				});
@@ -138,6 +157,7 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 				EmailTextLData.left =  new FormAttachment(0, 1000, 91);
 				EmailTextLData.top =  new FormAttachment(0, 1000, 91);
 				EmailText.setLayoutData(EmailTextLData);
+				EmailText.setEnabled(false);
 			}
 			{
 				text2 = new Text(dialogShell, SWT.NONE);
@@ -147,6 +167,7 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 				text2LData.left =  new FormAttachment(0, 1000, 91);
 				text2LData.top =  new FormAttachment(0, 1000, 62);
 				text2.setLayoutData(text2LData);
+				text2.setEchoChar('*');
 			}
 			{
 				text1 = new Text(dialogShell, SWT.NONE);
