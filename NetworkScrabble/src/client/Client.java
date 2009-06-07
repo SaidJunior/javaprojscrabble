@@ -456,6 +456,7 @@ public class Client {
 				loginErrorMsgBox.setText("Login Error");
 				loginErrorMsgBox.setMessage("User Name or Password, was not entered prorerly. Try Agian");
 				loginErrorMsgBox.open();
+				window.toggleMenues(true);
  			}
 		 });
 //		System.out.println("mis");
@@ -468,6 +469,8 @@ public class Client {
 	 				loginErrorMsgBox.setText("Login Error");
 					loginErrorMsgBox.setMessage("This User is already exist in our database. Please enter anothor one");
 					loginErrorMsgBox.open();
+					window.toggleMenues(true);
+
 	 			}
 		 });
 //		System.out.println("already exists");
@@ -480,6 +483,8 @@ public class Client {
 	            connectionFailBox.setText("Connection Fail");
 	            connectionFailBox.setMessage("Failed to connect to server, try again later");
 	            connectionFailBox.open();
+				window.toggleMenues(true);
+
 			}
         });
 		//System.out.println("fail");
