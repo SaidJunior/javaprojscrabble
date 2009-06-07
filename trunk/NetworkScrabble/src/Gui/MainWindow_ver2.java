@@ -2671,6 +2671,14 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		
 	}
 	
+	public void toggleMenues(boolean t){
+		menuItemGameNew.setEnabled(t);
+		menuItemGameMulti.setEnabled(t);
+		menuItemGameOpen.setEnabled(t);
+		menuItemGameSave.setEnabled(t);
+		menuItemRecordList.setEnabled(t);
+	}
+	
 	private void initMultiGame() {
 		if (!isSaved) {
 			saveBeforExitMessage();
@@ -2678,15 +2686,13 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		multiDialog = new NewMultiDialog(getShell(), SWT.DIALOG_TRIM);
 		multiDialog.open();
 		//user changed his mind and don't want to start a new game
+		toggleMenues(false);
 		if (multiDialog.isClosed() == true) {
+		    toggleMenues(true);
 			return;
 		}
 		GLogic = GameGui.getG();
-		menuItemGameNew.setEnabled(false);
-		menuItemGameMulti.setEnabled(false);
-		menuItemGameOpen.setEnabled(false);
-		menuItemGameSave.setEnabled(false);
-		menuItemRecordList.setEnabled(false);
+		
 		
 		//Now we need to start the login!!!
 		client = new Client(this);
