@@ -121,6 +121,7 @@ public class LoginPlayThread extends Thread{
                                                 if (addResault == true) {
                                                 		
                                                         returnOK();
+                                                        break;
                                                 }
                                                 else {
                                                         returnAlreadyExist();

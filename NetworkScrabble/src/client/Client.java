@@ -38,9 +38,9 @@ public class Client {
 	public Client(final MainWindow_ver2 window) {
 		try {
 			//log to server in tau:
-            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
+            //clientSock = new Socket("kite.cs.tau.ac.il", 40775);
 			//log to local server
-//            clientSock = new Socket(serverAddress, 40775);
+            clientSock = new Socket(serverAddress, 40775);
             out = new ObjectOutputStream(clientSock.getOutputStream());
             in  = new ObjectInputStream (clientSock.getInputStream());
             
@@ -48,6 +48,7 @@ public class Client {
             System.err.println("Don't know about host: local host");
             Display.getDefault().asyncExec(new Runnable() {
     			public void run() {
+				    window.toggleMenues(true);
 		            MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 		            connectionFailBox.setText("Connection Fail");
 		            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -59,6 +60,7 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to: local host");
             Display.getDefault().asyncExec(new Runnable() {
     			public void run() {
+				    window.toggleMenues(true);
     				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 		            connectionFailBox.setText("Connection Fail");
 		            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -90,6 +92,7 @@ public class Client {
 	    	   e.printStackTrace();
 	    	   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -98,7 +101,6 @@ public class Client {
 	            });;
 	       } 
 	    userInformPopUp();
-	   
 	    while (isGameFinished  == false) {
 	    	   GameChunk gameChunk = null;
 	    	   //wait until game start
@@ -218,6 +220,7 @@ public class Client {
 	    	   e.printStackTrace();
 	    	   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -239,6 +242,7 @@ public class Client {
 		   } catch (IOException e) {
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -250,6 +254,7 @@ public class Client {
 		   } catch (ClassNotFoundException e) {
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -272,6 +277,7 @@ public class Client {
 					window.setPlayStatusText("Waiting for a player...");
 				} else {
 					try {
+					    window.toggleMenues(true);
 						in.close();
 						out.close();
 						clientSock.close();
@@ -295,6 +301,7 @@ public class Client {
 			   e1.printStackTrace();
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -306,6 +313,7 @@ public class Client {
 			   e1.printStackTrace();
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -346,6 +354,7 @@ public class Client {
 	     } catch (IOException e) {
 	    	 Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -370,6 +379,7 @@ public class Client {
 		   } catch (IOException e) {
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -381,6 +391,7 @@ public class Client {
 		   } catch (ClassNotFoundException e) {
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
+					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -395,6 +406,7 @@ public class Client {
 	private void userPassWordMis() {
 		 Display.getDefault().asyncExec(new Runnable() {
  			public void run() {
+			    window.toggleMenues(true);
  				MessageBox loginErrorMsgBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 				loginErrorMsgBox.setText("Login Error");
 				loginErrorMsgBox.setMessage("User Name or Password, was not entered prorerly. Try Agian");
@@ -407,6 +419,7 @@ public class Client {
 	private void userNameAlreadyExist() {
 		 Display.getDefault().asyncExec(new Runnable() {
 	 			public void run() {
+				    window.toggleMenues(true);
 	 				MessageBox loginErrorMsgBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 	 				loginErrorMsgBox.setText("Login Error");
 					loginErrorMsgBox.setMessage("This User is already exist in our database. Please enter anothor one");
@@ -419,6 +432,7 @@ public class Client {
 	private void fail() {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
+			    window.toggleMenues(true);
 				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 	            connectionFailBox.setText("Connection Fail");
 	            connectionFailBox.setMessage("Failed to connect to server, try again later");
