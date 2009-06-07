@@ -26,9 +26,11 @@ anyone of them should be automatic. Notice that the first player must be human.
 
 
 For an Internet game:
-
-If you are a new user, enter your wanted user name, password and email.
-If you are already registered, only name and password
+Go to Game->Multiplayer.
+If you are a new user, press "New User" and enter your wanted user name, password and email.
+If you are already registered, enter only name and password and press "User login"
+If you want to login as a guest, fill only the name field and press "Login". Notice that if
+you want your results to be saved, you must be registered.
 If there a are no players available currently, you can choose to abort
 and play a local game. 
 The Internet game is only for the basic rule set.
