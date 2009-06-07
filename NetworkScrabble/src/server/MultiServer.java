@@ -42,12 +42,12 @@ public class MultiServer {
         try {
             serverSocket = new ServerSocket(40775);
         } catch (IOException e) {
-            System.err.println("Could not listen on port: 4445");
+            System.err.println("Could not listen on port: 40775");
             System.exit(-1);
         }
         
-        Thread hook = new ServerShutDownTread(serverSocket, userDB);
-		Runtime.getRuntime().addShutdownHook(hook);
+//        Thread hook = new ServerShutDownTread(serverSocket, userDB);
+//		Runtime.getRuntime().addShutdownHook(hook);
 
         while (listening){
 			try {
@@ -73,6 +73,9 @@ public class MultiServer {
         private ObjectInputStream  in  = null;
         public UserInfo userInfo = null;
         
+        public SocketStreamsAndUserInfo() {
+        	socket = null;
+        }
 		public UserInfo getUserInfo() {
 			return userInfo;
 		}

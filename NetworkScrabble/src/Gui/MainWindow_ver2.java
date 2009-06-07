@@ -44,6 +44,7 @@ import scrabbleMain.GameLogic;
 import scrabbleMain.Player;
 import scrabbleMain.gameDirectories;
 import scrabbleMain.GameGui.LP;
+import server.MultiServer;
 import Gui.NewMultiDialog.ClientInfo;
 import client.Client;
 

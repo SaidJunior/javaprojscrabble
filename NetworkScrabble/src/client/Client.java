@@ -23,10 +23,10 @@ public class Client {
 	private final static int USER_NAME_ALREADY_EXIST = 1;
 	private final static int FAIL = 2;
 	private final static int USERNAME_AND_PASSWOND_MISMATCH = 3; //also for username not exist
-	private final static int WAIT = 4;
+//	private final static int WAIT = 4;
 	private static boolean isGameFinished = false; //update this according to the received object
 	//log to local server
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	private InetAddress serverAddress = getLocalHost();
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
@@ -38,7 +38,7 @@ public class Client {
 	public Client(final MainWindow_ver2 window) {
 		try {
 			//log to server in tau:
-            //clientSock = new Socket("kite.cs.tau.ac.il", 40775);
+//            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
 			//log to local server
             clientSock = new Socket(serverAddress, 40775);
             out = new ObjectOutputStream(clientSock.getOutputStream());
@@ -48,7 +48,6 @@ public class Client {
             System.err.println("Don't know about host: local host");
             Display.getDefault().asyncExec(new Runnable() {
     			public void run() {
-				    window.toggleMenues(true);
 		            MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 		            connectionFailBox.setText("Connection Fail");
 		            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -60,7 +59,6 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to: local host");
             Display.getDefault().asyncExec(new Runnable() {
     			public void run() {
-				    window.toggleMenues(true);
     				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 		            connectionFailBox.setText("Connection Fail");
 		            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -84,75 +82,71 @@ public class Client {
 		else //if guest
 			loginAsGuest();
 		
-		char answer = chooseGameMode();
-		try {
-	    	   out.writeObject(answer);
-	       } catch (IOException e) {
-	    	   System.out.println("client failed with choose game mode");
-	    	   e.printStackTrace();
-	    	   Display.getDefault().asyncExec(new Runnable() {
-	    			public void run() {
-					    window.toggleMenues(true);
-	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
-			            connectionFailBox.setText("Connection Fail");
-			            connectionFailBox.setMessage("Failed to connect to server, try again later");
-			            connectionFailBox.open();
-	    			}
-	            });;
-	       } 
-	    userInformPopUp();
-	    while (isGameFinished  == false) {
-	    	   GameChunk gameChunk = null;
-	    	   //wait until game start
-		       try {
-		    	   gameChunk = (GameChunk)in.readObject(); //wait for a player
-		    	   
-		    	   Display.getDefault().asyncExec(new Runnable() {
-		    		   public void run() {
-		    			   window.setPlayStatusText(""); //this is for the waiting... status
-		    		   }
-		    	   });
-		    	   
-		    	   
-		       } catch (IOException e) {
-					System.out.println("client fail with getting gameChunk");
-					Display.getDefault().asyncExec(new Runnable() {
-		    			public void run() {
-		    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+		char answer = waitOrStart();
+//		try {
+//	    	   out.writeObject(answer);
+//	       } catch (IOException e) {
+//	    	   System.out.println("client failed with choose game mode");
+//	    	   e.printStackTrace();
+//	    	   Display.getDefault().asyncExec(new Runnable() {
+//	    			public void run() {
+//	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+//			            connectionFailBox.setText("Connection Fail");
+//			            connectionFailBox.setMessage("Failed to connect to server, try again later");
+//			            connectionFailBox.open();
+//	    			}
+//	            });;
+//	       } 
+//	    userInformPopUp();
+	   if (answer == 'n') { //start playing
+		   this.startGame();
+	   }
+	   else {
+		 Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					waitMsgBox = new MessageBox(window.getShell(), SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
+					waitMsgBox.setText("Scrabble Server Information");
+					waitMsgBox.setMessage("Currently, there are no waiting player. Do you want to wait?");
+					answerToWaitPopUp = waitMsgBox.open();
+//					System.out.println(answerToWaitPopUp == SWT.YES ? "y" : "n");
+					if (answerToWaitPopUp == SWT.YES) {
+						answerToWaitPopUp = 'y';
+						try {
+							out.writeObject(answerToWaitPopUp);
+						} catch (IOException e) {
+							System.out.println("sending answerToWaitPopUp failed");
+							e.printStackTrace();
+							MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 				            connectionFailBox.setText("Connection Fail");
 				            connectionFailBox.setMessage("Failed to connect to server, try again later");
 				            connectionFailBox.open();
-		    			}
-		            });
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					System.out.println("client fail with getting gameChunk");
-					Display.getDefault().asyncExec(new Runnable() {
-		    			public void run() {
-		    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+						}
+					} else {
+						answerToWaitPopUp = 'n';
+						try {
+							out.writeObject(answerToWaitPopUp);
+						} catch (IOException e) {
+							System.out.println("sending answerToWaitPopUp failed");
+							e.printStackTrace();
+							MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 				            connectionFailBox.setText("Connection Fail");
 				            connectionFailBox.setMessage("Failed to connect to server, try again later");
 				            connectionFailBox.open();
-		    			}
-		            });
-					e.printStackTrace();
+						}
+						closeSocket();
+					}	
 				}
-				window.onOffButtonsAndDrag(true);
-				//1)paint game window according to gameChunk
-				//2)update gameChunk
-				//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
-				GameGui.G.insertGameChunk(gameChunk);
-		    	//window.updateNowPlayingText();
-				window.updateWindow();
-				//3)is done in window...We need to stall
-				//System.out.println(GameGui.G.getCurrentPlayerName());
-				while (window.signalDone == false){}
-				window.onOffButtonsAndDrag(false);
-				window.signalDone = false;
-	    }
-	    
-	    closeSocket();
-	    window.isMulti = false;
+			});	}
+	   try {
+		Thread.sleep(1000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+//	   System.out.println("bla   " + (char)answerToWaitPopUp);
+	   if (answerToWaitPopUp == 'y') {
+		   this.startGame();
+	   }
 	}
 	/**
 	 * @param args
@@ -221,7 +215,6 @@ public class Client {
 	    	   e.printStackTrace();
 	    	   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
-					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -231,78 +224,103 @@ public class Client {
 	       } 
 	}
 	
-	private void userInformPopUp() {
-		try {
-			   int serverResponse = (Integer)in.readObject();
-			   
-			   switch (serverResponse) {
-			   	case OK: startGame(); break;
-			   	case WAIT: waitToPlay(); break;
-			   	default: System.out.println("bug1");
-			   }
-		   } catch (IOException e) {
-			   Display.getDefault().asyncExec(new Runnable() {
-	    			public void run() {
-					    window.toggleMenues(true);
-	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
-			            connectionFailBox.setText("Connection Fail");
-			            connectionFailBox.setMessage("Failed to connect to server, try again later");
-			            connectionFailBox.open();
-	    			}
-	            });
-			   System.out.println("server replay fail");
-			   e.printStackTrace();
-		   } catch (ClassNotFoundException e) {
-			   Display.getDefault().asyncExec(new Runnable() {
-	    			public void run() {
-					    window.toggleMenues(true);
-	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
-			            connectionFailBox.setText("Connection Fail");
-			            connectionFailBox.setMessage("Failed to connect to server, try again later");
-			            connectionFailBox.open();
-	    			}
-	            });
-			   System.out.println("server replay fail");
-			e.printStackTrace();
-		}	
-	}
-	private void waitToPlay() {
-//		System.out.println("wait");
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				waitMsgBox = new MessageBox(window.getShell(), SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
-				waitMsgBox.setText("Scrabble Server Information");
-				waitMsgBox.setMessage("Currently, there are no waiting player. Do you want to wait?");
-				int answer = waitMsgBox.open();
-				if (answer == SWT.YES) {
-					window.setPlayStatusText("Waiting for a player...");
-				} else {
-					try {
-					    window.toggleMenues(true);
-						in.close();
-						out.close();
-						clientSock.close();
-					} catch (IOException e) {
-						System.out.println("socket closing failed");
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-	}
+//	private void userInformPopUp() {
+//		try {
+//			   int serverResponse = (Integer)in.readObject();
+//			   
+//			   switch (serverResponse) {
+//			   	case OK: startGame(); break;
+//			   	case WAIT: waitToPlay(); break;
+//			   	default: System.out.println("bug1");
+//			   }
+//		   } catch (IOException e) {
+//			   Display.getDefault().asyncExec(new Runnable() {
+//	    			public void run() {
+//	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+//			            connectionFailBox.setText("Connection Fail");
+//			            connectionFailBox.setMessage("Failed to connect to server, try again later");
+//			            connectionFailBox.open();
+//	    			}
+//	            });
+//			   System.out.println("server replay fail");
+//			   e.printStackTrace();
+//		   } catch (ClassNotFoundException e) {
+//			   Display.getDefault().asyncExec(new Runnable() {
+//	    			public void run() {
+//	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+//			            connectionFailBox.setText("Connection Fail");
+//			            connectionFailBox.setMessage("Failed to connect to server, try again later");
+//			            connectionFailBox.open();
+//	    			}
+//	            });
+//			   System.out.println("server replay fail");
+//			e.printStackTrace();
+//		}	
+//	}
+//	private void waitToPlay() {
+//		window.setPlayStatusText("Waiting for a player...");
+//	}
 	private void startGame() {
 //		System.out.println("start game");
+		 while (isGameFinished  == false) {
+	    	   GameChunk gameChunk = null;
+	    	   //wait until game start
+		       try {
+		    	   gameChunk = (GameChunk)in.readObject(); //wait for a player
+		    	   
+		    	   Display.getDefault().asyncExec(new Runnable() {
+		    		   public void run() {
+		    			   window.setPlayStatusText(""); //this is for the waiting... status
+		    		   }
+		    	   });
+		    	   
+		    	   
+		       } catch (IOException e) {
+					System.out.println("client fail with getting gameChunk");
+					Display.getDefault().asyncExec(new Runnable() {
+		    			public void run() {
+		    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+				            connectionFailBox.setText("Connection Fail");
+				            connectionFailBox.setMessage("Failed to connect to server, try again later");
+				            connectionFailBox.open();
+		    			}
+		            });
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					System.out.println("client fail with getting gameChunk");
+					Display.getDefault().asyncExec(new Runnable() {
+		    			public void run() {
+		    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+				            connectionFailBox.setText("Connection Fail");
+				            connectionFailBox.setMessage("Failed to connect to server, try again later");
+				            connectionFailBox.open();
+		    			}
+		            });
+					e.printStackTrace();
+				}
+				window.onOffButtonsAndDrag(true);
+				//1)paint game window according to gameChunk
+				//2)update gameChunk
+				//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
+				GameGui.G.insertGameChunk(gameChunk);
+		    	//window.updateNowPlayingText();
+				window.updateWindow();
+				//3)is done in window...We need to stall
+				//System.out.println(GameGui.G.getCurrentPlayerName());
+				while (window.signalDone == false){}
+				window.onOffButtonsAndDrag(false);
+				window.signalDone = false;
+	    }
 	}
-	//'a' for auto player 'h' for human
-	private char chooseGameMode() {
+	
+	private char waitOrStart() {
 		 try {
 	    	   this.in.readObject();
 		   } catch (IOException e1) {
-			   System.out.println("client failed to get computer or human");
+			   System.out.println("client failed to get waitOrNo");
 			   e1.printStackTrace();
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
-					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -310,11 +328,10 @@ public class Client {
 	    			}
 	            });
 		   } catch (ClassNotFoundException e1) {
-			   System.out.println("client failed to get computer or human");
+			   System.out.println("client failed to get waitOrNo");
 			   e1.printStackTrace();
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
-					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -322,9 +339,35 @@ public class Client {
 	    			}
 	            });
 		   }
-		 if( clientInfo.isAuto())
-			return 'a';
-		 return 'h';
+		
+		char answerIsTherePlayersWaiting = 0;  
+		try { //ask server if there are any players waiting
+			answerIsTherePlayersWaiting = (Character)in.readObject();
+		} catch (IOException e1) {
+			System.out.println("client fail to get answerIsTherePlayersWaiting");
+			e1.printStackTrace();
+			Display.getDefault().asyncExec(new Runnable() {
+    			public void run() {
+    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+		            connectionFailBox.setText("Connection Fail");
+		            connectionFailBox.setMessage("Failed to connect to server, try again later");
+		            connectionFailBox.open();
+    			}
+            });
+		} catch (ClassNotFoundException e1) {
+			System.out.println("client fail to get answerIsTherePlayersWaiting");
+			e1.printStackTrace();
+			Display.getDefault().asyncExec(new Runnable() {
+    			public void run() {
+    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+		            connectionFailBox.setText("Connection Fail");
+		            connectionFailBox.setMessage("Failed to connect to server, try again later");
+		            connectionFailBox.open();
+    			}
+            });
+		}
+		
+		return answerIsTherePlayersWaiting;		
 	}
 	
 	////// login methods 
@@ -355,7 +398,6 @@ public class Client {
 	     } catch (IOException e) {
 	    	 Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
-					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -380,7 +422,6 @@ public class Client {
 		   } catch (IOException e) {
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
-					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -392,7 +433,6 @@ public class Client {
 		   } catch (ClassNotFoundException e) {
 			   Display.getDefault().asyncExec(new Runnable() {
 	    			public void run() {
-					    window.toggleMenues(true);
 	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 			            connectionFailBox.setText("Connection Fail");
 			            connectionFailBox.setMessage("Failed to connect to server, try again later");
@@ -403,11 +443,12 @@ public class Client {
 		}
 	}
 	
-	private MessageBox waitMsgBox; 
+	private MessageBox waitMsgBox;
+	private int answerToWaitPopUp; 
+	
 	private void userPassWordMis() {
 		 Display.getDefault().asyncExec(new Runnable() {
  			public void run() {
-			    window.toggleMenues(true);
  				MessageBox loginErrorMsgBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 				loginErrorMsgBox.setText("Login Error");
 				loginErrorMsgBox.setMessage("User Name or Password, was not entered prorerly. Try Agian");
@@ -420,7 +461,6 @@ public class Client {
 	private void userNameAlreadyExist() {
 		 Display.getDefault().asyncExec(new Runnable() {
 	 			public void run() {
-				    window.toggleMenues(true);
 	 				MessageBox loginErrorMsgBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 	 				loginErrorMsgBox.setText("Login Error");
 					loginErrorMsgBox.setMessage("This User is already exist in our database. Please enter anothor one");
@@ -433,7 +473,6 @@ public class Client {
 	private void fail() {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-			    window.toggleMenues(true);
 				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
 	            connectionFailBox.setText("Connection Fail");
 	            connectionFailBox.setMessage("Failed to connect to server, try again later");
