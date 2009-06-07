@@ -152,6 +152,7 @@ public class Client {
 	    }
 	    
 	    closeSocket();
+	    window.isMulti = false;
 	}
 	/**
 	 * @param args
