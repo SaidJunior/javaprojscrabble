@@ -38,9 +38,9 @@ public class Client {
 	public Client(final MainWindow_ver2 window) {
 		try {
 			//log to server in tau:
-//            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
+            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
 			//log to local server
-            clientSock = new Socket(serverAddress, 40775);
+//            clientSock = new Socket(serverAddress, 40775);
             out = new ObjectOutputStream(clientSock.getOutputStream());
             in  = new ObjectInputStream (clientSock.getInputStream());
             
@@ -111,6 +111,7 @@ public class Client {
 //					System.out.println(answerToWaitPopUp == SWT.YES ? "y" : "n");
 					if (answerToWaitPopUp == SWT.YES) {
 						answerToWaitPopUp = 'y';
+						window.setPlayStatusText("Waiting...");
 						try {
 							out.writeObject(answerToWaitPopUp);
 						} catch (IOException e) {
@@ -137,14 +138,16 @@ public class Client {
 					}	
 				}
 			});	}
-	   try {
-		Thread.sleep(1000);
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-//	   System.out.println("bla   " + (char)answerToWaitPopUp);
+//	   try {
+//		Thread.sleep(1000);
+//	} catch (InterruptedException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+	   while (answerToWaitPopUp == 0);
+//	   System.out.println("bla   " + answerToWaitPopUp);
 	   if (answerToWaitPopUp == 'y') {
+//		   System.out.println("bla");
 		   this.startGame();
 	   }
 	}
@@ -261,7 +264,7 @@ public class Client {
 //		window.setPlayStatusText("Waiting for a player...");
 //	}
 	private void startGame() {
-//		System.out.println("start game");
+		System.out.println("start game");
 		 while (isGameFinished  == false) {
 	    	   GameChunk gameChunk = null;
 	    	   //wait until game start
