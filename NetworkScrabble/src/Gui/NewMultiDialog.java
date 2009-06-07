@@ -33,7 +33,6 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 	private Label label1;
 	private Button cancelConnect;
 	private Button newUser;
-	private Button AutoCheck;
 	private Text EmailText;
 	private Text text2;
 	private Text text1;
@@ -70,10 +69,10 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 				Existing = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
 				Existing.setText("Login User");
 				FormData ExistingLData = new FormData();
-				ExistingLData.width = 68;
-				ExistingLData.height = 31;
+				ExistingLData.width = 66;
+				ExistingLData.height = 33;
 				ExistingLData.left =  new FormAttachment(0, 1000, 131);
-				ExistingLData.top =  new FormAttachment(0, 1000, 165);
+				ExistingLData.top =  new FormAttachment(0, 1000, 120);
 				Existing.setLayoutData(ExistingLData);
 				Existing.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
@@ -95,10 +94,10 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 				cancelConnect.setText("Cancel");
 				FormData cancelConnectLData = new FormData();
 				cancelConnectLData.width = 43;
-				cancelConnectLData.height = 32;
-				cancelConnectLData.top =  new FormAttachment(0, 1000, 165);
-				cancelConnectLData.left =  new FormAttachment(0, 1000, 205);
-				cancelConnectLData.right =  new FormAttachment(1000, 1000, -46);
+				cancelConnectLData.height = 33;
+				cancelConnectLData.top =  new FormAttachment(0, 1000, 120);
+				cancelConnectLData.left =  new FormAttachment(0, 1000, 203);
+				cancelConnectLData.right =  new FormAttachment(1000, 1000, -41);
 				cancelConnect.setLayoutData(cancelConnectLData);
 				cancelConnect.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
@@ -111,9 +110,9 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 				newUser = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
 				newUser.setText("Login New User");
 				FormData connectLData = new FormData();
-				connectLData.width = 87;
-				connectLData.height = 31;
-				connectLData.top =  new FormAttachment(0, 1000, 165);
+				connectLData.width = 86;
+				connectLData.height = 33;
+				connectLData.top =  new FormAttachment(0, 1000, 120);
 				connectLData.left =  new FormAttachment(0, 1000, 38);
 				newUser.setLayoutData(connectLData);
 				newUser.addSelectionListener(new SelectionAdapter() {
@@ -130,16 +129,6 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 					}
 					
 				});
-			}
-			{
-				AutoCheck = new Button(dialogShell, SWT.CHECK | SWT.LEFT);
-				AutoCheck.setText("Automated Player");
-				FormData AutoCheckLData = new FormData();
-				AutoCheckLData.width = 111;
-				AutoCheckLData.height = 16;
-				AutoCheckLData.left =  new FormAttachment(0, 1000, 18);
-				AutoCheckLData.top =  new FormAttachment(0, 1000, 129);
-				AutoCheck.setLayoutData(AutoCheckLData);
 			}
 			{
 				EmailText = new Text(dialogShell, SWT.NONE);
@@ -220,7 +209,7 @@ public class NewMultiDialog extends org.eclipse.swt.widgets.Dialog {
 				text1.getText(),
 				text2.getText(),
 				EmailText.getText(),
-				AutoCheck.getSelection(),
+				false,
 				newUser));
 		dialogShell.dispose();
 	}

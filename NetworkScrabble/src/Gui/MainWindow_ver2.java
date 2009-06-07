@@ -2629,13 +2629,15 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		this.updateStatusText(string);
 	}
 	
-	private static void saveBeforExitMessage() {
-		MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO);
-		messageBox.setText("Save before exit");
-		messageBox.setMessage("The current game was not saved. Would you like to save it?");
-		int response = messageBox.open();
-		if (response == SWT.YES) {
-			saveAction();
+	private void saveBeforExitMessage() {
+		if (!isMulti){
+			MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO);
+			messageBox.setText("Save before exit");
+			messageBox.setMessage("The current game was not saved. Would you like to save it?");
+			int response = messageBox.open();
+			if (response == SWT.YES) {
+				saveAction();
+			}
 		}
 	}
 	
