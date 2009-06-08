@@ -2630,6 +2630,10 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		this.updateStatusText(string);
 	}
 	
+	public String getPlayStatusText() {
+		return textStatus.getText(); 
+	}
+	
 	private void saveBeforExitMessage() {
 		if (!isMulti){
 			MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO);
