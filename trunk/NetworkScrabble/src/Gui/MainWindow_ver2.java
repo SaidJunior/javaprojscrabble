@@ -2686,7 +2686,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		menuItemRecordList.setEnabled(t);
 	}
 	
-	private void initMultiGame() {
+	public void initMultiGame() {
 		if (!isSaved) {
 			saveBeforExitMessage();
 		}		
