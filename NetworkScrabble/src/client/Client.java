@@ -317,6 +317,7 @@ public class Client {
 					System.out.println("blaa");
 					otherConnectionClosed();
 					closeSocket();
+					return;
 				} else {
 					Display.getDefault().asyncExec(new Runnable() {
 			    		   public void run() {
@@ -351,6 +352,7 @@ private void otherConnectionClosed() {
 	        connectionFailBox.setText("Connection Fail");
 	        connectionFailBox.setMessage(message); 
 	        connectionFailBox.open();
+	        window.setPlayStatusText("");
 		}
 	});
 }
