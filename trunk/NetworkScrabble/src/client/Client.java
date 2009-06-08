@@ -26,7 +26,7 @@ public class Client {
 //	private final static int WAIT = 4;
 	private static boolean isGameFinished = false; //update this according to the received object
 	//log to local server
-//	@SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private InetAddress serverAddress = getLocalHost();
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
@@ -38,9 +38,9 @@ public class Client {
 	public Client(final MainWindow_ver2 window) {
 		try {
 			//log to server in tau:
-//            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
+            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
 			//log to local server
-            clientSock = new Socket(serverAddress, 40775);
+//            clientSock = new Socket(serverAddress, 40775);
             out = new ObjectOutputStream(clientSock.getOutputStream());
             in  = new ObjectInputStream (clientSock.getInputStream());
             
