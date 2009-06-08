@@ -17,10 +17,20 @@ public class GameChunk implements Serializable{
 	private  Board          board; 
 	private  int            turnInd         = 0;
 	private  char           mode            = 'b';  //indicates the chosen rules set
-	
+	private boolean         isSecondPlayerClosed = false;
+
 	public GameChunk(){
 		}
+	
+	
+	public boolean isSecondPlayerClosed() {
+		return isSecondPlayerClosed;
+	}
 
+	public void setSecondPlayerClosed(boolean isSecondPlayerClosed) {
+		this.isSecondPlayerClosed = isSecondPlayerClosed;
+	}
+	
     public int getLetterMode(){
     	return LetterMode;
     }

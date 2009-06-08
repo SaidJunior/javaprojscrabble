@@ -90,21 +90,12 @@ public class LoginPlayThread extends Thread{
                                                 System.out.println("data base fail");
                                                 returnFail();
                                         }
-                                        /*DEBUG code*/
                                         catch (NullPointerException e) {
                                                 // TODO Auto-generated catch block
                                                 e.printStackTrace();
                                                 System.out.println("data base fail null pointers");
                                                 returnFail();
-                                                break;
                                         }
-                                        
-                                        
-                                        /*DEBUG end*/
-                                        
-                                        //DEBUG
-//                                      returnFail();
-//                                      break;
                                 }
                                 //New request
                                 else {
@@ -130,9 +121,7 @@ public class LoginPlayThread extends Thread{
                                                 returnFail();
                                         }
                                 }
-                                /* debug */
-//                          break;
-                            /* end debug */
+
                 }
                     //out.close();
                     //in.close();
@@ -153,10 +142,25 @@ public class LoginPlayThread extends Thread{
 	
         System.out.println("Reached coputer querry.");//DEBUG
         
-        Socket secondPlayerSock = null;
-        //TODO: optimize with Tor
-        if((secondPlayerSock = MultiServer.getWaitSocket().getSocket()) != null) { // we do have somebody to play with
-        	try {
+        ObjectOutputStream waitingOutStream = MultiServer.getWaitSocket().getOut();
+        ObjectInputStream waitingInStream = MultiServer.getWaitSocket().getIn();
+        if (waitingOutStream != null) {
+	        try { //see if waiting player is still there
+	        	waitingOutStream.writeObject("areYouStillThere?");
+					try {
+						waitingInStream.readObject();
+					} catch (ClassNotFoundException e) {
+						// waiting player closed his socket, start waiting procedure
+						System.out.println("waiting player closed socket");
+						this.waitingProcedure(userInfo);
+						e.printStackTrace();
+						return;
+					}
+			} catch (IOException e3) {
+				e3.printStackTrace();
+			}
+			//if we got here the waiting player is still there start game
+			try {
 				out.writeObject('n');
 			} catch (IOException e2) {
 				// TODO Auto-generated catch block
@@ -164,143 +168,100 @@ public class LoginPlayThread extends Thread{
 			}
         	GameGui.setNumberOfPlayers(2);
         	
+        	ObjectOutputStream secondPlayerOut = waitingOutStream;
+			ObjectInputStream  secondPlayerIn = MultiServer.getWaitSocket().getIn();
+			UserInfo u = MultiServer.getWaitSocket().getUserInfo();
+			PlayerInfo p[] = new PlayerInfo[2];
+			
+			p[0] = new PlayerInfo(userInfo.getUserName(), false);
+			p[1] = new PlayerInfo(u.getUserName(), false);
+			GameGui.createPlayerList(p);
+			MultiServer.setWaitSocket(null, null, null, null);
+        			
 
-        	//waiting player closed connection
-        		if (secondPlayerSock.isClosed() || !secondPlayerSock.isConnected()) {
-        			System.out.println("try");
-//                	 MultiServer.setWaitSocket(mySocket, in, out, userInfo);
-//                	 returnWait();
-        			waitingProcedure(userInfo);
-                }
-        		else {
-        			ObjectOutputStream secondPlayerOut = MultiServer.getWaitSocket().getOut();
-        			ObjectInputStream  secondPlayerIn = MultiServer.getWaitSocket().getIn();
-        			UserInfo u = MultiServer.getWaitSocket().getUserInfo();
-        			PlayerInfo p[] = new PlayerInfo[2];
-        			
-        			p[0] = new PlayerInfo(userInfo.getUserName(), false);
-        			p[1] = new PlayerInfo(u.getUserName(), false);
-        			GameGui.createPlayerList(p);
-        			MultiServer.setWaitSocket(null, null, null, null);
-                			
-
-//        			returnOK();
-        			
-        			ObjectOutputStream currentOut = out;
-        			ObjectInputStream currentIn = in;
-        			boolean player1Turn = true;
-        			
-        			
-        			gameChunk = GameGui.G.extractGameChunk();
-        			
-        			while (GameGui.G.getFinishGame() == false) {
-		                 
-	                	//send to client game object chunk
-		                try {
-							currentOut.writeObject(gameChunk);
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							System.out.println("sending chunk to client failed");
-							e1.printStackTrace();
-						}
-						
-						GameChunk tmpInChank = null;
-						//get response from client1
-						try {
-							tmpInChank = (GameChunk)currentIn.readObject();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (ClassNotFoundException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						//************TODO: change game logic according to the in chunk********************
-						//don't forget to update gameChunk;
-						
-					
-						gameChunk = tmpInChank;
-						GameGui.G.insertGameChunk(gameChunk);
-						if (player1Turn == false) {
-							currentIn = in;
-							currentOut = out;
-							player1Turn = true;
-						}
-						else {
-							currentIn  = secondPlayerIn;
-							currentOut = secondPlayerOut;
-							player1Turn = false;
-						}
-	                }
-	                
-	                try {
-	                	out.close();
-	                	in.close();
-						mySocket.close();
+//			returnOK();
+			
+			ObjectOutputStream currentOut = out;
+			ObjectInputStream currentIn = in;
+			boolean player1Turn = true;
+			
+			
+			gameChunk = GameGui.G.extractGameChunk();
+			
+			boolean playerClosedConnection = false;
+			int counter = 0;
+			while (GameGui.G.getFinishGame() == false) {
+                 if (playerClosedConnection == true) {
+                	 gameChunk.setSecondPlayerClosed(true);
+                 }
+            	//send to client game object chunk
+                try {
+					currentOut.writeObject(gameChunk);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					System.out.println("sending chunk to client failed");
+					e1.printStackTrace();
+					gameChunk.setSecondPlayerClosed(true);
+					try {
+						secondPlayerOut.writeObject(gameChunk);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						System.out.println("bla");
+						if (counter == 2) {
+							System.out.println("game finished");
+							return;
+						} else {
+							++counter;
+						}
 						e.printStackTrace();
 					}
-        		}
+				}
+				
+				GameChunk tmpInChank = null;
+				//get response from client1
+				try {
+					tmpInChank = (GameChunk)currentIn.readObject();
+					if (tmpInChank == null) {
+						playerClosedConnection = true;
+					}
+				} catch (IOException e1) {
+					//current player closed his connection, notify player
+					playerClosedConnection = true;
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				//************TODO: change game logic according to the in chunk********************
+				//don't forget to update gameChunk;
+				
+				if (playerClosedConnection != true) {
+					gameChunk = tmpInChank;
+					GameGui.G.insertGameChunk(gameChunk);
+				}
+				
+				if (player1Turn == false) {
+					currentIn = in;
+					currentOut = out;
+					player1Turn = true;
+				}
+				else {
+					currentIn  = secondPlayerIn;
+					currentOut = secondPlayerOut;
+					player1Turn = false;
+				}
+            }
+            
+            try {
+            	out.close();
+            	in.close();
+				mySocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        } else {
+        	this.waitingProcedure(userInfo);
         }
-//        else if (answer == 'a') {
-//        	returnOK();
-//        	GameGui.setNumberOfPlayers(2);
-//        	
-//        	PlayerInfo p[] = new PlayerInfo[2];
-//        	
-//			p[0] = new PlayerInfo(userInfo.getUserName(), false);
-//			p[1] = new PlayerInfo("comp1",true);
-//			GameGui.createPlayerList(p);
-//        			
-//    		
-//			gameChunk = GameGui.G.extractGameChunk();
-//			
-//    		while (GameGui.G.getFinishGame() == false) {
-//                
-//            	//send to client game object chunk
-//                try {
-//					out.writeObject(gameChunk);
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					System.out.println("sending chunk to client failed");
-//					e1.printStackTrace();
-//				}
-//				
-//				GameChunk tmpInChank = null;
-//				//get response from client1
-//				try {
-//					tmpInChank = (GameChunk)in.readObject();
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				} catch (ClassNotFoundException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//				//************TODO: change game logic according to the in-chunk and make an auto player move***************
-//				//don't forget to update gameChunk;
-//				gameChunk = tmpInChank;
-//				GameGui.G.insertGameChunk(gameChunk);
-//				GameGui.placeAutoWord();
-//				GameGui.moveToNextPlayer();
-//				gameChunk = GameGui.G.extractGameChunk();
-//            }
-//        	
-//        	try {
-//        		out.close();
-//            	in.close();
-//				mySocket.close();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//        	
-//        }
-        else{// ask if you want to become a waiting player
-        	waitingProcedure(userInfo);
-//            		
-        } 
     }
 
 	private void waitingProcedure(UserInfo userInfo) {

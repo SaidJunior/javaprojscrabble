@@ -38,9 +38,9 @@ public class Client {
 	public Client(final MainWindow_ver2 window) {
 		try {
 			//log to server in tau:
-            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
+//            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
 			//log to local server
-//            clientSock = new Socket(serverAddress, 40775);
+            clientSock = new Socket(serverAddress, 40775);
             out = new ObjectOutputStream(clientSock.getOutputStream());
             in  = new ObjectInputStream (clientSock.getInputStream());
             
@@ -148,6 +148,24 @@ public class Client {
 //	   System.out.println("bla   " + answerToWaitPopUp);
 	   if (answerToWaitPopUp == 'y') {
 //		   System.out.println("bla");
+		   String a = null;
+		try {
+			a = (String)in.readObject();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		   if (a.equals("areYouStillThere?")) {
+			   try {
+				out.writeObject("yes");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		   }
 		   this.startGame();
 	   }
 	}
@@ -269,26 +287,19 @@ public class Client {
 	    	   GameChunk gameChunk = null;
 	    	   //wait until game start
 		       try {
-		    	   gameChunk = (GameChunk)in.readObject(); //wait for a player
-		    	   
-		    	   Display.getDefault().asyncExec(new Runnable() {
-		    		   public void run() {
-		    			   window.setPlayStatusText(""); //this is for the waiting... status
-		    		   }
-		    	   });
-		    	   
-		    	   
+		    	   gameChunk = (GameChunk)in.readObject(); 
 		       } catch (IOException e) {
 					System.out.println("client fail with getting gameChunk");
-					Display.getDefault().asyncExec(new Runnable() {
-		    			public void run() {
-		    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
-				            connectionFailBox.setText("Connection Fail");
-				            connectionFailBox.setMessage("Failed to connect to server, try again later");
-				            connectionFailBox.open();
-		    			}
-		            });
+//					Display.getDefault().asyncExec(new Runnable() {
+//		    			public void run() {
+//		    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+//				            connectionFailBox.setText("Connection Fail");
+//				            connectionFailBox.setMessage("Failed to connect to server, try again later");
+//				            connectionFailBox.open();
+//		    			}
+//		            });
 					e.printStackTrace();
+					otherConnectionClosed();
 				} catch (ClassNotFoundException e) {
 					System.out.println("client fail with getting gameChunk");
 					Display.getDefault().asyncExec(new Runnable() {
@@ -300,21 +311,49 @@ public class Client {
 		    			}
 		            });
 					e.printStackTrace();
+					otherConnectionClosed();
 				}
-				window.onOffButtonsAndDrag(true);
-				//1)paint game window according to gameChunk
-				//2)update gameChunk
-				//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
-				GameGui.G.insertGameChunk(gameChunk);
-		    	//window.updateNowPlayingText();
-				window.updateWindow();
-				//3)is done in window...We need to stall
-				//System.out.println(GameGui.G.getCurrentPlayerName());
+				if (gameChunk.isSecondPlayerClosed() == true) { //second player closed his connection
+					System.out.println("blaa");
+					otherConnectionClosed();
+					closeSocket();
+				} else {
+					Display.getDefault().asyncExec(new Runnable() {
+			    		   public void run() {
+			    			   if ((window.getPlayStatusText()).equals("Waiting...")) {
+			    				   window.setPlayStatusText(""); //this is for the waiting... status
+			    			   }
+			    		   }
+			    	   });
+					window.onOffButtonsAndDrag(true);
+					//1)paint game window according to gameChunk
+					//2)update gameChunk
+					//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
+					GameGui.G.insertGameChunk(gameChunk);
+			    	//window.updateNowPlayingText();
+					window.updateWindow();
+					//3)is done in window...We need to stall
+					//System.out.println(GameGui.G.getCurrentPlayerName());
+				}
 				while (window.signalDone == false){}
 				window.onOffButtonsAndDrag(false);
 				window.signalDone = false;
 	    }
 	}
+
+private void otherConnectionClosed() {
+	Display.getDefault().asyncExec(new Runnable() {
+		public void run() {
+			String message = ((window.getPlayStatusText()).equals("Waiting...")) ?
+					"A game was started but the other side closed the connection": 
+				    "Your opponent closed his connection, You must be a hell of a player";
+			MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
+	        connectionFailBox.setText("Connection Fail");
+	        connectionFailBox.setMessage(message); 
+	        connectionFailBox.open();
+		}
+	});
+}
 	
 	private char waitOrStart() {
 		 try {
