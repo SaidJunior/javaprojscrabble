@@ -82,33 +82,28 @@ public class Client {
 		else //if guest
 			loginAsGuest();
 		
-		char answer = waitOrStart();
-//		try {
-//	    	   out.writeObject(answer);
-//	       } catch (IOException e) {
-//	    	   System.out.println("client failed with choose game mode");
-//	    	   e.printStackTrace();
-//	    	   Display.getDefault().asyncExec(new Runnable() {
-//	    			public void run() {
-//	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
-//			            connectionFailBox.setText("Connection Fail");
-//			            connectionFailBox.setMessage("Failed to connect to server, try again later");
-//			            connectionFailBox.open();
-//	    			}
-//	            });;
-//	       } 
-//	    userInformPopUp();
-	   if (answer == 'n') { //start playing
+	   String answer = waitOrStart();
+	   if (answer.equals("noPlayers")) {
+		 System.out.println("if: noPlayers");
+		 askPlayerIfHeWantsToWait();
+	   }
+	   else if (answer.equals("PlayerWaiting")) { 
+		   System.out.println("if: PlayerWaiting");
 		   this.startGame();
 	   }
 	   else {
-		 Display.getDefault().asyncExec(new Runnable() {
+		   System.out.println("unknown state");
+	   }
+	}
+
+	private void askPlayerIfHeWantsToWait() {
+		Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					waitMsgBox = new MessageBox(window.getShell(), SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
 					waitMsgBox.setText("Scrabble Server Information");
 					waitMsgBox.setMessage("Currently, there are no waiting player. Do you want to wait?");
 					answerToWaitPopUp = waitMsgBox.open();
-//					System.out.println(answerToWaitPopUp == SWT.YES ? "y" : "n");
+					System.out.println("answer from wait box: " + (answerToWaitPopUp == SWT.YES ? "y" : "n"));
 					if (answerToWaitPopUp == SWT.YES) {
 						answerToWaitPopUp = 'y';
 						window.setPlayStatusText("Waiting...");
@@ -133,100 +128,47 @@ public class Client {
 				            connectionFailBox.setText("Connection Fail");
 				            connectionFailBox.setMessage("Failed to connect to server, try again later");
 				            connectionFailBox.open();
-						}
-						closeSocket();
+						}			
 					}	
 				}
-			});	}
+			});	
 //	   try {
 //		Thread.sleep(1000);
 //	} catch (InterruptedException e) {
 //		// TODO Auto-generated catch block
 //		e.printStackTrace();
 //	}
-	   while (answerToWaitPopUp == 0);
-//	   System.out.println("bla   " + answerToWaitPopUp);
-	   if (answerToWaitPopUp == 'y') {
-//		   System.out.println("bla");
-		   String a = null;
-		try {
-			a = (String)in.readObject();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		   if (a.equals("areYouStillThere?")) {
+		   while (answerToWaitPopUp == 0);
+	//	   System.out.println("bla   " + answerToWaitPopUp);
+		   if (answerToWaitPopUp == 'y') {
+			   System.out.println("waiting");
+			   String verifyAttendecnce = null;
 			   try {
-				out.writeObject("yes");
+				verifyAttendecnce = (String)in.readObject();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-		   }
-		   this.startGame();
-	   }
-	}
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-     //Client client = new Client();
-       
-       /* if New user button is pressed */
-//       client.loginAsNew();
-       /* else if guest button is pressed */
-     //client.loginAsGuest();
-       /* else if existing user button pressed */
-//       client.loginAsUser();
-       
-      
-      /* char answer = client.chooseGameMode();
-       try {
-    	   client.out.writeObject(answer);
-       } catch (IOException e) {
-    	   System.out.println("client failed with choose game mode");
-    	   e.printStackTrace();
-       } //choose between a human or computer player
-       
-       client.userInformPopUp();*/
-       
-       
-       
-       //******* main loop ***************/
-      /* while (isGameFinished  == false) {
-    	   GameChunk gameChunk = null;
-    	   //wait until game start
-	       try {
-				gameChunk = (GameChunk)client.in.readObject(); //wait for a player
-			} catch (IOException e) {
-				System.out.println("client fail with getting gameChunk");
-				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				System.out.println("client fail with getting gameChunk");
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			//1)paint game window according to gameChunk
-			//2)update gameChunk
-			//3)when player pressed "done" call client.sendMoveToServer(gameChunk); 
-			
-			//debug
-			/*client.showChunk((String)gameChunk);
-			client.sendMoveToServer(gameChunk + "a");*/
-      // }
-	       
-       
-      // client.closeSocket();
-    }
+			   if(verifyAttendecnce.equals("areYouStillThere?")) {
+				   System.out.println("if: are you still there");
+				   try {
+						out.writeObject("yes");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return;
+					}
+					this.startGame();
+			   }
+		   }
+		   else {
+			   closeSocket();
+		   }
+	}
 	
-	
-	//this is for debug
-//	private void showChunk(String gameChunk) {
-//		System.out.println(gameChunk);
-//	}
 	
 	public void sendMoveToServer(Object gameChunk) {
 		try {
@@ -245,42 +187,6 @@ public class Client {
 	       } 
 	}
 	
-//	private void userInformPopUp() {
-//		try {
-//			   int serverResponse = (Integer)in.readObject();
-//			   
-//			   switch (serverResponse) {
-//			   	case OK: startGame(); break;
-//			   	case WAIT: waitToPlay(); break;
-//			   	default: System.out.println("bug1");
-//			   }
-//		   } catch (IOException e) {
-//			   Display.getDefault().asyncExec(new Runnable() {
-//	    			public void run() {
-//	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
-//			            connectionFailBox.setText("Connection Fail");
-//			            connectionFailBox.setMessage("Failed to connect to server, try again later");
-//			            connectionFailBox.open();
-//	    			}
-//	            });
-//			   System.out.println("server replay fail");
-//			   e.printStackTrace();
-//		   } catch (ClassNotFoundException e) {
-//			   Display.getDefault().asyncExec(new Runnable() {
-//	    			public void run() {
-//	    				MessageBox connectionFailBox = new MessageBox(window.getShell(), SWT.ICON_ERROR | SWT.OK);
-//			            connectionFailBox.setText("Connection Fail");
-//			            connectionFailBox.setMessage("Failed to connect to server, try again later");
-//			            connectionFailBox.open();
-//	    			}
-//	            });
-//			   System.out.println("server replay fail");
-//			e.printStackTrace();
-//		}	
-//	}
-//	private void waitToPlay() {
-//		window.setPlayStatusText("Waiting for a player...");
-//	}
 	private void startGame() {
 		System.out.println("start game");
 		 while (isGameFinished  == false) {
@@ -336,7 +242,14 @@ public class Client {
 					//3)is done in window...We need to stall
 					//System.out.println(GameGui.G.getCurrentPlayerName());
 				}
-				while (window.signalDone == false){}
+				while (window.signalDone == false){
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				window.onOffButtonsAndDrag(false);
 				window.signalDone = false;
 	    }
@@ -357,7 +270,7 @@ private void otherConnectionClosed() {
 	});
 }
 	
-	private char waitOrStart() {
+	private String waitOrStart() {
 		 try {
 	    	   this.in.readObject();
 		   } catch (IOException e1) {
@@ -384,9 +297,11 @@ private void otherConnectionClosed() {
 	            });
 		   }
 		
-		char answerIsTherePlayersWaiting = 0;  
+		
+		String answerIsTherePlayersWaiting = null;  
 		try { //ask server if there are any players waiting
-			answerIsTherePlayersWaiting = (Character)in.readObject();
+			answerIsTherePlayersWaiting = (String)in.readObject();  // get "noPlayers" or ...
+			System.out.println("answerIsThere: " + answerIsTherePlayersWaiting);
 		} catch (IOException e1) {
 			System.out.println("client fail to get answerIsTherePlayersWaiting");
 			e1.printStackTrace();
