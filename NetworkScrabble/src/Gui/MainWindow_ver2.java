@@ -1,6 +1,9 @@
 package Gui;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -3033,7 +3036,7 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 			//Now we need to send it to the server...
 			GameChunk gameChunk = GameGui.G.extractGameChunk();
 			client.sendMoveToServer(gameChunk);
-			signalDone = true;
+			this.signalDone();
 			return;
 		}
 		
@@ -3123,6 +3126,15 @@ public class MainWindow_ver2 extends org.eclipse.swt.widgets.Composite {
 		updateLetterSetText();
 		updateScoresText();
 		
+	}
+//	public Lock lock = new ReentrantLock();
+//	public Condition signalDoneCond = lock.newCondition();
+//	
+//	public synchronized void signalDone() {
+	public void signalDone() {
+		signalDone = true;
+//		notifyAll();
+//		signalDoneCond.signalAll();
 	}
 
 	private void enablePlayerLetters(boolean b) {

@@ -6,6 +6,9 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -38,9 +41,9 @@ public class Client {
 	public Client(final MainWindow_ver2 window) {
 		try {
 			//log to server in tau:
-            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
+//            clientSock = new Socket("kite.cs.tau.ac.il", 40775);
 			//log to local server
-//            clientSock = new Socket(serverAddress, 40775);
+            clientSock = new Socket(serverAddress, 40775);
             out = new ObjectOutputStream(clientSock.getOutputStream());
             in  = new ObjectInputStream (clientSock.getInputStream());
             
@@ -187,12 +190,14 @@ public class Client {
 	       } 
 	}
 	
-	private void startGame() {
+	private synchronized void startGame() {
 		System.out.println("start game");
+		System.out.println("1");
 		 while (isGameFinished  == false) {
 	    	   GameChunk gameChunk = null;
 	    	   //wait until game start
 		       try {
+		    	   System.out.println("2");
 		    	   gameChunk = (GameChunk)in.readObject(); 
 		       } catch (IOException e) {
 					System.out.println("client fail with getting gameChunk");
@@ -223,8 +228,11 @@ public class Client {
 					System.out.println("blaa");
 					otherConnectionClosed();
 					closeSocket();
+					window.onOffButtonsAndDrag(false);
+					window.signalDone = false;
 					return;
 				} else {
+					System.out.println("3");
 					Display.getDefault().asyncExec(new Runnable() {
 			    		   public void run() {
 			    			   if ((window.getPlayStatusText()).equals("Waiting...")) {
@@ -232,6 +240,7 @@ public class Client {
 			    			   }
 			    		   }
 			    	   });
+					System.out.println("4");
 					window.onOffButtonsAndDrag(true);
 					//1)paint game window according to gameChunk
 					//2)update gameChunk
@@ -242,18 +251,26 @@ public class Client {
 					//3)is done in window...We need to stall
 					//System.out.println(GameGui.G.getCurrentPlayerName());
 				}
+				System.out.println("5");
 				while (window.signalDone == false){
-					try {
-						wait();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+//					window.lock.lock();
+//					try {
+//						window.signalDoneCond.await();
+//						wait();
+//					} catch (InterruptedException e) {
+//						System.out.println("6");
+//						e.printStackTrace();
+//					} finally {
+//						window.lock.unlock();
+//					}
 				}
+				System.out.println("7");
 				window.onOffButtonsAndDrag(false);
 				window.signalDone = false;
 	    }
 	}
+	
+	
 
 private void otherConnectionClosed() {
 	Display.getDefault().asyncExec(new Runnable() {
