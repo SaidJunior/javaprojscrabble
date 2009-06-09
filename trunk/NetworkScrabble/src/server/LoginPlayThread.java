@@ -186,12 +186,17 @@ public class LoginPlayThread extends Thread{
 			
 			boolean playerClosedConnection = false;
 			int counter = 0;
+			
 			while (GameGui.G.getFinishGame() == false) {
-                 if (playerClosedConnection == true) {
+				String player = "player " + ((player1Turn == true) ? 1 : 2); 
+				System.out.println(player + "1"); 
+				if (playerClosedConnection == true) {
+					System.out.println(player + "2"); 
                 	 gameChunk.setSecondPlayerClosed(true);
                  }
             	//send to client game object chunk
                 try {
+                	System.out.println(player + "3"); 
 					currentOut.writeObject(gameChunk);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -199,48 +204,57 @@ public class LoginPlayThread extends Thread{
 					e1.printStackTrace();
 					gameChunk.setSecondPlayerClosed(true);
 					try {
+						System.out.println(player + "4"); 
 						secondPlayerOut.writeObject(gameChunk);
 					} catch (IOException e) {
-						System.out.println("bla");
+						System.out.println(player + "5");
 						if (counter == 2) {
 							System.out.println("game finished");
 							return;
 						} else {
+							System.out.println(player + "6");
 							++counter;
 						}
 						e.printStackTrace();
 					}
 				}
-				
+				System.out.println(player + "7"); 
 				GameChunk tmpInChank = null;
 				//get response from client1
 				try {
+					System.out.println(player + "8"); 
 					tmpInChank = (GameChunk)currentIn.readObject();
 					if (tmpInChank == null) {
+						System.out.println(player + "9"); 
 						playerClosedConnection = true;
 					}
 				} catch (IOException e1) {
 					//current player closed his connection, notify player
+					System.out.println(player + "10"); 
 					playerClosedConnection = true;
 					e1.printStackTrace();
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
+					System.out.println(player + "11"); 
 					e1.printStackTrace();
 				}
 				//************TODO: change game logic according to the in chunk********************
 				//don't forget to update gameChunk;
-				
+				System.out.println(player + "12"); 
 				if (playerClosedConnection != true) {
+					System.out.println(player + "13"); 
 					gameChunk = tmpInChank;
 					GameGui.G.insertGameChunk(gameChunk);
 				}
 				
 				if (player1Turn == false) {
+					System.out.println(player + "14"); 
 					currentIn = in;
 					currentOut = out;
 					player1Turn = true;
 				}
 				else {
+					System.out.println(player + "15"); 
 					currentIn  = secondPlayerIn;
 					currentOut = secondPlayerOut;
 					player1Turn = false;
