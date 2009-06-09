@@ -123,9 +123,6 @@ public class LoginPlayThread extends Thread{
                                 }
 
                 }
-                    //out.close();
-                    //in.close();
-                   //socket.close(); //should not be closed later  
         } catch (IOException e) {
                 System.out.println("server failed to connect");
                 e.printStackTrace();
@@ -145,6 +142,7 @@ public class LoginPlayThread extends Thread{
         ObjectOutputStream waitingOutStream = MultiServer.getWaitSocket().getOut();
         ObjectInputStream waitingInStream = MultiServer.getWaitSocket().getIn();
         if (waitingOutStream != null) {
+        	System.out.println("if1");
 	        try { //see if waiting player is still there
 	        	waitingOutStream.writeObject("areYouStillThere?");
 					try {
@@ -159,27 +157,25 @@ public class LoginPlayThread extends Thread{
 			} catch (IOException e3) {
 				e3.printStackTrace();
 			}
-			//if we got here the waiting player is still there start game
+			
 			try {
-				out.writeObject('n');
+				out.writeObject("PlayerWaiting");
 			} catch (IOException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
-        	GameGui.setNumberOfPlayers(2);
+			//if we got here the waiting player is still there - start game
+			UserInfo u = MultiServer.getWaitSocket().getUserInfo();
+			MultiServer.setWaitSocket(null, null, null, null);
+			GameGui.setNumberOfPlayers(2);
         	
         	ObjectOutputStream secondPlayerOut = waitingOutStream;
-			ObjectInputStream  secondPlayerIn = MultiServer.getWaitSocket().getIn();
-			UserInfo u = MultiServer.getWaitSocket().getUserInfo();
+			ObjectInputStream  secondPlayerIn = waitingInStream;
 			PlayerInfo p[] = new PlayerInfo[2];
 			
 			p[0] = new PlayerInfo(userInfo.getUserName(), false);
 			p[1] = new PlayerInfo(u.getUserName(), false);
 			GameGui.createPlayerList(p);
-			MultiServer.setWaitSocket(null, null, null, null);
-        			
-
-//			returnOK();
 			
 			ObjectOutputStream currentOut = out;
 			ObjectInputStream currentIn = in;
@@ -260,13 +256,14 @@ public class LoginPlayThread extends Thread{
 				e.printStackTrace();
 			}
         } else {
+        	System.out.println("if2");
         	this.waitingProcedure(userInfo);
         }
     }
 
 	private void waitingProcedure(UserInfo userInfo) {
 		try {
-			out.writeObject('y');
+			out.writeObject("noPlayers");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
