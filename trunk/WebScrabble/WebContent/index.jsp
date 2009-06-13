@@ -1,5 +1,6 @@
+
 <%@ page language="java" contentType="text/html; charset=windows-1255"
-    pageEncoding="windows-1255"%>
+    pageEncoding="windows-1255" import = "GameWeb.TestClass" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,10 +10,9 @@
 <!--
 function updateHidden()
 {
-	var Name = document.forms[0].firstName.value;
-	var surname = document.forms[0].surname.value;
-	document.forms[0].Vals.value = Name+" "+surname;
-	//document.write(Name+" "+surname);
+	var text = document.forms[0].userText.value;
+	document.forms[0].Vals.value = text;
+	
 }
 // -->
 </script>
@@ -20,15 +20,26 @@ function updateHidden()
 </head>
 <body>
  <form action='<%= request.getRequestURI() %>' method="POST" onsubmit="updateHidden()">
- 		<%
- 		String item = request.getParameter("Vals");
- 		out.println(item);
- 		%>
-        First Name: <input type="text" name="firstName" size="20"><br>
-        Surname: <input type="text" name="surname" size="20">
+ 		
+        Your Text: <input type="text" name="userText" size="20"><br>
         <br><br>
         <input type="submit" value="Submit">
         <input type="hidden" name="Vals" value="">
+        <%
+        String name = (String)session.getAttribute( "userName" );
+        if (name == null || name.equals("")){
+        	TestClass.counter++;
+        	name = "user"+TestClass.counter;
+        	session.setAttribute( "userName", name );
+
+        }
+ 		String item = request.getParameter("Vals");
+        
+        if (item != null){
+ 			TestClass.content += (name+" said: "+item+"<br>");
+ 			out.write(TestClass.content);
+        }
+ 		%>
        
     </form>
 </body>
