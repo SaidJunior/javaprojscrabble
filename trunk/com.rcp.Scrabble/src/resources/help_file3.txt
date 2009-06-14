@@ -1,0 +1,74 @@
+===================
+WELCOME TO SCRABBLE
+===================
+
+For some background on the game please visit 
+http://en.wikipedia.org/wiki/Scrabble
+
+
+THE BEGINNING
+=============
+Once you start the application you can choose between a new 
+game load an existing game, or to play against someone via
+the Internet.
+
+SETTING THE PREFERENCES
+=======================
+For a local game:
+
+Now you have to choose the number of players (1-4) and the rules set:
+1) Basic: Each cell is worth exactly one point, and the program decides 
+   by herself what is the longest word that was created.
+2) Advanced: You can place only one letter.
+
+Now enter the names of the players (length less then 15) and choose if 
+anyone of them should be automatic. Notice that the first player must be human.
+
+
+For an Internet game:
+Go to Game->Multiplayer.
+If you are a new user, press "New User" and enter your wanted user name, password and email.
+If you are already registered, enter only name and password and press "User login"
+If you want to login as a guest, fill only the name field and press "Login". Notice that if
+you want your results to be saved, you must be registered.
+If there a are no players available currently, you can choose to abort
+and play a local game. 
+The Internet game is only for the basic rule set.
+
+=======================
+
+PLAYING THE GAME
+================
+Ok, what you see now is a 15X15 table with a random word in the middle. 
+Your job is to select letters from your letter set in the bottom and place 
+it on the board to create a meaningful word.
+
+You are ready to place words. A letter is placed by dragging it to the 
+right place on the board. A valid cell would be marked when hovering over it.
+After you placed letters you may undo it at the reverse order of the insertion,
+by pressing the "Undo" button.
+Your placed letter must be a valid word according to the game's dictionary. 
+It must be placed up-down or left-right. Your placed word must, also, use 
+one of the currently placed letters on the board. It is ALLOWED to attach 
+two different words(for example dogcat).
+
+The score for your placed Letter would be according to each letter's score(Printed
+each letter cube) and according to any "bonus" cells you used. 
+
+You can also select the button "change letter" to throw one of your letters and
+get a letter from the main letter set. How you do that? after pressing the 
+button you just press the letter you want to change and the letter would 
+immediately change. After you do that, there is no way back!You can change 
+up to 3 letters.
+
+ 	
+Anyway when you want to pass the turn to the next player, press "Done".
+If the next player is automatic, and you want it to play, press "Done" 
+and his action will take place immediately.
+
+Now it's time for your opponent to play...
+
+The game ends once the main letter set is empty. 
+Then the winner will be determined.
+
+=====================

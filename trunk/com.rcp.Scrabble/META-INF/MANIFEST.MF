@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Scrabble Plug-in
+Bundle-SymbolicName: com.rcp.Scrabble; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: com.rcp.scrabble.Activator
+Bundle-Vendor: RCP
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.rap.ui,
+ org.eclipse.rap.ui.forms,
+ org.eclipse.rap.ui.views
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
