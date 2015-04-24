@@ -1,0 +1,1 @@
+This is basically a project for the course "Development of Java based Software Systems". It's a game of scrabble that will be developed during the semester.
